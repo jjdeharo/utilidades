@@ -8,20 +8,30 @@
     <style>
         body {
             font-family: 'Baloo Tammudu 2', cursive;
-            background: #007991;
+            background: #060073;
             color: white;
+            
         }
+
+        p {
+  margin-top: 0;
+}
+
+        a {
+            color: #F0ECE1;
+        }
+
 
         h1,h2 {
             text-align: center;
             font-size: 2.5em;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             margin-top: 0px;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 300px;
             margin: 0 auto;
         }
 
@@ -35,7 +45,7 @@
             border: 2px solid white;
             border-radius: 10px;
             resize: none;
-            overflow: auto;
+            /*overflow: auto;*/
         }
 
         .buttons {
@@ -150,8 +160,8 @@
         <div class="container">
         <textarea id="nombres" rows="5" placeholder="Escribe o pega aquí los nombres separados por comas o saltos de línea"></textarea>
         <div class="buttons">
-            <button id="boton">Iniciar selección</button>
-            <button id="botonDetener">Detener selección</button>
+            <button id="boton">Iniciar</button>
+            <button id="botonDetener">Detener</button>
         </div>
         <label for="eliminarNombre">
             <input type="checkbox" id="eliminarNombre">
