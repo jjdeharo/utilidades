@@ -132,15 +132,6 @@
             return lista[Math.floor(Math.random() * lista.length)];
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                const listaNombres = nombres.value.split(/[\n,]+/).filter(nombre => nombre.trim() !== '');
-                if (listaNombres.length > 0) {
-                    detenerAnimacion(listaNombres);
-                }
-            }
-        });
 
         boton.addEventListener('mouseup', () => {
             const listaNombres = nombres.value.split(/[\n,]+/).filter(nombre => nombre.trim() !== '');
