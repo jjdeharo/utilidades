@@ -14,7 +14,7 @@
         }
 
         p {
-            margin-top: 10px;
+            margin-top: 1px;
         }
 
         a {
@@ -95,13 +95,13 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => { 
-    const boton = document.getElementById('boton');
-    const botonDetener = document.getElementById('botonDetener');
-    const nombres = document.getElementById('nombres');
-    const nombreElegido = document.getElementById('nombreElegido');
-    const eliminarNombre = document.getElementById('eliminarNombre');
-    let intervaloAnimacion;
-    let borrarNombre = false;
+        const boton = document.getElementById('boton');
+        const botonDetener = document.getElementById('botonDetener');
+        const nombres = document.getElementById('nombres');
+        const nombreElegido = document.getElementById('nombreElegido');
+        const eliminarNombre = document.getElementById('eliminarNombre');
+        let intervaloAnimacion;
+        let borrarNombre = false;
 
     botonDetener.addEventListener('click', () => {
         const listaNombres = nombres.value.split(/[\n,]+/).filter(nombre => nombre.trim() !== '');
