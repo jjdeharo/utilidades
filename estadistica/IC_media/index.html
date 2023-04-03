@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Media y Desviación Típica con Intervalos de Confianza</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/jstat@1.9.0/dist/jstat.min.js"></script>
+</head>
+<body>
+  <div id="container">
+    <h1>Calculadora de Media y Desviación Típica con Intervalos de Confianza</h1>
+    <p>Ingrese los datos separados por comas, espacios o saltos de línea (ejemplo: 1, 2, 3, 4, 5):</p>
+    <textarea id="dataInput" placeholder="Ej: 1,2,3,4,5" rows="5" cols="40">10, 20, 30, 40, 50</textarea>
+    <button onclick="calculate()">Calcular</button>
+    <button onclick="clearData()">Borrar</button>
+    <br><br>
+    <label for="significanceLevel">Nivel de significación:</label>
+    <input type="number" id="significanceLevel" value="0.05" min="0" max="1" step="0.01">
+    <p id="result"></p>
+  </div>
+
+  <script>
+    function calculate() {
+      const dataInput = document.getElementById('dataInput').value;
+      const significanceLevel = parseFloat(document.getElementById('significanceLevel').value);
+      const dataArray = dataInput.split(/[\s,]+/).map(Number).filter(n => !isNaN(n));
+
+      if (dataArray.length === 0) {
+        alert('Ingrese datos válidos separados por comas, espacios o saltos de línea.');
+        return;
+      }
+
+      const average = dataArray.reduce((acc, val) => acc + val, 0) / dataArray.length;
+      const variance = dataArray.reduce((acc, val) => acc + Math.pow(val - average, 2), 0) / dataArray.length;
+      const stddev = Math.sqrt(variance);
+      const dof = dataArray.length - 1;
+      const tScore = jStat.studentt.inv(1 - significanceLevel / 2, dof);
+      const marginOfError = tScore * stddev / Math.sqrt(dataArray.length);
+      const ciLower = average - marginOfError;
+      const ciUpper = average + marginOfError;
+
+      document.getElementById('result').innerHTML = `
+        <strong>Media:</strong> ${average.toFixed(2)}<br>
+                <strong>Desviación Típica:</strong> ${stddev.toFixed(2)}<br>
+        <strong>Intervalo de Confianza de la Media (Nivel de significación: ${significanceLevel}):</strong> [${ciLower.toFixed(2)}, ${ciUpper.toFixed(2)}]
+      `;
+    }
+
+    function clearData() {
+      document.getElementById('dataInput').value = '';
+      document.getElementById('result').innerHTML = '';
+    }
+  </script>
+</body>
+</html>
+

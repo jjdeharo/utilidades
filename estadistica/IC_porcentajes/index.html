@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de intervalo de confianza</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.4/jstat.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de intervalo de confianza</h1>
+    <form onsubmit="event.preventDefault(); calculateConfidenceInterval();">
+        <label for="sampleSize">Tamaño de la muestra (n):</label>
+        <input type="number" id="sampleSize" min="1" value="400">
+
+        <label for="numSuccess">Número de éxitos (x):</label>
+        <input type="number" id="numSuccess" min="0" value="240">
+
+        <label for="confidenceLevel">Nivel de confianza (en %):</label>
+        <input type="number" id="confidenceLevel" min="0" max="100" value="95">
+
+        <button type="submit">Calcular intervalo de confianza</button>
+    </form>
+    <p id="result"></p>
+    <p id="SE"></p>
+
+    <script>
+      function calculateConfidenceInterval() {
+    const sampleSize = parseInt(document.getElementById('sampleSize').value);
+    const numSuccess = parseInt(document.getElementById('numSuccess').value);
+    const confidenceLevel = parseFloat(document.getElementById('confidenceLevel').value) / 100;
+
+    const proportion = numSuccess / sampleSize;
+    const SE = Math.sqrt(proportion * (1 - proportion) / sampleSize);
+    const Z = getZValue(confidenceLevel);
+    const ME = Z * SE;
+
+    const lowerBound = ((proportion - ME) * 100).toFixed(2);
+    const upperBound = ((proportion + ME) * 100).toFixed(2);
+
+    document.getElementById('result').innerText = `${(proportion * 100).toFixed(2)}% ± ${(ME * 100).toFixed(2)}% (${lowerBound}%, ${upperBound}%)`;
+    document.getElementById('SE').innerText = `Error estándar (SE): ${(SE * 100).toFixed(2)}%`;
+}
+
+function getZValue(confidenceLevel) {
+    const alpha = 1 - confidenceLevel;
+    const Z = jStat.normal.inv(1 - alpha / 2, 0, 1);
+    return Z;
+}
+
+    </script>
+</body>
+</html>
+
