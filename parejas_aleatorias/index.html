@@ -53,16 +53,29 @@
         .result {
             margin-top: 20px;
         }
+        .main-container {
+        text-align: center;
+        max-width: 500px;
+        margin: 0 auto;
+    }
     </style>
 </head>
 <body>
+    <div class="main-container">
     <div class="container">
         <h1>Parejas Aleatorias</h1>
         <textarea id="left" placeholder="Introduce elementos separados por comas o saltos de línea"></textarea>
-        <textarea id="right" placeholder="Introduce elementos separados por comas o saltos de línea"></textarea>
+        <textarea id.main-container {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }="right" placeholder="Introduce elementos separados por comas o saltos de línea"></textarea>
         <button onclick="matchElements()">Generar parejas</button>
         <div class="result" id="result"></div>
     </div>
+
+    <br><br><p>Juan José de Haro cc by-sa</p>
+</div>
     <script>
         function matchElements() {
             const left = document.getElementById("left").value;
@@ -92,5 +105,6 @@
             document.getElementById("result").innerHTML = result;
         }
     </script>
+    
 </body>
 </html>
