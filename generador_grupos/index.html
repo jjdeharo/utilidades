@@ -111,7 +111,11 @@ button {
 button:hover {
   background-color: #0056b3;
 }
-
+#groupInfo {
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+}
 
 </style>
 </head>
@@ -125,6 +129,7 @@ button:hover {
       <textarea id="students" rows="10" oninput="updateInfo()">Ana, Jordi, Carmen, David, Elena, Felipe, Gabriela, Héctor, Isabel, Jorge, Karla, Luis, Mariana, Nicolás, Olivia, Pedro, Raquel, Sergio, Teresa, Úrsula, Víctor, Ximena, Yolanda</textarea>
       <label for="groupSize">Tamaño de los grupos:</label>
       <input type="number" id="groupSize" value="4" oninput="updateInfo()">
+      <p id="groupInfo"></p>
       <div class="question">¿Qué hacer con los alumnos sobrantes?</div>
 <div class="options">
   <input type="radio" id="addToGroups" name="remainderOption" value="addToGroups" checked>
@@ -133,7 +138,7 @@ button:hover {
   <label for="newGroup">Crear un nuevo grupo con ellos</label>
 </div>
 
-      <p id="groupInfo"></p>
+      
       <div class="options">
       <div class="buttons"> <!-- Agregado: contenedor de botones -->
         <button onclick="generateGroups()">Generar Grupos</button>
