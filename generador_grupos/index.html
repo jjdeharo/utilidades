@@ -29,21 +29,26 @@
     resize: none;
   }
   .container {
-    width: 80%;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+  width: 80%;
+  background-color: #fff;
+  padding: 20px 40px; /* Cambiado de 20px a 20px 40px */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
   .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-  .column {
-    flex: 1;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
   #output {
     white-space: pre-wrap;
     font-size: 20px;
@@ -67,9 +72,51 @@
   .options label {
     margin-right: 10px;
   }
+  .main-container {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+#students {
+  margin-right: 10px;
+}
+#groupSize {
+  margin-top: 10px;
+  width: 3em; /* Ajusta este valor según lo estrecho que desees que sea el cuadro */
+}
+.question {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+.options input[type="radio"] + label {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.options input[type="radio"]:checked + label {
+  background-color: #dabf49;
+  color: #fff;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+
 </style>
 </head>
 <body>
+  <div class="main-container">
 <h1>Generador Aleatorio de Grupos</h1>
 <div class="container">
   <div class="row">
@@ -78,55 +125,70 @@
       <textarea id="students" rows="10" oninput="updateInfo()">Ana, Jordi, Carmen, David, Elena, Felipe, Gabriela, Héctor, Isabel, Jorge, Karla, Luis, Mariana, Nicolás, Olivia, Pedro, Raquel, Sergio, Teresa, Úrsula, Víctor, Ximena, Yolanda</textarea>
       <label for="groupSize">Tamaño de los grupos:</label>
       <input type="number" id="groupSize" value="4" oninput="updateInfo()">
+      <div class="question">¿Qué hacer con los alumnos sobrantes?</div>
+<div class="options">
+  <input type="radio" id="addToGroups" name="remainderOption" value="addToGroups" checked>
+  <label for="addToGroups">Añadirlos a los grupos existentes</label>
+  <input type="radio" id="newGroup" name="remainderOption" value="newGroup">
+  <label for="newGroup">Crear un nuevo grupo con ellos</label>
+</div>
+
       <p id="groupInfo"></p>
       <div class="options">
-        <p>¿Qué hacer con los alumnos sobrantes?</p>
-        <label><input type="radio" name="remainderOption" value="newGroup"> Un grupo nuevo</label>
-        <label><input type="radio" name="remainderOption" value="addToGroups"> Añadirlos al resto de grupos</label>
+      <div class="buttons"> <!-- Agregado: contenedor de botones -->
+        <button onclick="generateGroups()">Generar Grupos</button>
+        <button onclick="reset()">Borrar Todo</button>
       </div>
     </div>
     <div class="column">
-      <button onclick="generateGroups()">Generar Grupos</button>
-      <button onclick="reset()">Borrar Todo</button>
       <ul id="output"></ul>
     </div>
   </div>
 </div>
+</div>
+
 <script>
   function generateGroups() {
-    const studentsInput = document.getElementById("students");
-    const groupSizeInput = document.getElementById("groupSize");
-    const output = document.getElementById("output");
-    
-    const students = studentsInput.value.split(/[\n,]+/).filter(Boolean);
-    const groupSize = parseInt(groupSizeInput.value);
-    
-    if (isNaN(groupSize) || groupSize < 1) {
-      alert("Por favor, ingresa un tamaño de grupo válido.");
-      return;
-    }
-    
-    students.sort(() => Math.random() - 0.5);
-    const groups = [];
-    
-    for (let i = 0; i < students.length; i += groupSize) {
-      groups.push(students.slice(i, i + groupSize));
-    }
-    
-    const remainder = students.length % groupSize;
-    if (remainder !== 0) {
-      const remainderOption = document.querySelector("input[name='remainderOption']:checked");
-      if (remainderOption.value === "addToGroups") {
-        let index = 0;
-        for (let i = students.length - remainder; i < students.length; i++) {
-          groups[index].push(students[i]);
-          index++;
-        }
-      }
-    }
-    
-    displayGroups(groups);
+  const studentsInput = document.getElementById("students");
+  const groupSizeInput = document.getElementById("groupSize");
+  const output = document.getElementById("output");
+  
+  const students = studentsInput.value.split(/[\n,]+/).filter(Boolean);
+  const groupSize = parseInt(groupSizeInput.value);
+  
+  if (isNaN(groupSize) || groupSize < 1) {
+    alert("Por favor, ingresa un tamaño de grupo válido.");
+    return;
   }
+  
+  students.sort(() => Math.random() - 0.5);
+  const groups = [];
+  
+  for (let i = 0; i < students.length; i += groupSize) {
+    groups.push(students.slice(i, i + groupSize));
+  }
+  
+  const remainder = students.length % groupSize;
+  if (remainder !== 0) {
+    const remainderOption = document.querySelector("input[name='remainderOption']:checked");
+    if (remainderOption.value === "addToGroups") {
+      groups.pop(); // Elimina el último grupo formado por los alumnos sobrantes
+      let index = 0;
+      for (let i = students.length - remainder; i < students.length; i++) {
+        groups[index].push(students[i]);
+        index++;
+      }
+    } else {
+      // No elimina el último grupo si se eligió la opción "Crear un nuevo grupo con ellos"
+    }
+  }
+  
+  displayGroups(groups);
+}
+
+
+
+
   
   function displayGroups(groups) {
     const output = document.getElementById("output");
