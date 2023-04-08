@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grupos de Alumnos</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("generarGrupos").addEventListener("click", generarGrupos);
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Generador de Grupos de Alumnos</h1>
+
+    <div id="inputs">
+      <label for="grupoA">Grupo A:</label>
+      <textarea id="grupoA" rows="4">Ana, Pedro, María, Luis</textarea>
+      <label for="grupoB">Grupo B:</label>
+      <textarea id="grupoB" rows="4">Lucía, Carlos, Marta, Juan, Sofía, Miguel, Elena, Pablo, Laura, Alejandro, Carmen, David, Raquel, Andrea, Jorge</textarea>
+      <label for="grupoC">Grupo C:</label>
+      <textarea id="grupoC" rows="4">Isabel, Guillermo, Martín, Irene, Daniel, Teresa, Javier</textarea>
+      <label for="numAlumnos">Número de alumnos por grupo:</label>
+      <input type="number" id="numAlumnos">
+    </div>
+
+    <div id="radioButtons">
+      <div style="display: inline-block">
+        <label><strong>Tipo de grupos:</strong></label>
+      </div>
+      <div style="display: inline-block">
+        <label for="homogeneos" style="display: inline-block;">Homogéneos</label>
+        <input type="radio" id="homogeneos" name="tipoGrupo" value="homogeneos" style="display: inline-block;">
+      </div>
+      <div style="display: inline-block">
+        <label for="heterogeneos" style="display: inline-block;">Heterogéneos</label>
+        <input type="radio" id="heterogeneos" name="tipoGrupo" value="heterogeneos" style="display: inline-block;">
+      </div>
+      <br>
+      <div style="display: inline-block">
+        <br>
+        <label><strong>¿Qué hacemos con los alumnos sobrantes?</strong></label>
+      </div>
+      <div style="display: inline-block">
+        <label for="grupoNuevo" style="display: inline-block;">Crear grupo nuevo</label>
+        <input type="radio" id="grupoNuevo" name="sobrantes" value="grupoNuevo" style="display: inline-block;">
+      </div>
+      <div style="display: inline-block">
+        <label for="agregar" style="display: inline-block;">Agregar a otros grupos</label>
+        <input type="radio" id="agregar" name="sobrantes" value="agregar" style="display: inline-block;">
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      <button id="generarGrupos" onclick="generarGrupos()">Generar Grupos</button>
+
+<div id="resultados"></div>
+
+<script src="script.js"></script>
+</div>
+<footer>
+  <p>Desarrollado por <a href="https://bilateria.org" target="_blank">Juan José de Haro</a>. Licencia: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a></p>
+</footer>
+
+</body>
+</html>
