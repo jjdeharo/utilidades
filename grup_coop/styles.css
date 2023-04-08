@@ -4,7 +4,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   margin: 0;
   padding: 0;
   overflow-y: scroll;
@@ -15,7 +14,9 @@ body {
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 600px;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 50px; /*ajusta la separación entre el contenedor y el footer*/
 }
 
 h1 {
@@ -48,6 +49,7 @@ label, input {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
+  margin-bottom: 20px; /*Agrega un margen inferior para evitar que se peguen al borde inferior*/
 }
 
 .radio-group label {
@@ -72,7 +74,7 @@ button:hover {
 
 #resultados {
   margin-top: 20px;
-  max-height: 400px; /*opcional: limita la altura máxima del contenedor*/
+  max-height: 300px; /*ajusta la altura máxima del contenido, en lugar del contenedor*/
   overflow-y: scroll;
 }
 
@@ -81,7 +83,6 @@ button:hover {
     width: 90%;
   }
 }
-
 
 footer {
   position: fixed;
