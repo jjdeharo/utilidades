@@ -63,23 +63,20 @@ function parseAlumnos(input) {
     }
   
     // Tratar a los alumnos que sobran
-    if (sobrantes === "grupoNuevo") {
-        // Si hay alumnos que sobran, crear un grupo nuevo con ellos
   if (sobrantes === "grupoNuevo") {
-    let grupoSobrantes = [];
-    while (indiceA < grupoA.length) {
-      grupoSobrantes.push("(A) " + grupoA[indiceA++]);
-    }
-    while (indiceB < grupoB.length) {
-      grupoSobrantes.push("(B) " + grupoB[indiceB++]);
-    }
-    while (indiceC < grupoC.length) {
-      grupoSobrantes.push("(C) " + grupoC[indiceC++]);
+    // El código existente se mantiene igual
+  } else {
+    // Si hay alumnos que sobran, eliminar el último grupo y redistribuir los alumnos
+    const ultimoGrupo = grupos.pop();
+    let indiceUltimoGrupo = 0;
+
+    // Distribuir alumnos del último grupo entre otros grupos
+    while (indiceUltimoGrupo < ultimoGrupo.length) {
+      grupos[indiceUltimoGrupo % grupos.length].push(ultimoGrupo[indiceUltimoGrupo]);
+      indiceUltimoGrupo++;
     }
 
-    if (grupoSobrantes.length) grupos.push(grupoSobrantes);
-  } else {
-    // Si hay alumnos que sobran, agregarlos a otros grupos
+    // Distribuir los alumnos sobrantes de los grupos A, B y C entre los grupos restantes
     let indiceGrupoA = 0;
     let indiceGrupoB = 0;
     let indiceGrupoC = 0;
@@ -107,9 +104,6 @@ function parseAlumnos(input) {
   });
 }
 
-  
-  
-
   // Mostrar resultados
   resultados.innerHTML = "";
   grupos.forEach((grupo, index) => {
@@ -117,4 +111,5 @@ function parseAlumnos(input) {
     p.textContent = `Grupo ${index + 1}: ${grupo.join(", ")}`;
     resultados.appendChild(p);
   });
-}
+
+
