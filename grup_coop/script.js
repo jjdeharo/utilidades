@@ -94,7 +94,6 @@ function parseAlumnos(input) {
       indiceGrupoC++;
     }
   }
-
   // Mostrar resultados
   resultados.innerHTML = "";
   grupos.forEach((grupo, index) => {
@@ -102,14 +101,31 @@ function parseAlumnos(input) {
     p.textContent = `Grupo ${index + 1}: ${grupo.join(", ")}`;
     resultados.appendChild(p);
   });
+  
 }
 
-  // Mostrar resultados
-  resultados.innerHTML = "";
-  grupos.forEach((grupo, index) => {
-    const p = document.createElement("p");
-    p.textContent = `Grupo ${index + 1}: ${grupo.join(", ")}`;
-    resultados.appendChild(p);
+
+
+  function actualizarInfoGrupos() {
+    const grupoA = parseAlumnos(document.getElementById("grupoA").value);
+    const grupoB = parseAlumnos(document.getElementById("grupoB").value);
+    const grupoC = parseAlumnos(document.getElementById("grupoC").value);
+    const numAlumnos = parseInt(document.getElementById("numAlumnos").value);
+  
+    const totalAlumnos = grupoA.length + grupoB.length + grupoC.length;
+    const numGrupos = Math.floor(totalAlumnos / numAlumnos);
+    const sobrantes = totalAlumnos % numAlumnos;
+  
+    const infoGrupos = document.getElementById("infoGrupos");
+    infoGrupos.textContent = `Hay ${totalAlumnos} alumnos, se formarán ${numGrupos} grupos. Sobran ${sobrantes} alumnos.`;
+  }
+  
+  document.getElementById("grupoA").addEventListener("input", actualizarInfoGrupos);
+  document.getElementById("grupoB").addEventListener("input", actualizarInfoGrupos);
+  document.getElementById("grupoC").addEventListener("input", actualizarInfoGrupos);
+  document.getElementById("numAlumnos").addEventListener("input", actualizarInfoGrupos);
+  
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("generarGrupos").addEventListener("click", generarGrupos);
+    actualizarInfoGrupos();
   });
-
-
