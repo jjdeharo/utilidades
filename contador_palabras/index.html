@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Palabrería. Contador de caracteres y palabras</title>
+    <title>ContaPal. Contador de caracteres y palabras</title>
     <style>
       /* Estilos CSS para el cuadro de texto y el botón */
       body {
@@ -19,7 +19,7 @@
 
       textarea {
         width: 100%;
-        height: 200px;
+        height: 50vh;
         font-size: 16px;
         padding: 10px;
         border: 2px solid #ccc;
@@ -59,20 +59,21 @@
         font-size: 14px;
         font-family: Arial, sans-serif;
         color: #333;
-}
-
+      }
 
     </style>
   </head>
   <body>
-    <h1>Contador de caracteres y palabras</h1>
+    <h1>Contador de caracteres, palabras y bytes</h1>
     <label for="texto">Escribe tu texto:</label>
     <textarea id="texto"></textarea>
     <p id="contador"></p>
+    <p id="contadorBytes"></p>
+    <button onclick="guardarArchivo()">Guardar</button>
     <button onclick="borrar()">Borrar</button>
     
     <script>
-      // Código JavaScript para contar caracteres y palabras
+      // Código JavaScript para contar caracteres, palabras y bytes
       var texto = document.getElementById("texto");
       texto.addEventListener("input", contar);
       
@@ -85,18 +86,34 @@
         } else {
           palabras = 0;
         }
-        document.getElementById("contador").innerHTML = "El texto tiene " + caracteres + " caracteres y " + palabras + " palabras.";
+        var bytes = new Blob([contenido]).size;
+        document.getElementById("contador").innerHTML = "El texto tiene <strong>" + caracteres + "</strong> caracteres, <strong>" + palabras + "</strong> palabras y <strong>" + bytes + "</strong> bytes.";
+      }
+
+      function guardarArchivo() {
+        var contenido = texto.value;
+        var enlace = document.createElement("a");
+        var archivo = new Blob([contenido], {type: "text/plain"});
+        enlace.href = URL.createObjectURL(archivo);
+        enlace.download = "texto.txt";
+        enlace.click();
       }
       
       function borrar() {
-        texto.value = "";
-        document.getElementById("contador").innerHTML = "";
-      }
+  texto.value = "";
+  document.getElementById("contador").innerHTML = "";
+  document.getElementById("contadorBytes").innerHTML = "";
+}
+
+function contarBytes() {
+  var contenido = texto.value;
+  var bytes = new Blob([contenido]).size;
+  document.getElementById("contadorBytes").innerHTML = "El texto tiene " + bytes + " bytes.";
+}
     </script>
     <footer>
-        <p>Desarrollado por Juan José de Haro <a href="https://bilateria.org">https://bilateria.org</a></p>
-        <p>Este trabajo está bajo una licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a></p>
-     </footer>
-     
+      <p>Desarrollado por Juan José de Haro <a href="https://bilateria.org">https://bilateria.org</a></p>
+      <p>Este trabajo está bajo una licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a></p>
+   </footer>
   </body>
-</html>
+</html> 
