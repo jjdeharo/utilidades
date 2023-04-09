@@ -8,6 +8,36 @@ function parseAlumnos(input) {
     }
   }
     
+  function balancearGrupos(grupos) {
+    for (let i = 0; i < grupos.length - 1; i++) {
+      const grupoActual = grupos[i];
+      const numAlumnosAActual = grupoActual.filter(alumno => alumno.startsWith("(A)")).length;
+  
+      if (numAlumnosAActual >= 2) {
+        for (let j = i + 1; j < grupos.length; j++) {
+          const grupoSiguiente = grupos[j];
+          const numAlumnosASiguiente = grupoSiguiente.filter(alumno => alumno.startsWith("(A)")).length;
+  
+          if (numAlumnosASiguiente === 0) {
+            const indiceAlumnoA = grupoActual.findIndex(alumno => alumno.startsWith("(A)"));
+            const alumnoA = grupoActual[indiceAlumnoA];
+            grupoActual.splice(indiceAlumnoA, 1);
+  
+            const indiceAlumnoNoA = grupoSiguiente.findIndex(alumno => !alumno.startsWith("(A)"));
+            const alumnoNoA = grupoSiguiente[indiceAlumnoNoA];
+            grupoSiguiente.splice(indiceAlumnoNoA, 1);
+  
+            grupoActual.push(alumnoNoA);
+            grupoSiguiente.push(alumnoA);
+  
+            // Salir del bucle interno ya que se ha realizado el intercambio
+            break;
+          }
+        }
+      }
+    }
+  }
+  
 
   function generarGrupos() {
     const grupoA = parseAlumnos(document.getElementById("grupoA").value);
@@ -60,6 +90,7 @@ function parseAlumnos(input) {
         }
         grupos.push(nuevoGrupo);
       }
+      balancearGrupos(grupos);
     }
   
     // Tratar a los alumnos que sobran
