@@ -117,7 +117,7 @@ function parseAlumnos(input) {
     const sobrantes = totalAlumnos % numAlumnos;
   
     const infoGrupos = document.getElementById("infoGrupos");
-    infoGrupos.textContent = `Hay ${totalAlumnos} alumnos, se formarán ${numGrupos} grupos. Sobran ${sobrantes} alumnos.`;
+    infoGrupos.textContent = `Hay ${totalAlumnos} alumnos, se formarán ${numGrupos} equipos y sobran ${sobrantes} alumnos.`;
   }
   
   document.getElementById("grupoA").addEventListener("input", actualizarInfoGrupos);
