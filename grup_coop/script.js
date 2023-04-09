@@ -158,6 +158,14 @@ function parseAlumnos(input) {
       indiceGrupoC++;
     }
   }
+
+  // Ordenar cada grupo alfabéticamente, incluyendo las letras A, B o C
+  grupos.forEach(grupo => {
+    grupo.sort((a, b) => {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+  });
+
   // Mostrar resultados
   resultados.innerHTML = "";
   grupos.forEach((grupo, index) => {
