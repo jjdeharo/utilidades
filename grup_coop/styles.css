@@ -7,6 +7,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-y: scroll;
+  min-height: 100vh;
 }
 
 .container {
@@ -16,7 +17,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   margin-top: 20px;
-  margin-bottom: 100px; /*ajusta la separación entre el contenedor y el footer*/
+  margin-bottom: 120px; /*ajusta la separación entre el contenedor y el footer*/
 }
 
 h1 {

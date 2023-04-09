@@ -9,6 +9,7 @@ function parseAlumnos(input) {
   }
     
   function balancearGrupos(grupos) {
+    // Balancear alumnos A
     for (let i = 0; i < grupos.length - 1; i++) {
       const grupoActual = grupos[i];
       const numAlumnosAActual = grupoActual.filter(alumno => alumno.startsWith("(A)")).length;
@@ -36,7 +37,39 @@ function parseAlumnos(input) {
         }
       }
     }
+  
+    // Balancear alumnos C
+    for (let i = 0; i < grupos.length - 1; i++) {
+      const grupoActual = grupos[i];
+      const numAlumnosCActual = grupoActual.filter(alumno => alumno.startsWith("(C)")).length;
+  
+      if (numAlumnosCActual >= 2) {
+        for (let j = i + 1; j < grupos.length; j++) {
+          const grupoSiguiente = grupos[j];
+          const numAlumnosCSiguiente = grupoSiguiente.filter(alumno => alumno.startsWith("(C)")).length;
+  
+          if (numAlumnosCSiguiente === 0) {
+            const indiceAlumnoC = grupoActual.findIndex(alumno => alumno.startsWith("(C)"));
+            const alumnoC = grupoActual[indiceAlumnoC];
+            grupoActual.splice(indiceAlumnoC, 1);
+  
+            const indiceAlumnoB = grupoSiguiente.findIndex(alumno => alumno.startsWith("(B)"));
+            if (indiceAlumnoB !== -1) {
+              const alumnoB = grupoSiguiente[indiceAlumnoB];
+              grupoSiguiente.splice(indiceAlumnoB, 1);
+  
+              grupoActual.push(alumnoB);
+              grupoSiguiente.push(alumnoC);
+  
+              // Salir del bucle interno ya que se ha realizado el intercambio
+              break;
+            }
+          }
+        }
+      }
+    }
   }
+  
   
 
   function generarGrupos() {
