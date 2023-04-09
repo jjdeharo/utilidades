@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Editor de Markdown</title>
+    <style>
+      #editor {
+        width: 50%;
+        height: 300px;
+        font-size: 1.2em;
+      }
+
+      #preview {
+        width: 50%;
+        height: 300px;
+        font-size: 1.2em;
+        border: 1px solid black;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Editor de Markdown</h1>
+    <textarea id="editor"></textarea>
+    <div id="preview"></div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      const editor = document.getElementById('editor');
+      const preview = document.getElementById('preview');
+
+      editor.addEventListener('input', () => {
+        const markdown = editor.value;
+        const html = marked(markdown);
+
+        // Elimina todos los nodos hijos del div
+        while (preview.firstChild) {
+          preview.removeChild(preview.firstChild);
+        }
+
+        // Crea un nuevo nodo de párrafo con el contenido HTML
+        const p = document.createElement('p');
+        p.innerHTML = html;
+
+        // Agrega el nodo de párrafo al div
+        preview.appendChild(p);
+      });
+    </script>
+  </body>
+</html>
