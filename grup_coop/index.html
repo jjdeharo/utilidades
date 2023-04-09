@@ -4,14 +4,14 @@
   
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GeCo</title>
+  <title>GeCo - Generador de Equipos Cooperativos</title>
   
   <link rel="stylesheet" href="styles.css">
   
 </head>
 <body>
   <div class="container">
-    <h1>Generador de Grupos Cooperativos de Alumnos</h1>
+    <h1>Generador de Equipos Cooperativos de Alumnos</h1>
     <p>
       <a href="instr.html" target="_blank">INSTRUCCIONES</a>
     </p>
@@ -22,7 +22,7 @@
       <textarea id="grupoB" rows="4">Lucía, Carlos, Marta, Juan, Sofía, Miguel, Elena, Pablo, Laura, Alejandro, Carmen, David, Raquel, Andrea, Jorge</textarea>
       <label for="grupoC">Tipología C:</label>
       <textarea id="grupoC" rows="4">Isabel, Guillermo, Martín, Irene, Daniel, Teresa, Javier</textarea>
-      <label for="numAlumnos">Número de alumnos por grupo:</label>
+      <label for="numAlumnos">Número de alumnos por equipo:</label>
       <input type="number" id="numAlumnos" value="4">
 
     </div>
@@ -32,7 +32,7 @@
 
     <div id="radioButtons">
       <div style="display: inline-block">
-        <label><strong>Tipo de grupos:</strong></label>
+        <label><strong>Tipo de equipos:</strong></label>
       </div>
       <div style="display: inline-block">
         <label for="homogeneos" style="display: inline-block;">Homogéneos</label>
@@ -52,7 +52,7 @@
         <input type="radio" id="grupoNuevo" name="sobrantes" value="grupoNuevo" checked style="display: inline-block;">
       </div>
       <div style="display: inline-block">
-        <label for="agregar" style="display: inline-block;">Agregar a otros grupos</label>
+        <label for="agregar" style="display: inline-block;">Agregar a otros equipos</label>
         <input type="radio" id="agregar" name="sobrantes" value="agregar" style="display: inline-block;">
       </div>
     </div>
@@ -65,7 +65,7 @@
     
     
     
-    <button id="generarGrupos">Generar Grupos</button>
+    <button id="generarGrupos">Generar Equipos</button>
 
 
 <div id="resultados"></div>
