@@ -12,7 +12,22 @@
       white-space: pre-wrap;
       word-wrap: break-word;
     }
+  
+    #markdown-preview ul,
+    #markdown-preview ol {
+      padding-left: 1rem;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  
+    #markdown-preview li {
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
   </style>
+  
+  
+  
 </head>
 <body>
   <div class="container">
@@ -67,31 +82,43 @@
             </div>
               </div>
               <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.8/marked.min.js" referrerpolicy="no-referrer"></script>
-              <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-              <script>
-                const markdownInput = document.getElementById('markdown-input');
-                const markdownPreview = document.getElementById('markdown-preview');
-                const saveMarkdownBtn = document.getElementById('save-markdown');
-                const clearMarkdownBtn = document.getElementById('clear-markdown');
-            
-                markdownInput.addEventListener('input', () => {
-                  const markdownText = markdownInput.value;
-                  markdownPreview.innerHTML = marked(markdownText);
-                });
-            
-                saveMarkdownBtn.addEventListener('click', () => {
-                  const markdownText = markdownInput.value;
-                  const blob = new Blob([markdownText], { type: 'text/plain' });
-                  const link = document.createElement('a');
-                  link.href = URL.createObjectURL(blob);
-                  link.download = 'markdown.md';
-                  link.click();
-                });
-            
-                clearMarkdownBtn.addEventListener('click', () => {
-                  markdownInput.value = '';
-                  markdownPreview.innerHTML = '';
-                });
-              </script>
+<script>
+  const markdownInput = document.getElementById('markdown-input');
+  const markdownPreview = document.getElementById('markdown-preview');
+  const saveMarkdownBtn = document.getElementById('save-markdown');
+  const clearMarkdownBtn = document.getElementById('clear-markdown');
+
+  const renderer = new marked.Renderer();
+  const originalListitem = renderer.listitem;
+
+  renderer.listitem = function (text) {
+    return originalListitem.call(this, text).replace('<li>', '<li style="margin-bottom: 0.25rem; line-height: 1.25;">');
+  };
+
+  marked.setOptions({
+    renderer: renderer
+  });
+
+  markdownInput.addEventListener('input', () => {
+    const markdownText = markdownInput.value;
+    markdownPreview.innerHTML = marked(markdownText);
+  });
+
+  saveMarkdownBtn.addEventListener('click', () => {
+    const markdownText = markdownInput.value;
+    const blob = new Blob([markdownText], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'markdown.md';
+    link.click();
+  });
+
+  clearMarkdownBtn.addEventListener('click', () => {
+    markdownInput.value = '';
+    markdownPreview.innerHTML = '';
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
             </body>
             </html>
