@@ -31,7 +31,7 @@
 
         .container {
             width: 100%;
-            max-width: 300px;
+            max-width: 400px;
             margin: 0 auto;
         }
 
@@ -94,83 +94,149 @@
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', () => { 
-        const boton = document.getElementById('boton');
-        const botonDetener = document.getElementById('botonDetener');
-        const nombres = document.getElementById('nombres');
-        const nombreElegido = document.getElementById('nombreElegido');
-        const eliminarNombre = document.getElementById('eliminarNombre');
-        let intervaloAnimacion;
-        let borrarNombre = false;
-
-    botonDetener.addEventListener('click', () => {
-        const listaNombres = nombres.value.split(/[\n,]+/).filter(nombre => nombre.trim() !== '');
-        if (listaNombres.length > 0) {
-            detenerAnimacion(listaNombres);
-        }
-    });
-
-    boton.addEventListener('click', () => {
-        const listaNombres = nombres.value.split(/[\n,]+/).filter(nombre => nombre.trim() !== '');
-        if (borrarNombre && eliminarNombre.checked) {
-            const index = listaNombres.indexOf(nombreElegido.textContent);
-            if (index > -1) {
-                listaNombres.splice(index, 1);
-                nombres.value = listaNombres.join('\n');
-            }
-        }
-        animacionSeleccion(listaNombres, 150);
-        borrarNombre = true;
-    });
-
-    function animacionSeleccion(listaNombres, intervalo) {
-        let contador = 0;
-        clearInterval(intervaloAnimacion);
-        intervaloAnimacion = setInterval(() => {
-            nombreElegido.textContent = listaNombres[contador % listaNombres.length];
-            contador++;
-        }, intervalo);
-    }
-
-    function detenerAnimacion(listaNombres) {
-        clearInterval(intervaloAnimacion);
-        const seleccionado = seleccionarAlAzar(listaNombres);
-        nombreElegido.textContent = seleccionado;
-        if (eliminarNombre.checked) {
-            const index = listaNombres.indexOf(seleccionado);
-            if (index > -1) {
-                listaNombres.splice(index, 1);
-                nombres.value = listaNombres.join('\n');
-            }
-        }
-    }
-
-    function seleccionarAlAzar(lista) {
-        return lista[Math.floor(Math.random() * lista.length)];
-    }
-
+        document.addEventListener('DOMContentLoaded', () => {
+            const boton = document.getElementById('boton');
+            const botonDetener = document.getElementById('botonDetener');
+            const nombres = document.getElementById('nombres');
+            const nombreElegido = document.getElementById('nombreElegido');
+            const eliminarNombre = document.getElementById('eliminarNombre');
+            let intervaloAnimacion;
+            let borrarNombre = false;
     
-});
+            function playDing() {
+                const activarSonido = document.getElementById('activarSonido');
+    
+                if (!activarSonido.checked) {
+                    return; // Si la casilla de selección no está marcada, no reproducir el sonido
+                }
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-</script>
+                const bufferSize = 4096;
+                const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                const output = buffer.getChannelData(0);
+
+                for (let i = 0; i < bufferSize; i++) {
+                    const time = i / audioContext.sampleRate;
+                    const amplitude = Math.exp(-time * 1.5); // Cambiar el decaimiento aquí
+                    const frequency = 550; // Cambiar la frecuencia aquí
+                    output[i] = amplitude * Math.sin(2 * Math.PI * frequency * time);
+                }
+
+                const bufferSource = audioContext.createBufferSource();
+                bufferSource.buffer = buffer;
+
+                const gainNode = audioContext.createGain();
+                bufferSource.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1);
+
+                bufferSource.start(audioContext.currentTime);
+                bufferSource.stop(audioContext.currentTime + 1);
+            }
+
+
+
+            function playClick() {
+                const activarSonido = document.getElementById('activarSonido');
+    
+                if (!activarSonido.checked) {
+                    return; // Si la casilla de selección no está marcada, no reproducir el sonido
+                }
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+    
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+    
+                gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.01);
+    
+                oscillator.frequency.value = 1000;
+                oscillator.type = "sine";
+    
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.01);
+            }
+    
+            botonDetener.addEventListener('click', () => {
+                const listaNombres = nombres.value.split(/[\n,]+/).filter(nombre => nombre.trim() !== '');
+                if (listaNombres.length > 0) {
+                    detenerAnimacion(listaNombres);
+                }
+            });
+    
+            boton.addEventListener('click', () => {
+                const listaNombres = nombres.value.split(/[\n,]+/).filter(nombre => nombre.trim() !== '');
+                if (borrarNombre && eliminarNombre.checked) {
+                    const index = listaNombres.indexOf(nombreElegido.textContent);
+                    if (index > -1) {
+                        listaNombres.splice(index, 1);
+                        nombres.value = listaNombres.join('\n');
+                    }
+                }
+                animacionSeleccion(listaNombres, 150);
+                borrarNombre = true;
+            });
+    
+            function animacionSeleccion(listaNombres, intervalo) {
+                let contador = 0;
+                clearInterval(intervaloAnimacion);
+                intervaloAnimacion = setInterval(() => {
+                    nombreElegido.textContent = listaNombres[contador % listaNombres.length];
+                    contador++;
+                    playClick();
+                }, intervalo);
+            }
+    
+            function detenerAnimacion(listaNombres) {
+                clearInterval(intervaloAnimacion);
+                const seleccionado = seleccionarAlAzar(listaNombres);
+                nombreElegido.textContent = seleccionado;
+                playDing();
+                if (eliminarNombre.checked) {
+                    const index = listaNombres.indexOf(seleccionado);
+                    if (index > -1) {
+                        listaNombres.splice(index, 1);
+                        nombres.value = listaNombres.join('\n');
+                    }
+                }
+            }
+    
+            function seleccionarAlAzar(lista) {
+                return lista[Math.floor(Math.random() * lista.length)];
+            }
+        });
+    </script>
+    
 </head>
 <body>
 
     <h1>Selector Aleatorio de Nombres</h1>
         <div class="container">
-        <textarea id="nombres" rows="5" placeholder="Escribe o pega aquí los nombres separados por comas o saltos de línea"></textarea>
+        <textarea id="nombres" rows="13" placeholder="Escribe o pega aquí los nombres separados por comas o saltos de línea"></textarea>
         <div class="buttons">
             <button id="boton">Iniciar</button>
             <button id="botonDetener">Detener</button>
         </div>
         <label for="eliminarNombre">
             <input type="checkbox" id="eliminarNombre">
-            Eliminar nombre seleccionado de la lista
+            Eliminar el nombre seleccionado de la lista
         </label>
     </div>
+    <label for="activarSonido">
+        <input type="checkbox" id="activarSonido" checked>
+        Activar sonido
+    </label>
+    <br>
+    <br>
+    <br>
     <div id="nombreElegido"></div>
-    <p>Autor: <a href="https://bilateria.org">Juan José de Haro</a><br>
+    <br>
+    <br>
+    <br>
+    <p style="text-align: center;"><a href="https://bilateria.org">Juan José de Haro</a><br>
         Licencia: <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">cc by-sa</a></p>
-    </header>
 </body>
 </html>
