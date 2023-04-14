@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de índice de legibilidad</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 5px;
+      resize: auto;
+    }
+
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 10px 2px;
+      cursor: pointer;
+    }
+
+    #result {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #interpretation {
+      font-size: 1em;
+      color: #333;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    #formula {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .container select {
+      background-color: rgb(0, 0, 205);
+      color: white; /* Cambia el color del texto a blanco para mejorar la legibilidad */
+      font-size: 1.2em;
+    }
+
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora de índice de legibilidad</h1>
+    <p></p>Los índices de legibilidad son herramientas que ayudan a medir la dificultad de un texto en función de su estructura lingüística. La calculadora de índice de legibilidad que presentamos aquí utiliza fórmulas específicas para los idiomas castellano, catalán, gallego y euskera, con el fin de proporcionar una estimación de la dificultad del texto en esos idiomas.<br><br> Hay que tener en cuenta que este programa tiene limitaciones en cuanto a la precisión de los índices de legibilidad debido la forma de dividir sílabas, que puede no ser del todo exacta. Estos índices son herramientas útiles para tener una idea general de la legibilidad, pero debido a las limitaciones del programa, no deben tomarse como medidas definitivas.</p>
+    
+    <p>Selecciona el idioma:</p>
+    <select id="language" onchange="displayFormula()">
+      <option value="es">Castellano</option>
+      <option value="ca">Catalán</option>
+      <option value="gl">Gallego</option>
+      <option value="eu">Euskera</option>
+    </select>
+    <div id="formula"></div>
+    <p>Introduce el texto en el siguiente campo:</p>
+    <textarea id="input-text"></textarea>
+    <button onclick="calculateLegibility()">Calcular legibilidad</button>
+    <button onclick="clearText()">Borrar texto</button>
+    <div id="result"></div>
+    <div id="interpretation"></div>
+  </div>
+
+  <script>
+    function calculateLegibility() {
+      const text = document.getElementById("input-text").value;
+      const language = document.getElementById("language").value;
+      let result;
+
+      const words = text.split(/\s+/);
+      const sentences = text.split(/[.!?]+/);
+      const syllables = text.match(/[aeiouáéíóúàèìòùüïöü]/gi);
+
+      const avgWordsPerSentence = words.length / sentences.length;
+      const avgSyllablesPerWord = syllables.length / words.length;
+
+      switch (language) {
+        case "es":
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (60 * avgSyllablesPerWord);
+          break;
+        case "ca":
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (62 * avgSyllablesPerWord);
+        break;
+        case "gl":
+        result = 206.84 - (1.02 * avgWordsPerSentence) - (61 * avgSyllablesPerWord);
+        break;
+        case "eu":
+        result = 206.84 - (1.02 * avgWordsPerSentence) - (63 * avgSyllablesPerWord);
+        break;
+        default:
+        result = null;
+        }
+        document.getElementById("result").innerHTML = `Índice de legibilidad: ${result.toFixed(2)}`;
+  interpretResult(result);
+}
+
+function interpretResult(result) {
+  let interpretation;
+
+  if (result < 30) {
+    interpretation = "Muy difícil: Este texto es muy complicado y puede requerir un nivel universitario para comprenderlo.";
+  } else if (result >= 30 && result < 50) {
+    interpretation = "Difícil: Este texto es adecuado para personas con un nivel educativo avanzado.";
+  } else if (result >= 50 && result < 60) {
+    interpretation = "Normal: Este texto es adecuado para personas con un nivel educativo intermedio.";
+  } else if (result >= 60 && result < 80) {
+    interpretation = "Fácil: Este texto es adecuado para personas con un nivel educativo básico o estudiantes de primaria.";
+  } else {
+    interpretation = "Muy fácil: Este texto es muy simple y puede ser comprendido por la mayoría de las personas, incluso aquellas con poca educación formal.";
+  }
+
+  document.getElementById("interpretation").innerHTML = interpretation;
+}
+
+function displayFormula() {
+  const language = document.getElementById("language").value;
+  let formula;
+
+  switch (language) {
+    case "es":
+      formula = "Fórmula de Fernández-Huerta:<br> ILFH = 206.84 - (1.02 * palabras por oración) - (60 * sílabas por palabra)";
+      break;
+    case "ca":
+      formula = "Fórmula adaptada para catalán:<br>ILFC = 206.84 - (1.02 * palabras por oración) - (62 * sílabas por palabra)";
+      break;
+    case "gl":
+      formula = "Fórmula adaptada para gallego:<br>ILFG = 206.84 - (1.02 * palabras por oración) - (61 * sílabas por palabra)";
+      break;
+    case "eu":
+      formula = "Fórmula adaptada para euskera:<br>ILFE = 206.84 - (1.02 * palabras por oración) - (63 * sílabas por palabra)";
+      break;
+    default:
+      formula = "";
+  }
+
+  document.getElementById("formula").innerHTML = formula;
+}
+
+
+function clearText() {
+  document.getElementById("input-text").value = "";
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("interpretation").innerHTML = "";
+}
+
+// Inicializar la fórmula al cargar la página
+displayFormula();
+</script>
+<footer>
+  <p>Desarrollado por <a href="https://bilateria.org" target="_blank">Juan José de Haro</a>. Licencia: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a></p>
+</footer>
+</body>
+</html>
