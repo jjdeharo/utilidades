@@ -69,18 +69,22 @@
 <body>
   <div class="container">
     <h1>Calculadora de índice de legibilidad</h1>
-    <p></p>Útil para saber si el texto es apropiado al público al que nos dirigimos.<br>Los índices de legibilidad son herramientas que ayudan a medir la dificultad de un texto en función de su estructura lingüística. La calculadora de índice de legibilidad que presentamos aquí utiliza fórmulas específicas para los idiomas castellano, catalán, gallego y euskera, con el fin de proporcionar una estimación de la dificultad del texto en esos idiomas.<br><br> Hay que tener en cuenta que este programa tiene limitaciones en cuanto a la precisión de los índices de legibilidad debido la forma de dividir sílabas, que puede no ser del todo exacta. Estos índices son herramientas útiles para tener una idea general de la legibilidad, pero debido a las limitaciones del programa, no deben tomarse como medidas definitivas.</p>
+    <p></p>Esta herramienta mide la legibilidad de textos en castellano, catalán, gallego, euskera e inglés. Es útil para saber si el texto de nuestro recurso es apropiado al publico para el que lo hemos escrito. Aunque ofrece una idea general, sus limitaciones en la división de sílabas pueden afectar la precisión de los índices.</p>
     
     <p>Selecciona el idioma:</p>
     <select id="language" onchange="displayFormula()">
       <option value="es">Castellano</option>
-      <option value="ca">Catalán</option>
-      <option value="gl">Gallego</option>
+      <option value="ca">Català</option>
+      <option value="gl">Galego</option>
       <option value="eu">Euskera</option>
+      <option value="en">English</option>
+
     </select>
     <div id="formula"></div>
-    <p>Introduce el texto en el siguiente campo:</p>
+    <p>Selecciona un archivo de texto: <input type="file" id="file-input" accept=".txt" onchange="loadFile()"></p>
+    <p>o introduce el texto en el siguiente campo:</p>
     <textarea id="input-text"></textarea>
+    <div id="word-count"></div>
     <button onclick="calculateLegibility()">Calcular legibilidad</button>
     <button onclick="clearText()">Borrar texto</button>
     <div id="result"></div>
@@ -106,18 +110,23 @@
           break;
         case "ca":
           result = 206.84 - (1.02 * avgWordsPerSentence) - (62 * avgSyllablesPerWord);
-        break;
+          break;
         case "gl":
-        result = 206.84 - (1.02 * avgWordsPerSentence) - (61 * avgSyllablesPerWord);
-        break;
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (61 * avgSyllablesPerWord);
+          break;
         case "eu":
-        result = 206.84 - (1.02 * avgWordsPerSentence) - (63 * avgSyllablesPerWord);
-        break;
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (63 * avgSyllablesPerWord);
+          break;
+        case "en":
+          result = 206.835 - (1.015 * avgWordsPerSentence) - (84.6 * avgSyllablesPerWord);
+          break;
+
         default:
         result = null;
         }
         document.getElementById("result").innerHTML = `Índice de legibilidad: ${result.toFixed(2)}`;
   interpretResult(result);
+  updateWordCount();
 }
 
 function interpretResult(result) {
@@ -147,13 +156,16 @@ function displayFormula() {
       formula = "Fórmula de Fernández-Huerta:<br> ILFH = 206.84 - (1.02 * palabras por oración) - (60 * sílabas por palabra)";
       break;
     case "ca":
-      formula = "Fórmula adaptada para catalán:<br>ILFC = 206.84 - (1.02 * palabras por oración) - (62 * sílabas por palabra)";
+      formula = "Fórmula de Fernández-Huerta adaptada para catalán:<br>ILFC = 206.84 - (1.02 * palabras por oración) - (62 * sílabas por palabra)";
       break;
     case "gl":
-      formula = "Fórmula adaptada para gallego:<br>ILFG = 206.84 - (1.02 * palabras por oración) - (61 * sílabas por palabra)";
+      formula = "Fórmula de Fernández-Huerta adaptada para gallego:<br>ILFG = 206.84 - (1.02 * palabras por oración) - (61 * sílabas por palabra)";
       break;
     case "eu":
-      formula = "Fórmula adaptada para euskera:<br>ILFE = 206.84 - (1.02 * palabras por oración) - (63 * sílabas por palabra)";
+      formula = "Fórmula de Fernández-Huerta adaptada para euskera:<br>ILFE = 206.84 - (1.02 * palabras por oración) - (63 * sílabas por palabra)";
+      break;
+    case "en":
+      formula = "Fórmula de Flesch Reading Ease Score:<br>FRES = 206.835 - (1.015 * palabras por oración) - (84.6 * sílabas por palabra)";
       break;
     default:
       formula = "";
@@ -167,7 +179,28 @@ function clearText() {
   document.getElementById("input-text").value = "";
   document.getElementById("result").innerHTML = "";
   document.getElementById("interpretation").innerHTML = "";
+  document.getElementById("word-count").innerHTML = "";
 }
+
+function updateWordCount() {
+    const text = document.getElementById("input-text").value;
+    const words = text.split(/\s+/);
+    const wordCount = words.length;
+    document.getElementById("word-count").innerHTML = `Palabras: ${wordCount}`;
+  }
+
+  function loadFile() {
+    const fileInput = document.getElementById("file-input");
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      document.getElementById("input-text").value = e.target.result;
+      updateWordCount();
+    };
+
+    reader.readAsText(file);
+  }
 
 // Inicializar la fórmula al cargar la página
 displayFormula();
@@ -177,3 +210,4 @@ displayFormula();
 </footer>
 </body>
 </html>
+
