@@ -69,6 +69,9 @@
 <body>
   <div class="container">
     <h1>Calculadora de índice de legibilidad</h1>
+    <h2><a href="instrucciones.html" style="left;">INSTRUCCIONES</a></h2>
+
+
     <p></p>Esta herramienta mide la legibilidad de textos en castellano, catalán, gallego, euskera e inglés. Es útil para saber si el texto de nuestro recurso es apropiado al publico para el que lo hemos escrito. Aunque ofrece una idea general, sus limitaciones en la división de sílabas pueden afectar la precisión de los índices.</p>
     
     <p>Selecciona el idioma:</p>
@@ -81,8 +84,8 @@
 
     </select>
     <div id="formula"></div>
-    <p>Selecciona un archivo de texto: <input type="file" id="file-input" accept=".txt" onchange="loadFile()"></p>
-    <p>o introduce el texto en el siguiente campo:</p>
+    <p><strong>Selecciona un archivo de texto</strong>: <input type="file" id="file-input" accept=".txt" onchange="loadFile()"></p>
+    <p><strong>o introduce el texto en el siguiente campo</strong>:</p>
     <textarea id="input-text"></textarea>
     <div id="word-count"></div>
     <button onclick="calculateLegibility()">Calcular legibilidad</button>
