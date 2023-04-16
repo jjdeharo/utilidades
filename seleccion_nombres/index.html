@@ -136,6 +136,15 @@
             }
 
 
+            function generarColorAleatorio() {
+    const luminosidad = 50; // Cambia el valor de la luminosidad aquí (por ejemplo, 50)
+    const color = `hsl(${Math.random() * 360}, 100%, ${luminosidad}%)`;
+    return color;
+}
+
+
+
+
 
             function playClick() {
                 const activarSonido = document.getElementById('activarSonido');
@@ -185,15 +194,18 @@
                 clearInterval(intervaloAnimacion);
                 intervaloAnimacion = setInterval(() => {
                     nombreElegido.textContent = listaNombres[contador % listaNombres.length];
+                    nombreElegido.style.color = generarColorAleatorio(); // Aplica el color aleatorio
                     contador++;
                     playClick();
                 }, intervalo);
             }
+
     
             function detenerAnimacion(listaNombres) {
                 clearInterval(intervaloAnimacion);
                 const seleccionado = seleccionarAlAzar(listaNombres);
                 nombreElegido.textContent = seleccionado;
+                nombreElegido.style.color = 'white';
                 playDing();
                 if (eliminarNombre.checked) {
                     const index = listaNombres.indexOf(seleccionado);
