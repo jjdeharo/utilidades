@@ -79,11 +79,12 @@ button:hover {
 <h2>Pasos para usar la calculadora</h2>
 
 <ol>
-    <li><strong>Seleccionar el idioma</strong>: Selecciona el idioma de tu texto en la sección "Selecciona el idioma". Las opciones son español, catalán, gallego, euskera e inglés.</li>
-    <li><strong>Cargar un archivo de texto</strong>: Si tu texto se encuentra en un archivo, puedes cargarlo haciendo clic en "Selecciona un archivo de texto" y seleccionando el archivo correspondiente. Asegúrate de que el archivo está en formato de texto puro (no en formato de procesador de textos como Word). Si no está en texto puro, guárdalo en ese formato, ya que todos los procesadores de texto lo permiten. No hay límite de tamaño en el archivo.</li>
+    <li><strong>Selecciona el idioma</strong> de tu texto.</li>
+    <li><strong>Selecciona el nivel</strong> de los destinatarios del texto.</li>
+    <li><strong>Cargar un archivo de texto</strong>: Si tu texto se encuentra en un archivo, puedes cargarlo. Asegúrate de que el archivo está en formato de texto puro (no en formato de procesador de textos como Word). No hay límite de tamaño en el archivo.</li>
 
     <li><strong>introducir el texto manualmente</strong>: Si prefieres ingresar el texto directamente, copia y pega o escribe el texto en el campo debajo del botón para cargar archivos.</li>
-    <li><strong>Calcular legibilidad</strong>: Cuando hayas cargado o ingresado el texto, presiona "Calcular legibilidad". La herramienta analizará tu texto y mostrará el índice de legibilidad, junto con una interpretación del nivel de dificultad del texto.</li>
+    <li><strong>Calcular legibilidad</strong>: Cuando hayas cargado o ingresado el texto, presiona "Calcular legibilidad". La herramienta analizará tu texto y mostrará el índice de legibilidad, junto con una interpretación del nivel de dificultad del texto y un semáforo que da idea de la accesibilidad del texto para el nivel seleccionado.</li>
 </ol>
 
 
@@ -98,8 +99,15 @@ button:hover {
 </ol>
 
 <h2>Índices</h2>
-<p>Se emplean el <strong>Flesch Reading Ease Score</strong> para el inglés, el <strong>índice de Fernández Huerta</strong> para castellano y adaptaciones de este último para los demás idiomas.</p>
-
+<p>Se emplean el <strong>Flesch Reading Ease Score</strong> para el inglés, el <strong>índice de Fernández Huerta</strong> para castellano y adaptaciones de este último para los demás idiomas:
+</p>
+<ul>
+    <li>Castellano: ILFH = 206.84 - (1.02 * palabras por oración) - (60 * sílabas por palabra)</li>
+    <li>Catalán: ILFC = 206.84 - (1.02 * palabras por oración) - (62 * sílabas por palabra)</li>
+    <li>Gallego: ILFG = 206.84 - (1.02 * palabras por oración) - (61 * sílabas por palabra)</li>
+    <li>Euskera: ILFE = 206.84 - (1.02 * palabras por oración) - (63 * sílabas por palabra)</li>
+    <li>Inglés: FRES = 206.835 - (1.015 * palabras por oración) - (84.6 * sílabas por palabra)</li>
+    </ul>
 <h2>Interpretación de los resultados</h2>
 
 <ol>
@@ -113,7 +121,7 @@ button:hover {
       <li>Muy difícil</li>
     </ol>
   </li>
-  <p>El semáforo de colores se maneja según la interpretación del índice y el nivel de lectura de la siguiente manera:</p>
+  <li>El <strong>semáforo de colores</strong> se maneja según la interpretación del índice y el nivel de lectura de la siguiente manera:</li>
   <ul>
     <li><strong>Verde</strong>: Indica que el texto es fácil de leer para el nivel seleccionado.</li>
     <li><strong>Amarillo</strong>: Indica que el texto puede tener alguna dificultad para el nivel seleccionado.</li>

@@ -111,7 +111,7 @@ button, select {
     <p></p>Esta herramienta mide la legibilidad de textos en castellano, catalán, gallego, euskera e inglés. Siguiendo los principios del Diseño Universal para el Aprendizaje (DUA), ayuda a determinar si un texto es apropiado y fácilmente comprensible para nuestro alumnado. Aunque ofrece una idea general, tiene limitaciones en la división de sílabas que pueden afectar la precisión de los índices.</p>
     
     <p>Selecciona el idioma:</p>
-    <select id="language" onchange="displayFormula()">
+    <select id="language">
       <option value="es">Castellano</option>
       <option value="ca">Català</option>
       <option value="gl">Galego</option>
@@ -126,7 +126,6 @@ button, select {
       <option value="adult" selected>Adultos</option>
     </select>
 
-    <div id="formula"></div>
     <p><strong>Selecciona un archivo de texto</strong>: <input type="file" id="file-input" accept=".txt" onchange="loadFile()"></p>
     <p><strong>o introduce el texto en el siguiente campo</strong>:</p>
     <textarea id="input-text"></textarea>
@@ -243,32 +242,7 @@ function updateReadabilityIndicator(result) {
 
 
 
-function displayFormula() {
-  const language = document.getElementById("language").value;
-  let formula;
 
-  switch (language) {
-    case "es":
-      formula = "Fórmula de Fernández-Huerta:<br> ILFH = 206.84 - (1.02 * palabras por oración) - (60 * sílabas por palabra)";
-      break;
-    case "ca":
-      formula = "Fórmula de Fernández-Huerta adaptada para catalán:<br>ILFC = 206.84 - (1.02 * palabras por oración) - (62 * sílabas por palabra)";
-      break;
-    case "gl":
-      formula = "Fórmula de Fernández-Huerta adaptada para gallego:<br>ILFG = 206.84 - (1.02 * palabras por oración) - (61 * sílabas por palabra)";
-      break;
-    case "eu":
-      formula = "Fórmula de Fernández-Huerta adaptada para euskera:<br>ILFE = 206.84 - (1.02 * palabras por oración) - (63 * sílabas por palabra)";
-      break;
-    case "en":
-      formula = "Fórmula de Flesch Reading Ease Score:<br>FRES = 206.835 - (1.015 * palabras por oración) - (84.6 * sílabas por palabra)";
-      break;
-    default:
-      formula = "";
-  }
-
-  document.getElementById("formula").innerHTML = formula;
-}
 
 
 function clearText() {
@@ -338,9 +312,8 @@ function updateWordCount() {
     reader.readAsText(file);
   }
 
-// Inicializar la fórmula al cargar la página
-displayFormula();
 </script>
+
 <footer>
   <p><br><br>Desarrollado por <a href="https://bilateria.org" target="_blank">Juan José de Haro</a><br>con la ayuda de <a href="https://chat.openai.com" target="_blank">ChatGPT</a><br>Licencia: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a></p>
 </footer>
