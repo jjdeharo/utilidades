@@ -75,7 +75,7 @@
 }
 
 .readability-normal {
-  background-color: orange;
+  background-color: rgb(255, 230, 0);
 }
 
 .readability-difficult {
@@ -190,16 +190,16 @@ function interpretResult(result) {
 
   if (result < 30) {
     interpretation = "<strong>Muy difícil</strong>: Este texto es muy complicado y puede requerir un nivel universitario para comprenderlo.";
-    readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "orange" : "red";
+    readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "rgb(255, 230, 0)" : "red";
   } else if (result >= 30 && result < 50) {
     interpretation = "<strong>Difícil</strong>: Este texto es adecuado para personas con un nivel educativo avanzado.";
-    readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "orange" : "red";
+    readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "rgb(255, 230, 0)" : "red";
   } else if (result >= 50 && result < 60) {
     interpretation = "<strong>Normal</strong>: Este texto es adecuado para personas con un nivel educativo intermedio.";
     if (readingLevel === "primary") {
       readabilityIndicator.style.backgroundColor = "red";
     } else if (readingLevel === "secondary") {
-      readabilityIndicator.style.backgroundColor = "orange";
+      readabilityIndicator.style.backgroundColor = "rgb(255, 230, 0)";
     } else {
       readabilityIndicator.style.backgroundColor = "green";
     }
