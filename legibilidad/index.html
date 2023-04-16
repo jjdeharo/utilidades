@@ -57,10 +57,44 @@
     }
 
     .container select {
-      background-color: rgb(0, 0, 205);
+      background-color: #4CAF50;
       color: white; /* Cambia el color del texto a blanco para mejorar la legibilidad */
-      font-size: 1.2em;
+      font-size: 1em;
     }
+
+    #readability-indicator {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+
+.readability-easy {
+  background-color: blue;
+}
+
+.readability-normal {
+  background-color: green;
+}
+
+.readability-difficult {
+  background-color: red;
+}
+
+.indicator-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#readability-indicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+button, select {
+  border-radius: 5px;
+}
 
 
 
@@ -81,8 +115,15 @@
       <option value="gl">Galego</option>
       <option value="eu">Euskera</option>
       <option value="en">English</option>
-
     </select>
+
+    <p>Selecciona el nivel (se usa para calcular el tiempo de lectura):</p>
+    <select id="reading-level">
+      <option value="primary">Primaria</option>
+      <option value="secondary">Secundaria</option>
+      <option value="adult" selected>Adultos</option>
+    </select>
+
     <div id="formula"></div>
     <p><strong>Selecciona un archivo de texto</strong>: <input type="file" id="file-input" accept=".txt" onchange="loadFile()"></p>
     <p><strong>o introduce el texto en el siguiente campo</strong>:</p>
@@ -90,8 +131,14 @@
     <div id="word-count"></div>
     <button onclick="calculateLegibility()">Calcular legibilidad</button>
     <button onclick="clearText()">Borrar texto</button>
+    
     <div id="result"></div>
     <div id="interpretation"></div>
+    <div id="reading-time"></div>
+    <div class="indicator-container"> 
+      <div id="readability-indicator"></div>
+    </div>
+    
   </div>
 
   <script>
@@ -134,21 +181,33 @@
 
 function interpretResult(result) {
   let interpretation;
+  const readingTime = calculateReadingTime(result);
+
+  const readabilityIndicator = document.getElementById("readability-indicator");
+  readabilityIndicator.className = ""; // Restablece la clase en cada cálculo
 
   if (result < 30) {
-    interpretation = "Muy difícil: Este texto es muy complicado y puede requerir un nivel universitario para comprenderlo.";
+    interpretation = "<strong>Muy difícil</strong>: Este texto es muy complicado y puede requerir un nivel universitario para comprenderlo.";
+    readabilityIndicator.classList.add("readability-difficult");
   } else if (result >= 30 && result < 50) {
-    interpretation = "Difícil: Este texto es adecuado para personas con un nivel educativo avanzado.";
+    interpretation = "<strong>Difícil</strong>: Este texto es adecuado para personas con un nivel educativo avanzado.";
+    readabilityIndicator.classList.add("readability-difficult");
   } else if (result >= 50 && result < 60) {
-    interpretation = "Normal: Este texto es adecuado para personas con un nivel educativo intermedio.";
+    interpretation = "<strong>Normal</strong>: Este texto es adecuado para personas con un nivel educativo intermedio.";
+    readabilityIndicator.classList.add("readability-normal");
   } else if (result >= 60 && result < 80) {
-    interpretation = "Fácil: Este texto es adecuado para personas con un nivel educativo básico o estudiantes de primaria.";
+    interpretation = "<strong>Fácil</strong>: Este texto es adecuado para personas con un nivel educativo básico o estudiantes de primaria.";
+    readabilityIndicator.classList.add("readability-easy");
   } else {
-    interpretation = "Muy fácil: Este texto es muy simple y puede ser comprendido por la mayoría de las personas, incluso aquellas con poca educación formal.";
+    interpretation = "<strong>Muy fácil</strong>: Este texto es muy simple y puede ser comprendido por la mayoría de las personas, incluso aquellas con poca educación formal.";
+    readabilityIndicator.classList.add("readability-easy");
   }
 
   document.getElementById("interpretation").innerHTML = interpretation;
+  document.getElementById("reading-time").innerHTML = `Tiempo estimado de lectura: ${readingTime}`;
 }
+
+
 
 function displayFormula() {
   const language = document.getElementById("language").value;
@@ -191,6 +250,46 @@ function updateWordCount() {
     const wordCount = words.length;
     document.getElementById("word-count").innerHTML = `Palabras: ${wordCount}`;
   }
+
+  function calculateReadingTime(result) {
+  const words = document.getElementById("input-text").value.split(/\s+/).length;
+  const readingLevel = document.getElementById("reading-level").value;
+  let wordsPerMinute;
+
+  if (result < 30) {
+    wordsPerMinute = 100;
+  } else if (result >= 30 && result < 50) {
+    wordsPerMinute = 150;
+  } else if (result >= 50 && result < 60) {
+    wordsPerMinute = 200;
+  } else if (result >= 60 && result < 80) {
+    wordsPerMinute = 250;
+  } else {
+    wordsPerMinute = 300;
+  }
+
+  // Ajustar la velocidad de lectura según el nivel
+  if (readingLevel === "primary") {
+    wordsPerMinute *= 0.6; // 60% de la velocidad para adultos
+  } else if (readingLevel === "secondary") {
+    wordsPerMinute *= 0.8; // 80% de la velocidad para adultos
+  }
+
+  const minutes = words / wordsPerMinute;
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = Math.round(minutes % 60);
+  const seconds = Math.round((minutes * 60) % 60);
+
+  if (hours >= 1) {
+    return `${hours} horas y ${remainingMinutes} minutos`;
+  } else if (remainingMinutes >= 1) {
+    return `${remainingMinutes} minutos y ${seconds} segundos`;
+  } else {
+    return `${seconds} segundos`;
+  }
+}
+
+
 
   function loadFile() {
     const fileInput = document.getElementById("file-input");
