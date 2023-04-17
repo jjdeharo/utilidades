@@ -213,7 +213,7 @@ function interpretResult(result) {
   }
 
   document.getElementById("interpretation").innerHTML = interpretation;
-  document.getElementById("reading-time").innerHTML = `Tiempo estimado de lectura: ${calculateReadingTime(result)}`;
+  document.getElementById("reading-time").innerHTML = `Según el nivel del alumnado escogido más arriba:<br><strong>Verde:</strong> Adecuado.<br> <strong>Amarillo:</strong> Alguna dificultad.<br><strong>Rojo:</strong> Tiene difcultad.<br><br>Tiempo estimado de lectura: ${calculateReadingTime(result)}`;
 }
 
 
