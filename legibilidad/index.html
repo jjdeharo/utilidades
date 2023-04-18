@@ -10,7 +10,6 @@
       text-align: center;
     }
 
-
     .container {
       max-width: 800px;
       margin: 0 auto;
@@ -23,8 +22,7 @@
       resize: auto;
     }
 
-    button {
-      background-color: #4CAF50;
+    button, select {
       border: none;
       color: white;
       padding: 10px 20px;
@@ -34,6 +32,23 @@
       font-size: 16px;
       margin: 10px 2px;
       cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button.calculate {
+      background-color: #4CAF50;
+    }
+
+    button.calculate:hover {
+      background-color: #388E3C;
+    }
+
+    button.clear {
+      background-color: #f44336;
+    }
+
+    button.clear:hover {
+      background-color: #d32f2f;
     }
 
     #result {
@@ -58,49 +73,32 @@
 
     .container select {
       background-color: #4CAF50;
-      color: white; /* Cambia el color del texto a blanco para mejorar la legibilidad */
-      font-size: 1em;
+      color: white;
+    }
+
+    .indicator-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
     }
 
     #readability-indicator {
-      width: 30px;
-      height: 30px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
     }
 
-    
+    .readability-easy {
+      background-color: green;
+    }
 
-.readability-easy {
-  background-color: green;
-}
+    .readability-normal {
+      background-color: rgb(255, 230, 0);
+    }
 
-.readability-normal {
-  background-color: rgb(255, 230, 0);
-}
-
-.readability-difficult {
-  background-color: red;
-}
-
-.indicator-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-#readability-indicator {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-button, select {
-  border-radius: 5px;
-}
-
-
-
-
+    .readability-difficult {
+      background-color: red;
+    }
 
   </style>
 </head>
@@ -112,7 +110,7 @@ button, select {
 
     <p>Esta herramienta evalúa si un texto es fácil de leer en diferentes idiomas. Siguiendo los principios del Diseño Universal para el Aprendizaje (DUA), permite saber si un texto es adecuado para el nivel del alumnado.</p>
     
-    <select id="language">
+    <select id="language" class="custom-select">
       <option value="" selected disabled>Idioma del texto</option>
       <option value="es" selected>Castellano</option>
       <option value="ca">Català</option>
@@ -122,7 +120,7 @@ button, select {
     </select>
     
 
-    <select id="reading-level">
+    <select id="reading-level" class="custom-select">
       <option value="" selected disabled>Nivel del alumnado</option>
       <option value="primary">Primaria</option>
       <option value="secondary">Secundaria</option>
@@ -132,8 +130,8 @@ button, select {
     <p><strong>Selecciona un archivo de texto o introduce el texto en el espacio que hay más abajo.<br></strong><input type="file" id="file-input" accept=".txt" onchange="loadFile()"></p>
     <textarea id="input-text"></textarea>
     <div id="word-count"></div>
-    <button onclick="calculateLegibility()">Calcular la legibilidad</button>
-    <button onclick="clearText()">Borrar</button>
+    <button class="calculate" onclick="calculateLegibility()">Calcular la legibilidad</button>
+    <button class="clear" onclick="clearText()">Borrar</button>
     
     <div id="result"></div>
     <div id="interpretation"></div>
@@ -252,6 +250,7 @@ function clearText() {
   document.getElementById("result").innerHTML = "";
   document.getElementById("interpretation").innerHTML = "";
   document.getElementById("word-count").innerHTML = "";
+  document.getElementById("readability-indicator").style.backgroundColor = "";
 }
 
 function updateWordCount() {
