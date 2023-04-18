@@ -75,7 +75,7 @@ button:hover {
 
 #resultados {
   margin-top: 20px;
-  max-height: 300px; /*ajusta la altura máxima del contenido, en lugar del contenedor*/
+  max-height: 400px; /*ajusta la altura máxima del contenido, en lugar del contenedor*/
   overflow-y: scroll;
 }
 
