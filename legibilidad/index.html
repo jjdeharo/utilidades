@@ -216,6 +216,7 @@ function splitSyllablesCatalan(word) {
   const vowels = 'aeiouáéíóúàèìòùïü';
   const consonants = 'bcdfghjklmnpqrstvwxyzç';
   const strongVowels = 'aeoáéóàèò';
+  const weakVowels = 'iuïü';
   let syllables = [];
   let currentSyllable = '';
 
@@ -231,7 +232,11 @@ function splitSyllablesCatalan(word) {
         if (strongVowels.includes(currentLetter) && strongVowels.includes(nextLetter)) {
           syllables.push(currentSyllable);
           currentSyllable = '';
-        } else {
+        } else if (
+          (weakVowels.includes(currentLetter) && weakVowels.includes(nextLetter)) ||
+          (strongVowels.includes(currentLetter) && weakVowels.includes(nextLetter)) ||
+          (weakVowels.includes(currentLetter) && strongVowels.includes(nextLetter))
+        ) {
           continue;
         }
       }
@@ -240,15 +245,20 @@ function splitSyllablesCatalan(word) {
       if (nextLetter && consonants.includes(nextLetter)) {
         let afterNextLetter = word[i + 2];
 
+        // Consonante + 'h' + vocal
         if (nextLetter === 'h' && vowels.includes(afterNextLetter)) {
           syllables.push(currentSyllable);
           currentSyllable = '';
-        } else if (afterNextLetter && consonants.includes(afterNextLetter)) {
+        }
+        // Consonante + consonante
+        else if (afterNextLetter && consonants.includes(afterNextLetter)) {
           if (!(nextLetter === 'q' && afterNextLetter === 'u')) {
             currentSyllable += nextLetter;
             i++;
           }
-        } else if (nextLetter === 'r' || nextLetter === 'l' || nextLetter === 'x') {
+        }
+        // Consonante + 'r' o 'l' o 'x'
+        else if (nextLetter === 'r' || nextLetter === 'l' || nextLetter === 'x') {
           currentSyllable += nextLetter;
           i++;
         }
@@ -263,12 +273,14 @@ function splitSyllablesCatalan(word) {
 
   return syllables;
 }
+
 
 
 function splitSyllablesGalician(word) {
   const vowels = 'aeiouáéíóúàèìòùü';
   const consonants = 'bcdfghjklmnpqrstvwxyzñ';
   const strongVowels = 'aeoáéóàèò';
+  const weakVowels = 'iuü';
   let syllables = [];
   let currentSyllable = '';
 
@@ -284,7 +296,11 @@ function splitSyllablesGalician(word) {
         if (strongVowels.includes(currentLetter) && strongVowels.includes(nextLetter)) {
           syllables.push(currentSyllable);
           currentSyllable = '';
-        } else {
+        } else if (
+          (weakVowels.includes(currentLetter) && weakVowels.includes(nextLetter)) ||
+          (strongVowels.includes(currentLetter) && weakVowels.includes(nextLetter)) ||
+          (weakVowels.includes(currentLetter) && strongVowels.includes(nextLetter))
+        ) {
           continue;
         }
       }
@@ -293,15 +309,20 @@ function splitSyllablesGalician(word) {
       if (nextLetter && consonants.includes(nextLetter)) {
         let afterNextLetter = word[i + 2];
 
+        // Consonante + 'h' + vocal
         if (nextLetter === 'h' && vowels.includes(afterNextLetter)) {
           syllables.push(currentSyllable);
           currentSyllable = '';
-        } else if (afterNextLetter && consonants.includes(afterNextLetter)) {
+        }
+        // Consonante + consonante
+        else if (afterNextLetter && consonants.includes(afterNextLetter)) {
           if (!(nextLetter === 'q' && afterNextLetter === 'u')) {
             currentSyllable += nextLetter;
             i++;
           }
-        } else if (nextLetter === 'r' || nextLetter === 'l' || nextLetter === 'x') {
+        }
+        // Consonante + 'r' o 'l' o 'x'
+        else if (nextLetter === 'r' || nextLetter === 'l' || nextLetter === 'x') {
           currentSyllable += nextLetter;
           i++;
         }
@@ -316,6 +337,7 @@ function splitSyllablesGalician(word) {
 
   return syllables;
 }
+
 
 
 function splitSyllablesBasque(word) {
@@ -354,7 +376,6 @@ function splitSyllablesBasque(word) {
 function splitSyllablesEnglish(word) {
   const vowels = 'aeiouy';
   const consonants = 'bcdfghjklmnpqrstvwxyz';
-  const doubleConsonants = 'bldgth';
   let syllables = [];
   let currentSyllable = '';
 
@@ -365,11 +386,11 @@ function splitSyllablesEnglish(word) {
     if (vowels.includes(currentLetter)) {
       let nextLetter = word[i + 1];
 
-      // Consonant clusters and double consonants
+      // Check for consonants between vowels
       if (nextLetter && consonants.includes(nextLetter)) {
         let afterNextLetter = word[i + 2];
 
-        if (afterNextLetter && (vowels.includes(afterNextLetter) || doubleConsonants.includes(nextLetter + afterNextLetter))) {
+        if (afterNextLetter && vowels.includes(afterNextLetter)) {
           currentSyllable += nextLetter;
           i++;
         }
@@ -380,9 +401,12 @@ function splitSyllablesEnglish(word) {
     }
   }
 
+  if (currentSyllable) {
+    syllables[syllables.length - 1] += currentSyllable;
+  }
+
   return syllables;
 }
-
 
 function countSyllables(text, language) {
   const words = text.split(/\s+/);
@@ -400,9 +424,9 @@ function countSyllables(text, language) {
       case 'gl':
         syllables = splitSyllablesGalician(word);
         break;
-      case 'eu':
-        syllables = splitSyllablesBasque(word);
-        break;
+      // case 'eu':
+      //   syllables = splitSyllablesBasque(word);
+      //   break;
       case 'en':
         syllables = splitSyllablesEnglish(word);
         break;
@@ -414,6 +438,7 @@ function countSyllables(text, language) {
 
   return totalSyllables;
 }
+
 
 function calculateLegibility() {
   const text = document.getElementById('input-text').value;
