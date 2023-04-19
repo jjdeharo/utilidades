@@ -151,6 +151,7 @@ function splitSyllablesSpanish(word) {
   const vowels = 'aeiouáéíóúü';
   const consonants = 'bcdfghjklmnñpqrstvwxyz';
   const strongVowels = 'aeoáéó';
+  const weakVowels = 'iuü';
   let syllables = [];
   let currentSyllable = '';
 
@@ -166,7 +167,11 @@ function splitSyllablesSpanish(word) {
         if (strongVowels.includes(currentLetter) && strongVowels.includes(nextLetter)) {
           syllables.push(currentSyllable);
           currentSyllable = '';
-        } else {
+        } else if (
+          (weakVowels.includes(currentLetter) && weakVowels.includes(nextLetter)) ||
+          (strongVowels.includes(currentLetter) && weakVowels.includes(nextLetter)) ||
+          (weakVowels.includes(currentLetter) && strongVowels.includes(nextLetter))
+        ) {
           continue;
         }
       }
@@ -175,15 +180,20 @@ function splitSyllablesSpanish(word) {
       if (nextLetter && consonants.includes(nextLetter)) {
         let afterNextLetter = word[i + 2];
 
+        // Consonante + 'h' + vocal
         if (nextLetter === 'h' && vowels.includes(afterNextLetter)) {
           syllables.push(currentSyllable);
           currentSyllable = '';
-        } else if (afterNextLetter && consonants.includes(afterNextLetter)) {
+        }
+        // Consonante + consonante
+        else if (afterNextLetter && consonants.includes(afterNextLetter)) {
           if (!(nextLetter === 'q' && afterNextLetter === 'u')) {
             currentSyllable += nextLetter;
             i++;
           }
-        } else if (nextLetter === 'r' || nextLetter === 'l' || nextLetter === 'x') {
+        }
+        // Consonante + 'r' o 'l' o 'x'
+        else if (nextLetter === 'r' || nextLetter === 'l' || nextLetter === 'x') {
           currentSyllable += nextLetter;
           i++;
         }
@@ -198,6 +208,7 @@ function splitSyllablesSpanish(word) {
 
   return syllables;
 }
+
 
 
 
