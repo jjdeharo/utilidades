@@ -147,255 +147,42 @@
   </div>
 
   <script>
+    function calculateLegibility() {
+      const text = document.getElementById("input-text").value;
+      const language = document.getElementById("language").value;
+      let result;
 
-function splitSyllablesSpanish(word) {
-  const vowels = 'aeiouáéíóúü';
-  const consonants = 'bcdfghjklmnñpqrstvwxyz';
-  let syllables = [];
-  let currentSyllable = '';
+      const words = text.split(/\s+/);
+      const sentences = text.split(/[.!?]+/);
+      const syllables = text.match(/[aeiouáéíóúàèìòùüïöü]/gi);
 
-  for (let i = 0; i < word.length; i++) {
-    let currentLetter = word[i];
-    currentSyllable += currentLetter;
+      const avgWordsPerSentence = words.length / sentences.length;
+      const avgSyllablesPerWord = syllables.length / words.length;
 
-    if (vowels.includes(currentLetter)) {
-      let nextLetter = word[i + 1];
+      switch (language) {
+        case "es":
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (60 * avgSyllablesPerWord);
+          break;
+        case "ca":
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (62 * avgSyllablesPerWord);
+          break;
+        case "gl":
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (61 * avgSyllablesPerWord);
+          break;
+        case "eu":
+          result = 206.84 - (1.02 * avgWordsPerSentence) - (63 * avgSyllablesPerWord);
+          break;
+        case "en":
+          result = 206.835 - (1.015 * avgWordsPerSentence) - (84.6 * avgSyllablesPerWord);
+          break;
 
-      if (nextLetter && vowels.includes(nextLetter)) {
-        if (!(currentLetter === 'u' && (nextLetter === 'a' || nextLetter === 'e' || nextLetter === 'o'))) {
-          continue;
+        default:
+        result = null;
         }
-      }
-
-      if (nextLetter && consonants.includes(nextLetter)) {
-        let afterNextLetter = word[i + 2];
-
-        if (afterNextLetter && consonants.includes(afterNextLetter)) {
-          if (!(nextLetter === 'q' && afterNextLetter === 'u')) {
-            currentSyllable += nextLetter;
-            i++;
-          }
-        }
-      }
-
-      syllables.push(currentSyllable);
-      currentSyllable = '';
-    }
-  }
-
-  return syllables;
-}
-
-function splitSyllablesCatalan(word) {
-  const vowels = 'aeiouáéíóúàèìòùïü';
-  const consonants = 'bcdfghjklmnpqrstvwxyzç';
-  let syllables = [];
-  let currentSyllable = '';
-
-  for (let i = 0; i < word.length; i++) {
-    let currentLetter = word[i];
-    currentSyllable += currentLetter;
-
-    if (vowels.includes(currentLetter)) {
-      let nextLetter = word[i + 1];
-
-      if (nextLetter && vowels.includes(nextLetter)) {
-        if (!(currentLetter === 'u' && (nextLetter === 'a' || nextLetter === 'e' || nextLetter === 'o'))) {
-          continue;
-        }
-      }
-
-      if (nextLetter && consonants.includes(nextLetter)) {
-        let afterNextLetter = word[i + 2];
-
-        if (afterNextLetter && consonants.includes(afterNextLetter)) {
-          if (!(nextLetter === 'q' && afterNextLetter === 'u')) {
-            currentSyllable += nextLetter;
-            i++;
-          }
-        }
-      }
-
-      syllables.push(currentSyllable);
-      currentSyllable = '';
-    }
-  }
-
-  return syllables;
-}
-
-
-function splitSyllablesGalician(word) {
-  const vowels = 'aeiouáéíóúàèìòùü';
-  const consonants = 'bcdfghjklmnpqrstvwxyzñ';
-  let syllables = [];
-  let currentSyllable = '';
-
-  for (let i = 0; i < word.length; i++) {
-    let currentLetter = word[i];
-    currentSyllable += currentLetter;
-
-    if (vowels.includes(currentLetter)) {
-      let nextLetter = word[i + 1];
-
-      if (nextLetter && vowels.includes(nextLetter)) {
-        if (!(currentLetter === 'u' && (nextLetter === 'a' || nextLetter === 'e' || nextLetter === 'o'))) {
-          continue;
-        }
-      }
-
-      if (nextLetter && consonants.includes(nextLetter)) {
-        let afterNextLetter = word[i + 2];
-
-        if (afterNextLetter && consonants.includes(afterNextLetter)) {
-          if (!(nextLetter === 'q' && afterNextLetter === 'u')) {
-            currentSyllable += nextLetter;
-            i++;
-          }
-        }
-      }
-
-      syllables.push(currentSyllable);
-      currentSyllable = '';
-    }
-  }
-
-  return syllables;
-}
-
-function splitSyllablesBasque(word) {
-  const vowels = 'aeiouáéíóú';
-  const consonants = 'bcdfghjklmnpqrstvwxyzñ';
-  let syllables = [];
-  let currentSyllable = '';
-
-  for (let i = 0; i < word.length; i++) {
-    let currentLetter = word[i];
-    currentSyllable += currentLetter;
-
-    if (vowels.includes(currentLetter)) {
-      let nextLetter = word[i + 1];
-
-      if (nextLetter && consonants.includes(nextLetter)) {
-        let afterNextLetter = word[i + 2];
-
-        if (afterNextLetter && consonants.includes(afterNextLetter)) {
-          if (!(nextLetter === 't' && afterNextLetter === 't')) {
-            currentSyllable += nextLetter;
-            i++;
-          }
-        }
-      }
-
-      syllables.push(currentSyllable);
-      currentSyllable = '';
-    }
-  }
-
-  return syllables;
-}
-
-
-function splitSyllablesEnglish(word) {
-  const vowels = 'aeiouy';
-  const consonants = 'bcdfghjklmnpqrstvwxyz';
-  let syllables = [];
-  let currentSyllable = '';
-
-  for (let i = 0; i < word.length; i++) {
-    let currentLetter = word[i];
-    currentSyllable += currentLetter;
-
-    if (vowels.includes(currentLetter)) {
-      let nextLetter = word[i + 1];
-
-      if (nextLetter && consonants.includes(nextLetter)) {
-        let afterNextLetter = word[i + 2];
-
-        if (afterNextLetter && consonants.includes(afterNextLetter)) {
-          currentSyllable += nextLetter;
-          i++;
-        }
-      }
-
-      syllables.push(currentSyllable);
-      currentSyllable = '';
-    }
-  }
-
-  return syllables;
-}
-
-
-function countSyllables(text, language) {
-  const words = text.split(/\s+/);
-  let totalSyllables = 0;
-
-  for (const word of words) {
-    let syllables;
-    switch (language) {
-      case 'es':
-        syllables = splitSyllablesSpanish(word);
-        break;
-      case 'ca':
-        syllables = splitSyllablesCatalan(word);
-        break;
-      case 'gl':
-        syllables = splitSyllablesGalician(word);
-        break;
-      case 'eu':
-        syllables = splitSyllablesBasque(word);
-        break;
-      case 'en':
-        syllables = splitSyllablesEnglish(word);
-        break;
-      default:
-        syllables = [];
-    }
-    totalSyllables += syllables.length;
-  }
-
-  return totalSyllables;
-}
-
-function calculateLegibility() {
-  const text = document.getElementById('input-text').value;
-  const language = document.getElementById('language').value;
-  let result;
-
-  const words = text.split(/\s+/);
-  const sentences = text.split(/[.!?]+/);
-  const syllables = countSyllables(text, language);
-
-  const avgWordsPerSentence = words.length / sentences.length;
-  const avgSyllablesPerWord = syllables / words.length;
-
-  switch (language) {
-    case 'es':
-      result = 206.84 - 1.02 * avgWordsPerSentence - 60 * avgSyllablesPerWord;
-      break;
-    case 'ca':
-      result = 206.84 - 1.02 * avgWordsPerSentence - 62 * avgSyllablesPerWord;
-      break;
-    case 'gl':
-      result = 206.84 - 1.02 * avgWordsPerSentence - 61 * avgSyllablesPerWord;
-      break;
-    case 'eu':
-      result = 206.84 - 1.02 * avgWordsPerSentence - 63 * avgSyllablesPerWord;
-      break;
-    case 'en':
-      result = 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
-      break;
-    default:
-      result = null;
-  }
-  document.getElementById('result').innerHTML = `Análisis de legibilidad: ${result.toFixed(2)}`;
+        document.getElementById("result").innerHTML = `Análisis de legibilidad: ${result.toFixed(2)}`;
   interpretResult(result);
   updateWordCount();
 }
-
-
-
 
 function interpretResult(result) {
   let interpretation;
