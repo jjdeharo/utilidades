@@ -586,15 +586,16 @@ function updateReadabilityText(result) {
 
 
 
-function updateWordCount() {
-    const text = document.getElementById("input-text").value;
-    const words = text.split(/\s+/);
-    const wordCount = words.length;
-    document.getElementById("word-count").innerHTML = `Palabras: ${wordCount}`;
-  }
+    function updateWordCount() {
+  const text = document.getElementById("input-text").value;
+  const words = text.split(/[\s,.!?;:()]+/).filter(Boolean);
+  const wordCount = words.length;
+  document.getElementById("word-count").innerHTML = `Palabras: ${wordCount}`;
+}
 
-  function calculateReadingTime(result) {
-  const words = document.getElementById("input-text").value.split(/\s+/).length;
+
+function calculateReadingTime(result) {
+  const words = document.getElementById("input-text").value.split(/[\s,.!?;:()]+/).filter(Boolean).length;
   const readingLevel = document.getElementById("reading-level").value;
   let wordsPerMinute;
 
@@ -620,16 +621,14 @@ function updateWordCount() {
   const minutes = words / wordsPerMinute;
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = Math.round(minutes % 60);
-  const seconds = Math.round((minutes * 60) % 60);
 
   if (hours >= 1) {
     return `${hours} horas y ${remainingMinutes} minutos`;
-  } else if (remainingMinutes >= 1) {
-    return `${remainingMinutes} minutos y ${seconds} segundos`;
   } else {
-    return `${seconds} segundos`;
+    return `${remainingMinutes} minutos`;
   }
 }
+
 
 
 
