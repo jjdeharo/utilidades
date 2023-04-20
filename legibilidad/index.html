@@ -436,17 +436,9 @@
 
 
   function splitWords(text) {
-  // La expresión regular busca:
-  // \p{L} : cualquier letra Unicode
-  // (?:[\p{L}'-]*\p{L})? : cero o más letras Unicode, apóstrofes o guiones seguidos de una letra Unicode (opcional)
-  //const regex = /\p{L}(?:[\p{L}'-]*\p{L})?/gu;
-  //const words = text.match(regex);
   const words = text.split(/[\s,.!?;:()]+/).filter(Boolean);
-
   return words;
 }
-
-
 
 
   function calculateLegibility() {
@@ -518,7 +510,7 @@
 
     document.getElementById("interpretation").innerHTML = interpretation;
     document.getElementById("reading-time").innerHTML = `Tiempo estimado de lectura: ${calculateReadingTime(result)}`;
-    updateReadabilityIndicator(result);
+    //updateReadabilityIndicator(result);
     updateReadabilityText(result);
   }
 
