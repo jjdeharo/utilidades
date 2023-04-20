@@ -65,6 +65,41 @@ button:hover {
         padding: 15px;
     }
 }
+
+table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      text-align: center;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .red {
+      background-color: red;
+      border-radius: 50%;
+      display: inline-block;
+      height: 20px;
+      width: 20px;
+    }
+    .yellow {
+      background-color: rgb(255, 230, 0);
+      border-radius: 50%;
+      display: inline-block;
+      height: 20px;
+      width: 20px;
+    }
+    .green {
+      background-color: green;
+      border-radius: 50%;
+      display: inline-block;
+      height: 20px;
+      width: 20px;
+    }
+
 </style>
 </head>
 <body>
@@ -113,20 +148,50 @@ button:hover {
 <ol>
   <li>Índice de legibilidad: valor del índice. Valores altos indican un texto sencillo, valores bajos, complicado.</li>
   <li>Interpretación:
-    <ol>
-      <li>Muy fácil</li>
-      <li>Fácil</li>
-      <li>Normal</li>
-      <li>Difícil</li>
-      <li>Muy difícil</li>
-    </ol>
-  </li>
-  <li>El <strong>semáforo de colores</strong> se maneja según la interpretación del índice y el nivel de lectura de la siguiente manera:</li>
-  <ul>
-    <li><strong>Verde</strong>: Indica que el texto es fácil de leer para el nivel seleccionado.</li>
-    <li><strong>Amarillo</strong>: Indica que el texto puede tener alguna dificultad para el nivel seleccionado.</li>
-    <li><strong>Rojo</strong>: Indica que el texto es difícil de leer para el nivel seleccionado.</li>
-  </ul>
+    <table>
+        <tr>
+          <th>Índice de legibilidad</th>
+          <th>Nivel de legibilidad</th>
+          <th>Primaria</th>
+          <th>Secundaria</th>
+          <th>Adultos</th>
+        </tr>
+        <tr>
+          <td>≥ 80</td>
+          <td>Muy fácil</td>
+          <td><span class="green"></span></td>
+          <td><span class="green"></span></td>
+          <td><span class="green"></span></td>
+        </tr>
+        <tr>
+          <td>60 - 79</td>
+          <td>Fácil</td>
+          <td><span class="green"></span></td>
+          <td><span class="green"></span></td>
+          <td><span class="green"></span></td>
+        </tr>
+        <tr>
+          <td>50 - 59</td>
+          <td>Normal</td>
+          <td><span class="red"></span></td>
+          <td><span class="yellow"></span></td>
+          <td><span class="green"></span></td>
+        </tr>
+        <tr>
+          <td>30 - 49</td>
+          <td>Difícil</td>
+          <td><span class="red"></span></td>
+          <td><span class="red"></span></td>
+          <td><span class="yellow"></span></td>
+        </tr>
+        <tr>
+          <td>< 30</td>
+          <td>Muy difícil</td>
+          <td><span class="red"></span></td>
+          <td><span class="red"></span></td>
+          <td><span class="red"></span></td>
+        </tr>
+      </table>
   <li>Tiempo de lectura:
     <ol>
       <li>Tiempo estimado de lectura en adultos:
