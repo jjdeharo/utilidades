@@ -516,56 +516,27 @@
 
 
   function updateReadabilityText(result) {
-        const readingLevel = document.getElementById("reading-level").value;
-        const readabilityText = document.getElementById("readability-text");
-
-        if (result >= 60) {
-          readabilityText.innerHTML = readingLevel === "primary" ? "Adecuado al nivel" : "Adecuado al nivel";
-        } else if (result >= 50 && result < 60) {
-          if (readingLevel === "adult") {
-            readabilityText.innerHTML = "Adecuado al nivel";
-          } else if (readingLevel === "secondary") {
-            readabilityText.innerHTML = "Puede tener dificultades en este nivel";
-          } else if (readingLevel === "primary") {
-            readabilityText.innerHTML = "Con dificultades para este nivel";
-          }
-        } else if (result >= 30 && result < 50) {
-          if (readingLevel === "adult") {
-            readabilityText.innerHTML = "Puede tener dificultades en este nivel";
-          } else {
-            readabilityText.innerHTML = "Con dificultades para este nivel";
-          }
-        } else {
-          readabilityText.innerHTML = "Con dificultades para este nivel";
-        }
-      }
-
-
-  function updateReadabilityIndicator(result) {
     const readingLevel = document.getElementById("reading-level").value;
-    const readabilityIndicator = document.getElementById("readability-indicator");
-    readabilityIndicator.className = '';
+    const readabilityText = document.getElementById("readability-text");
 
-    if (result > 80) {
-      readabilityIndicator.classList.add("readability-very-easy");
-    } else if (result >= 60 && result <= 79) {
-      readabilityIndicator.classList.add("readability-easy");
-    } else if (result >= 50 && result <= 59) {
-      if (readingLevel === "adult" || readingLevel === "bachillerato") {
-        readabilityIndicator.classList.add("readability-easy");
+    if (result >= 60) {
+      readabilityText.innerHTML = readingLevel === "primary" ? "Adecuado al nivel" : "Adecuado al nivel";
+    } else if (result >= 50 && result < 60) {
+      if (readingLevel === "adult") {
+        readabilityText.innerHTML = "Adecuado al nivel";
       } else if (readingLevel === "secondary") {
-        readabilityIndicator.classList.add("readability-normal");
+        readabilityText.innerHTML = "Puede tener dificultades en este nivel";
       } else if (readingLevel === "primary") {
-        readabilityIndicator.classList.add("readability-difficult");
+        readabilityText.innerHTML = "Con dificultades para este nivel";
       }
-    } else if (result >= 30 && result <= 49) {
-      if (readingLevel === "adult" || readingLevel === "bachillerato") {
-        readabilityIndicator.classList.add("readability-normal");
+    } else if (result >= 30 && result < 50) {
+      if (readingLevel === "adult") {
+        readabilityText.innerHTML = "Puede tener dificultades en este nivel";
       } else {
-        readabilityIndicator.classList.add("readability-difficult");
+        readabilityText.innerHTML = "Con dificultades para este nivel";
       }
     } else {
-      readabilityIndicator.classList.add("readability-difficult");
+      readabilityText.innerHTML = "Con dificultades para este nivel";
     }
   }
 
