@@ -541,30 +541,34 @@ function updateReadabilityText(result) {
     }
 
 
-function updateReadabilityIndicator(result) {
-      const readingLevel = document.getElementById("reading-level").value;
-      const readabilityIndicator = document.getElementById("readability-indicator");
+    function updateReadabilityIndicator(result) {
+  const readingLevel = document.getElementById("reading-level").value;
+  const readabilityIndicator = document.getElementById("readability-indicator");
+  readabilityIndicator.className = '';
 
-      if (result >= 60) {
-        readabilityIndicator.classList.add("readability-easy");
-      } else if (result >= 50 && result < 60) {
-        if (readingLevel === "adult") {
-          readabilityIndicator.classList.add("readability-easy");
-        } else if (readingLevel === "secondary") {
-          readabilityIndicator.classList.add("readability-normal");
-        } else if (readingLevel === "primary") {
-          readabilityIndicator.classList.add("readability-difficult");
-        }
-      } else if (result >= 30 && result < 50) {
-        if (readingLevel === "adult") {
-          readabilityIndicator.classList.add("readability-normal");
-        } else {
-          readabilityIndicator.classList.add("readability-difficult");
-        }
-      } else {
-        readabilityIndicator.classList.add("readability-difficult");
-      }
+  if (result > 80) {
+    readabilityIndicator.classList.add("readability-very-easy");
+  } else if (result >= 60 && result <= 79) {
+    readabilityIndicator.classList.add("readability-easy");
+  } else if (result >= 50 && result <= 59) {
+    if (readingLevel === "adult" || readingLevel === "bachillerato") {
+      readabilityIndicator.classList.add("readability-easy");
+    } else if (readingLevel === "secondary") {
+      readabilityIndicator.classList.add("readability-normal");
+    } else if (readingLevel === "primary") {
+      readabilityIndicator.classList.add("readability-difficult");
     }
+  } else if (result >= 30 && result <= 49) {
+    if (readingLevel === "adult" || readingLevel === "bachillerato") {
+      readabilityIndicator.classList.add("readability-normal");
+    } else {
+      readabilityIndicator.classList.add("readability-difficult");
+    }
+  } else {
+    readabilityIndicator.classList.add("readability-difficult");
+  }
+}
+
 
 
 
