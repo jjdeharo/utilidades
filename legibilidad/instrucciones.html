@@ -146,8 +146,7 @@ table {
 <h2>Interpretación de los resultados</h2>
 
 <ol>
-  <li>Índice de legibilidad: valor del índice. Valores altos indican un texto sencillo, valores bajos, complicado.</li>
-  <li>Interpretación:
+  <li>Índice de legibilidad. Valores altos indican un texto sencillo, valores bajos, complicado.</li>
     <table>
         <tr>
           <th>Índice de legibilidad</th>
@@ -157,21 +156,21 @@ table {
           <th>Bachillerato y adultos</th>
         </tr>
         <tr>
-          <td>≥ 80</td>
+          <td>≥ 90</td>
           <td>Muy fácil</td>
           <td><span class="green"></span></td>
           <td><span class="green"></span></td>
           <td><span class="green"></span></td>
         </tr>
         <tr>
-          <td>60 - 79</td>
+          <td>80 - 89</td>
           <td>Fácil</td>
           <td><span class="green"></span></td>
           <td><span class="green"></span></td>
           <td><span class="green"></span></td>
         </tr>
         <tr>
-          <td>50 - 59</td>
+          <td>50 - 79</td>
           <td>Normal</td>
           <td><span class="red"></span></td>
           <td><span class="yellow"></span></td>
@@ -192,29 +191,56 @@ table {
           <td><span class="red"></span></td>
         </tr>
       </table>
-      (La asignación de colores es una propuesta del autor basada en su propia experiencia)
+  <br><br><br>
   <li>Tiempo de lectura:
-    <ol>
-      <li>Tiempo estimado de lectura en adultos:
-        <ol>
-          <li>Muy fácil: 300 palabras por minuto (ppm).</li>
-          <li>Fácil: 250 ppm</li>
-          <li>Normal: 200 ppm.</li>
-          <li>Difícil: 150 ppm.</li>
-          <li>Muy difícil: 100 ppm.</li>
-        </ol>
-      </li>
-      <li>Secundaria: 80% de la velocidad para adultos</li>
-      <li>Primaria: 60% de la velocidad para adultos</li>
-    </ol>
-  </li>
+    <table>
+        <tr>
+          <th>Nivel de legibilidad</th>
+          <th>Palabras por minuto adultos</th>
+          <th>Palabras por minuto secundaria (80% adultos)</th>
+          <th>Palabras por minuto primaria (60% adultos)</th>
+        </tr>
+        <tr>
+          <td>Muy fácil</td>
+          <td>300</td>
+          <td>240</td>
+          <td>180</td>
+        </tr>
+        <tr>
+          <td>Fácil</td>
+          <td>250</td>
+          <td>200</td>
+          <td>150</td>
+        </tr>
+        <tr>
+          <td>Normal</td>
+          <td>200</td>
+          <td>160</td>
+          <td>120</td>
+        </tr>
+        <tr>
+          <td>Difícil</td>
+          <td>150</td>
+          <td>120</td>
+          <td>90</td>
+        </tr>
+        <tr>
+          <td>Muy difícil</td>
+          <td>100</td>
+          <td>80</td>
+          <td>60</td>
+        </tr>
+      </table>
+  </li> 
 </ol>
+
 
 
 <p>Fuentes:</p>
 <ul>
     <li><a href="https://es.wikipedia.org/wiki/Prueba_de_legibilidad_de_Flesch-Kincaid">Wikipedia</a></li>
     <li><a href="https://chat.openai.com">ChatGPT</a></li>
+    <li><a href="https://legible.es">Legible</a></li>
 </ul>
 
 <button onclick="window.location.href='index.html'">Volver a la página principal</button>

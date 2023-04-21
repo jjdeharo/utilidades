@@ -479,66 +479,67 @@
 
 
   function interpretResult(result) {
-    let interpretation;
-    const readingLevel = document.getElementById("reading-level").value;
+  let interpretation;
+  const readingLevel = document.getElementById("reading-level").value;
 
-    const readabilityIndicator = document.getElementById("readability-indicator");
-    readabilityIndicator.className = ""; // Restablece la clase en cada cálculo
+  const readabilityIndicator = document.getElementById("readability-indicator");
+  readabilityIndicator.className = ""; // Restablece la clase en cada cálculo
 
-    if (result < 30) {
-      interpretation = "<strong>Muy difícil</strong>: Este texto es muy complicado y puede requerir un nivel universitario para comprenderlo.";
-      readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "red" : "red";
-    } else if (result >= 30 && result < 50) {
-      interpretation = "<strong>Difícil</strong>: Este texto es adecuado para personas con un nivel educativo avanzado.";
-      readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "rgb(255, 230, 0)" : "red";
-    } else if (result >= 50 && result < 60) {
-      interpretation = "<strong>Normal</strong>: Este texto es adecuado para personas con un nivel educativo intermedio.";
-      if (readingLevel === "primary") {
-        readabilityIndicator.style.backgroundColor = "red";
-      } else if (readingLevel === "secondary") {
-        readabilityIndicator.style.backgroundColor = "rgb(255, 230, 0)";
-      } else {
-        readabilityIndicator.style.backgroundColor = "green";
-      }
-    } else if (result >= 60 && result < 80) {
-      interpretation = "<strong>Fácil</strong>: Este texto es adecuado para personas con un nivel educativo básico o estudiantes de primaria.";
-      readabilityIndicator.style.backgroundColor = "green";
+  if (result < 30) {
+    interpretation = "<strong>Muy difícil</strong>: Este texto es muy complicado y puede requerir un nivel universitario para comprenderlo.";
+    readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "red" : "red";
+  } else if (result >= 30 && result < 50) {
+    interpretation = "<strong>Difícil</strong>: Este texto es adecuado para personas con un nivel educativo avanzado.";
+    readabilityIndicator.style.backgroundColor = readingLevel === "adult" ? "rgb(255, 230, 0)" : "red";
+  } else if (result >= 50 && result < 80) {
+    interpretation = "<strong>Normal</strong>: Este texto es adecuado para personas con un nivel educativo intermedio.";
+    if (readingLevel === "primary") {
+      readabilityIndicator.style.backgroundColor = "red";
+    } else if (readingLevel === "secondary") {
+      readabilityIndicator.style.backgroundColor = "rgb(255, 230, 0)";
     } else {
-      interpretation = "<strong>Muy fácil</strong>: Este texto es muy simple y puede ser comprendido por la mayoría de las personas, incluso aquellas con poca educación formal.";
       readabilityIndicator.style.backgroundColor = "green";
     }
-
-    document.getElementById("interpretation").innerHTML = interpretation;
-    document.getElementById("reading-time").innerHTML = `Tiempo estimado de lectura: ${calculateReadingTime(result)}`;
-    //updateReadabilityIndicator(result);
-    updateReadabilityText(result);
+  } else if (result >= 80 && result < 90) {
+    interpretation = "<strong>Fácil</strong>: Este texto es adecuado para personas con un nivel educativo básico o estudiantes de primaria.";
+    readabilityIndicator.style.backgroundColor = "green";
+  } else {
+    interpretation = "<strong>Muy fácil</strong>: Este texto es muy simple y puede ser comprendido por la mayoría de las personas, incluso aquellas con poca educación formal.";
+    readabilityIndicator.style.backgroundColor = "green";
   }
 
+  document.getElementById("interpretation").innerHTML = interpretation;
+  document.getElementById("reading-time").innerHTML = `Tiempo estimado de lectura: ${calculateReadingTime(result)}`;
+  updateReadabilityText(result);
+}
 
-  function updateReadabilityText(result) {
-    const readingLevel = document.getElementById("reading-level").value;
-    const readabilityText = document.getElementById("readability-text");
 
-    if (result >= 60) {
-      readabilityText.innerHTML = readingLevel === "primary" ? "Adecuado al nivel" : "Adecuado al nivel";
-    } else if (result >= 50 && result < 60) {
-      if (readingLevel === "adult") {
-        readabilityText.innerHTML = "Adecuado al nivel";
-      } else if (readingLevel === "secondary") {
-        readabilityText.innerHTML = "Puede tener dificultades en este nivel";
-      } else if (readingLevel === "primary") {
-        readabilityText.innerHTML = "Con dificultades para este nivel";
-      }
-    } else if (result >= 30 && result < 50) {
-      if (readingLevel === "adult") {
-        readabilityText.innerHTML = "Puede tener dificultades en este nivel";
-      } else {
-        readabilityText.innerHTML = "Con dificultades para este nivel";
-      }
+
+function updateReadabilityText(result) {
+  const readingLevel = document.getElementById("reading-level").value;
+  const readabilityText = document.getElementById("readability-text");
+
+  if (result >= 80) {
+    readabilityText.innerHTML = readingLevel === "primary" ? "Adecuado al nivel" : "Adecuado al nivel";
+  } else if (result >= 50 && result < 80) {
+    if (readingLevel === "adult") {
+      readabilityText.innerHTML = "Adecuado al nivel";
+    } else if (readingLevel === "secondary") {
+      readabilityText.innerHTML = "Puede tener dificultades en este nivel";
+    } else if (readingLevel === "primary") {
+      readabilityText.innerHTML = "Con dificultades para este nivel";
+    }
+  } else if (result >= 30 && result < 50) {
+    if (readingLevel === "adult") {
+      readabilityText.innerHTML = "Puede tener dificultades en este nivel";
     } else {
       readabilityText.innerHTML = "Con dificultades para este nivel";
     }
+  } else {
+    readabilityText.innerHTML = "Con dificultades para este nivel";
   }
+}
+
 
 
   function clearText() {
@@ -563,41 +564,42 @@
 
 
   function calculateReadingTime(result) {
-    const wordsArray = splitWords(document.getElementById("input-text").value);
-    const words = wordsArray.length;
+  const wordsArray = splitWords(document.getElementById("input-text").value);
+  const words = wordsArray.length;
 
-    const readingLevel = document.getElementById("reading-level").value;
-    let wordsPerMinute;
+  const readingLevel = document.getElementById("reading-level").value;
+  let wordsPerMinute;
 
-    if (result < 30) {
-      wordsPerMinute = 100;
-    } else if (result >= 30 && result < 50) {
-      wordsPerMinute = 150;
-    } else if (result >= 50 && result < 60) {
-      wordsPerMinute = 200;
-    } else if (result >= 60 && result < 80) {
-      wordsPerMinute = 250;
-    } else {
-      wordsPerMinute = 300;
-    }
-
-    // Ajustar la velocidad de lectura según el nivel
-    if (readingLevel === "primary") {
-      wordsPerMinute *= 0.6; // 60% de la velocidad para adultos
-    } else if (readingLevel === "secondary") {
-      wordsPerMinute *= 0.8; // 80% de la velocidad para adultos
-    }
-
-    const minutes = words / wordsPerMinute;
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = Math.round(minutes % 60);
-
-    if (hours >= 1) {
-      return `${hours} horas y ${remainingMinutes} minutos`;
-    } else {
-      return `${remainingMinutes} minutos`;
-    }
+  if (result < 30) {
+    wordsPerMinute = 100;
+  } else if (result >= 30 && result < 50) {
+    wordsPerMinute = 150;
+  } else if (result >= 50 && result < 80) {
+    wordsPerMinute = 200;
+  } else if (result >= 80 && result < 90) {
+    wordsPerMinute = 250;
+  } else {
+    wordsPerMinute = 300;
   }
+
+  // Ajustar la velocidad de lectura según el nivel
+  if (readingLevel === "primary") {
+    wordsPerMinute *= 0.6; // 60% de la velocidad para adultos
+  } else if (readingLevel === "secondary") {
+    wordsPerMinute *= 0.8; // 80% de la velocidad para adultos
+  }
+
+  const minutes = words / wordsPerMinute;
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = Math.round(minutes % 60);
+
+  if (hours >= 1) {
+    return `${hours} horas y ${remainingMinutes} minutos`;
+  } else {
+    return `${remainingMinutes} minutos`;
+  }
+}
+
 
 
 function loadFile() {
