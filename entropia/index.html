@@ -12,25 +12,35 @@
             padding: 2rem;
         }
 
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
         .button {
-    display: inline-block;
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-
-
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
 
     </style>
 </head>
 <body>
+    <div class="contenedor">
     <h1>Calculadora de Entropía, Redundancia y Densidad del Léxico</h1>
     <p><a href="guia.html">Guía de uso</a></p>
     <p>Esta herramienta analiza un texto y muestra qué tan diversas y repetidas son las palabras que se usan en él, dando una idea de la riqueza y complejidad léxica.</p>
@@ -42,10 +52,11 @@
     <p>Ingrese el texto a continuación:</p>
     <textarea id="input-text" rows="10" cols="50"></textarea>
     <br>
+    <div class="button-container">
     <button class="button" onclick="calcularResultados()">Calcular</button>
 
     <button onclick="borrarTextoYResultados()" style="background-color: #ff4444;" class="button">Borrar</button>
-
+</div>
 
     <p id="resultado"></p>
 
@@ -104,13 +115,14 @@
     const { entropia, entropiaMaxima, redundancia, densidadLexico } = calcularRedundancia(inputText);
     const redundanciaPorcentaje = (redundancia / entropiaMaxima) * 100;
     const resultado = `
-    Palabras totales: ${numPalabrasTotales}
-    Entropía: ${entropia.toFixed(3)} bits/palabra
-    Entropía máxima: ${entropiaMaxima.toFixed(3)} bits/palabra
-    Redundancia: ${redundancia.toFixed(3)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)
-    Densidad del léxico: ${densidadLexico.toFixed(3)} (${(densidadLexico * 100).toFixed(2)}%)
+    <strong>Palabras totales:</strong> ${numPalabrasTotales}<br>
+    <strong>Entropía:</strong> ${entropia.toFixed(3)} bits/palabra<br>
+    <strong>Entropía máxima:</strong> ${entropiaMaxima.toFixed(3)} bits/palabra<br>
+    <strong>Redundancia:</strong> ${redundancia.toFixed(3)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)<br>
+    <strong>Densidad del léxico:</strong> ${densidadLexico.toFixed(3)} (${(densidadLexico * 100).toFixed(2)}%)
 `;
-    document.getElementById("resultado").innerText = resultado;
+
+    document.getElementById("resultado").innerHTML = resultado;
 }
 
 
@@ -124,5 +136,6 @@
     con la ayuda de <a href="https://chat.openai.com">ChatGPT</a><br>
     Licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC by sa</a>
 </p>
+</div>
 </body>
 </html>
