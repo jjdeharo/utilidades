@@ -85,49 +85,48 @@
       updateTotalPercentage();
     }
 
-
     function updateTotalPercentage() {
-  const columns = document.getElementById("columns").value;
-  let total = 0;
+      const columns = document.getElementById("columns").value;
+      let total = 0;
 
-  for (let i = 1; i <= columns; i++) {
-    total += parseFloat(document.getElementById("columnWidthPercentage" + i).value);
-  }
+      for (let i = 1; i <= columns; i++) {
+        total += parseFloat(document.getElementById("columnWidthPercentage" + i).value);
+      }
 
-  document.getElementById("totalPercentage").textContent = `${total.toFixed(2)}%`;
-}
+      document.getElementById("totalPercentage").textContent = `${total.toFixed(2)}%`;
+    }
 
-function generateLongtable() {
-  const rows = document.getElementById("rows").value;
-  const columns = document.getElementById("columns").value;
-  const repeatHeader = document.getElementById("repeatHeader").checked;
-  const centerHorizontally = document.getElementById("centerHorizontally").checked;
-  const centerVertically = document.getElementById("centerVertically").checked;
+    function generateLongtable() {
+      const rows = document.getElementById("rows").value;
+      const columns = document.getElementById("columns").value;
+      const repeatHeader = document.getElementById("repeatHeader").checked;
+      const centerHorizontally = document.getElementById("centerHorizontally").checked;
+      const centerVertically = document.getElementById("centerVertically").checked;
 
-  let cellAlignment = "";
-  if (centerHorizontally && centerVertically) {
-    cellAlignment = ">{\\centering\\arraybackslash}m{";
-  } else if (centerHorizontally) {
-    cellAlignment = ">{\\centering\\arraybackslash}p{";
-  } else if (centerVertically) {
-    cellAlignment = "m{";
-  } else {
-    cellAlignment = "p{";
-  }
+      let cellAlignment = "";
+      if (centerHorizontally && centerVertically) {
+        cellAlignment = ">{\\centering\\arraybackslash}m{";
+      } else if (centerHorizontally) {
+        cellAlignment = ">{\\centering\\arraybackslash}p{";
+      } else if (centerVertically) {
+        cellAlignment = "m{";
+      } else {
+        cellAlignment = "p{";
+      }
 
-  let columnSpec = "";
-  for (let i = 1; i <= columns; i++) {
-    const columnWidth = document.getElementById("columnWidthPercentage" + i).value / 100;
-    columnSpec += `${cellAlignment}${columnWidth}\\linewidth}|`;
-  }
+      let columnSpec = "";
+      for (let i = 1; i <= columns; i++) {
+        const columnWidth = document.getElementById("columnWidthPercentage" + i).value / 100;
+        columnSpec += `${cellAlignment}${columnWidth}\\linewidth}|`;
+      }
 
-  let header = "";
-  for (let i = 0; i < columns; i++) {
-    header += `\\textbf{${document.getElementById("cell0_" + i).value}} & `;
-  }
-  header = header.slice(0, -2);
+      let header = "";
+      for (let i = 0; i < columns; i++) {
+        header += `\\textbf{${document.getElementById("cell0_" + i).value}} & `;
+      }
+      header = header.slice(0, -2);
 
-  let longtableCode = `
+      let longtableCode = `
 \\begin{longtable}{|${columnSpec}}
   \\hline
   ${header}\\\\
@@ -136,54 +135,42 @@ function generateLongtable() {
   ${repeatHeader ? `\\hline ${header}\\\\ \\hline \\endfoot` : ""}
 `;
 
-  for (let i = 1; i < rows; i++) {
-    let row = "";
-    for (let j = 0; j < columns; j++) {
-      row += `${document.getElementById("cell" + i + "_" + j).value} & `;
+      for (let i = 1; i < rows; i++) {
+        let row = "";
+        for (let j = 0; j < columns; j++) {
+          row += `${document.getElementById("cell" + i + "_" + j).value} & `;
+        }
+        row = row.slice(0, -2);
+        longtableCode += `  ${row}\\\\ \\hline\n`;
+      }
+
+      longtableCode += "\\end{longtable}";
+      document.getElementById("output").textContent = longtableCode;
+      showCopyButton();
     }
-    row = row.slice(0, -2);
-    longtableCode += `  ${row}\\\\ \\hline\n`;
-  }
 
-  longtableCode += "\\end{longtable}";
-  document.getElementById("output").textContent = longtableCode;
-  showCopyButton();
-}
+    function showCopyButton() {
+      const copyButtonContainer = document.getElementById("copyButtonContainer");
+      copyButtonContainer.innerHTML = '<button onclick="copyToClipboard()">Copiar al portapapeles</button>';
+    }
 
-function showCopyButton() {
-  const copyButtonContainer = document.getElementById("copyButtonContainer");
-  copyButtonContainer.innerHTML = '<button onclick="copyToClipboard()">Copiar al portapapeles</button>';
-}
+    function copyToClipboard() {
+      const textarea = document.createElement("textarea");
+      textarea.textContent = document.getElementById("output").textContent;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      copyButtonContainer.innerHTML ='<button onclick="copyToClipboard()">Copiado</button>';
+      setTimeout(() => {
+        copyButtonContainer.innerHTML = '<button onclick="copyToClipboard()">Copiar al portapapeles</button>';
+      }, 1500);
+      // alert("Código LaTeX copiado al portapapeles");
+    }
 
-function copyToClipboard() {
-  const textarea = document.createElement("textarea");
-  textarea.textContent = document.getElementById("output").textContent;
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textarea);
-  copyButtonContainer.innerHTML ='<button onclick="copyToClipboard()">Copiado</button>';
-  setTimeout(() => {
-    copyButtonContainer.innerHTML = '<button onclick="copyToClipboard()">Copiar al portapapeles</button>';
-  }, 1500);
-  // alert("Código LaTeX copiado al portapapeles");
-}
+    createTable();
 
-createTable();
-
-</script>
-  
-  <footer>
-  <p>
-    Juan José de Haro<br><br>
-    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-      <img width="100" src="by-sa.png" alt="Licencia Creative Commons">
-    </a>
-    
-    
-  </p>
-</footer>
-
+  </script>
   
 </body>
 </html>

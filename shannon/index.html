@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Entropía y Redundancia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Entropía y Redundancia</h1>
+    <p>Cargar archivo de texto:</p>
+    <input type="file" id="input-file" accept=".txt">
+    <p>Ingrese el texto a continuación:</p>
+    <textarea id="input-text" rows="10" cols="50"></textarea>
+    <br>
+    <button onclick="calcularResultados()">Calcular Entropía y Redundancia</button>
+    <button onclick="borrarTextoYResultados()">Borrar</button>
+    <p id="resultado"></p>
+
+    <script>
+        document.getElementById('input-file').addEventListener('change', cargarArchivo);
+
+        function cargarArchivo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const texto = e.target.result;
+                    document.getElementById('input-text').value = texto;
+                };
+                reader.readAsText(file, 'UTF-8');
+            }
+        }
+
+        function contarPalabras(texto) {
+            const textoLimpio = texto.toLowerCase().replace(/[.,:;?!¡¿()“”"'«»_\-/]+/g, ' ').trim();
+            const palabras = textoLimpio.split(/\s+/).filter(palabra => palabra.length > 0);
+            return palabras;
+        }
+
+        function calcularRedundancia(texto) {
+            const palabras = contarPalabras(texto);
+            const contador = new Map();
+            for (const palabra of palabras) {
+                contador.set(palabra, (contador.get(palabra) || 0) + 1);
+            }
+
+            const numPalabras = palabras.length;
+            const probabilidades = new Map();
+            for (const [palabra, frecuencia] of contador) {
+                probabilidades.set(palabra, frecuencia / numPalabras);
+            }
+
+            let entropia = 0;
+            for (const p of probabilidades.values()) {
+                entropia -= p * Math.log2(p);
+            }
+
+            const entropiaMaxima = Math.log2(contador.size);
+            const redundancia = entropiaMaxima - entropia;
+
+            return { entropia, entropiaMaxima, redundancia };
+        }
+
+        function calcularResultados() {
+            const inputText = document.getElementById("input-text").value;
+            const { entropia, entropiaMaxima, redundancia } = calcularRedundancia(inputText);
+            const redundanciaPorcentaje = (redundancia / entropiaMaxima) * 100;
+
+            const resultado = `
+                Entropía: ${entropia.toFixed(3)} bits/palabra
+                Entropía máxima: ${entropiaMaxima.toFixed(3)} bits/palabra
+                Redundancia: ${redundancia.toFixed(3)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)
+            `;
+            document.getElementById("resultado").innerText = resultado;
+        }
+
+        function borrarTextoYResultados() {
+            document.getElementById("input-text").value = '';
+            document.getElementById("resultado").innerText = '';
+        }
+    </script>
+</body>
+</html>
+
