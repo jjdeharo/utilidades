@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Entropía y Redundancia</title>
+    <title>Calculadora de Entropía, Redundancia y Densidad del Léxico</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,13 +14,13 @@
     </style>
 </head>
 <body>
-    <h1>Calculadora de Entropía y Redundancia</h1>
+    <h1>Calculadora de Entropía, Redundancia y Densidad del Léxico</h1>
     <p>Cargar archivo de texto:</p>
     <input type="file" id="input-file" accept=".txt">
     <p>Ingrese el texto a continuación:</p>
     <textarea id="input-text" rows="10" cols="50"></textarea>
     <br>
-    <button onclick="calcularResultados()">Calcular Entropía y Redundancia</button>
+    <button onclick="calcularResultados()">Calcular Entropía, Redundancia y Densidad del Léxico</button>
     <button onclick="borrarTextoYResultados()">Borrar</button>
     <p id="resultado"></p>
 
@@ -53,6 +53,9 @@
             }
 
             const numPalabras = palabras.length;
+            const numPalabrasUnicas = contador.size;
+            const densidadLexico = numPalabrasUnicas / numPalabras;
+
             const probabilidades = new Map();
             for (const [palabra, frecuencia] of contador) {
                 probabilidades.set(palabra, frecuencia / numPalabras);
@@ -66,27 +69,26 @@
             const entropiaMaxima = Math.log2(contador.size);
             const redundancia = entropiaMaxima - entropia;
 
-            return { entropia, entropiaMaxima, redundancia };
+            return { entropia, entropiaMaxima, redundancia, densidadLexico };
         }
 
         function calcularResultados() {
             const inputText = document.getElementById("input-text").value;
-            const { entropia, entropiaMaxima, redundancia } = calcularRedundancia(inputText);
+            const { entropia, entropiaMaxima, redundancia, densidadLexico } = calcularRedundancia(inputText);
             const redundanciaPorcentaje = (redundancia / entropiaMaxima) * 100;
-
             const resultado = `
-                Entropía: ${entropia.toFixed(3)} bits/palabra
-                Entropía máxima: ${entropiaMaxima.toFixed(3)} bits/palabra
-                Redundancia: ${redundancia.toFixed(3)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)
-            `;
-            document.getElementById("resultado").innerText = resultado;
-        }
+            Entropía: ${entropia.toFixed(3)} bits/palabra
+            Entropía máxima: ${entropiaMaxima.toFixed(3)} bits/palabra
+            Redundancia: ${redundancia.toFixed(3)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)
+            Densidad del léxico: ${densidadLexico.toFixed(3)} (${(densidadLexico * 100).toFixed(2)}%)
+        `;
+        document.getElementById("resultado").innerText = resultado;
+    }
 
-        function borrarTextoYResultados() {
-            document.getElementById("input-text").value = '';
-            document.getElementById("resultado").innerText = '';
-        }
-    </script>
+    function borrarTextoYResultados() {
+        document.getElementById("input-text").value = '';
+        document.getElementById("resultado").innerText = '';
+    }
+</script>
 </body>
 </html>
-
