@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de código LaTeX para Longtable</title>
+  <style>
+    input[type="number"] {
+      width: 60px;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Generador de código LaTeX para Longtable</h1>
+  <p>Número de filas: <input type="number" id="rows" value="5" onchange="createTable()"></p>
+  <p>Número de columnas: <input type="number" id="columns" value="3" onchange="createTable()"></p>
+  <p>El código necesita los paquetes array y longtable que deberás poner en el preámbulo:
+    <p>\usepackage{longtable}<br>\usepackage{array}
+
+  <p>
+    ¿Repetir primera fila en el resto de páginas?
+    <input type="checkbox" id="repeatHeader">
+  </p>
+  <p>
+    ¿Centrar texto horizontalmente?
+    <input type="checkbox" id="centerHorizontally">
+  </p>
+  <p>
+    ¿Centrar texto verticalmente?
+    <input type="checkbox" id="centerVertically">
+  </p>
+  <div id="columnWidthsContainer"></div>
+  <p>
+    Suma de los porcentajes de la tabla:
+    <span id="totalPercentage">100%</span>
+  </p>
+  <div id="tableContainer"></div>
+  <button onclick="generateLongtable()">Generar código LaTeX</button>
+  
+  <pre id="output"></pre>
+  <div id="copyButtonContainer"></div>
+
+  <script>
+    function createTable() {
+      createColumnInputs();
+      const rows = document.getElementById("rows").value;
+      const columns = document.getElementById("columns").value;
+      const tableContainer = document.getElementById("tableContainer");
+
+      let tableHTML = "<table>";
+      for (let i = 0; i < rows; i++) {
+        tableHTML += "<tr>";
+        for (let j = 0; j < columns; j++) {
+          tableHTML += i === 0 ? "<th>" : "<td>";
+          tableHTML += `<input type="text" id="cell${i}_${j}">`;
+          tableHTML += i === 0 ? "</th>" : "</td>";
+        }
+        tableHTML += "</tr>";
+      }
+      tableHTML += "</table>";
+
+      tableContainer.innerHTML = tableHTML;
+    }
+
+    function createColumnInputs() {
+      const columns = document.getElementById("columns").value;
+      const container = document.getElementById("columnWidthsContainer");
+      container.innerHTML = "";
+
+      for (let i = 1; i <= columns; i++) {
+        container.innerHTML += `
+          <p>
+            Porcentaje de ancho de la columna ${i}:
+            <input type="number" id="columnWidthPercentage${i}" value="${(100 / columns).toFixed(2)}" min="0" max="100" onchange="updateTotalPercentage()">
+          </p>
+        `;
+      }
+      updateTotalPercentage();
+    }
+
+
+    function updateTotalPercentage() {
+  const columns = document.getElementById("columns").value;
+  let total = 0;
+
+  for (let i = 1; i <= columns; i++) {
+    total += parseFloat(document.getElementById("columnWidthPercentage" + i).value);
+  }
+
+  document.getElementById("totalPercentage").textContent = `${total.toFixed(2)}%`;
+}
+
+function generateLongtable() {
+  const rows = document.getElementById("rows").value;
+  const columns = document.getElementById("columns").value;
+  const repeatHeader = document.getElementById("repeatHeader").checked;
+  const centerHorizontally = document.getElementById("centerHorizontally").checked;
+  const centerVertically = document.getElementById("centerVertically").checked;
+
+  let cellAlignment = "";
+  if (centerHorizontally && centerVertically) {
+    cellAlignment = ">{\\centering\\arraybackslash}m{";
+  } else if (centerHorizontally) {
+    cellAlignment = ">{\\centering\\arraybackslash}p{";
+  } else if (centerVertically) {
+    cellAlignment = "m{";
+  } else {
+    cellAlignment = "p{";
+  }
+
+  let columnSpec = "";
+  for (let i = 1; i <= columns; i++) {
+    const columnWidth = document.getElementById("columnWidthPercentage" + i).value / 100;
+    columnSpec += `${cellAlignment}${columnWidth}\\linewidth}|`;
+  }
+
+  let header = "";
+  for (let i = 0; i < columns; i++) {
+    header += `\\textbf{${document.getElementById("cell0_" + i).value}} & `;
+  }
+  header = header.slice(0, -2);
+
+  let longtableCode = `
+\\begin{longtable}{|${columnSpec}}
+  \\hline
+  ${header}\\\\
+  \\hline
+  \\endhead
+  ${repeatHeader ? `\\hline ${header}\\\\ \\hline \\endfoot` : ""}
+`;
+
+  for (let i = 1; i < rows; i++) {
+    let row = "";
+    for (let j = 0; j < columns; j++) {
+      row += `${document.getElementById("cell" + i + "_" + j).value} & `;
+    }
+    row = row.slice(0, -2);
+    longtableCode += `  ${row}\\\\ \\hline\n`;
+  }
+
+  longtableCode += "\\end{longtable}";
+  document.getElementById("output").textContent = longtableCode;
+  showCopyButton();
+}
+
+function showCopyButton() {
+  const copyButtonContainer = document.getElementById("copyButtonContainer");
+  copyButtonContainer.innerHTML = '<button onclick="copyToClipboard()">Copiar al portapapeles</button>';
+}
+
+function copyToClipboard() {
+  const textarea = document.createElement("textarea");
+  textarea.textContent = document.getElementById("output").textContent;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+  copyButtonContainer.innerHTML ='<button onclick="copyToClipboard()">Copiado</button>';
+  setTimeout(() => {
+    copyButtonContainer.innerHTML = '<button onclick="copyToClipboard()">Copiar al portapapeles</button>';
+  }, 1500);
+  // alert("Código LaTeX copiado al portapapeles");
+}
+
+createTable();
+
+</script>
+  
+  <footer>
+  <p>
+    Juan José de Haro<br><br>
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img width="100" src="by-sa.png" alt="Licencia Creative Commons">
+    </a>
+    
+    
+  </p>
+</footer>
+
+  
+</body>
+</html>
+
