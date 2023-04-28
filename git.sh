@@ -16,4 +16,4 @@ git add .
 git commit -m "$descripcion"
 
 # Sube los cambios al repositorio remoto
-git push origin master:main
+git push 
