@@ -55,10 +55,10 @@
 <body>
     <h1>Calculadora de Entropía, Redundancia y Densidad del Léxico</h1>
 
-    <p>El análisis desarrollado por esta herramienta se basa, por un lado, en la <strong>teoría de información de Shannon</strong> para el cálculo de la entropía y redundancia. Por otro lado la densidad léxica, sin relación con la entropia de Shannon, nos indica el porcentaje de palabras distintas en un texto y la <strong>densidad léxica rarefactada</strong> es una propuesta del autor para evitar el efecto del tamaño del texto en el valor de la densidad léxica (que tiende a disminuir con textos muy largos). Está basada en la ecología y consiste en tomar muchas muestras aleatorias con un número de palabras constante y calcular la densidad léxica media de todas ellas. De este modo la densidad se calcula siempre sobre el mismo número de palabras con lo que se obtienen valores fácilmente comparables (está pendiente la publicación de un artículo con una justificación más completa).</p>
+    <p>El análisis desarrollado por esta herramienta se basa, por un lado, en la <strong>teoría de información de Shannon</strong> para el cálculo de la entropía y redundancia. Por otro lado la densidad léxica, sin relación con la entropia de Shannon, nos indica el porcentaje de palabras distintas en un escrito y la <strong>densidad léxica rarefactada</strong> es una propuesta del autor para evitar el efecto del tamaño del texto en el valor de la densidad léxica (que tiende a disminuir con textos muy largos). Está basada en la ecología y consiste en tomar muchas muestras aleatorias con un número de palabras constante y calcular la densidad léxica media de todas ellas. De este modo la densidad se calcula siempre sobre el mismo número de palabras con lo que se obtienen valores fácilmente comparables (está pendiente la publicación de un artículo con una justificación más completa).</p>
 
     <h2>Entropía máxima</h2>
-    <p>Es la máxima cantidad de información que puede contener un texto de cierta longitud, considerando todas las posibles combinaciones de palabras. En el contexto de esta calculadora, la entropía máxima se calcula a partir de la cantidad de palabras únicas que contiene el texto.</p>
+    <p>Es la máxima cantidad de información que puede contener un texto de cierta longitud, considerando todas las posibles combinaciones de palabras. En el contexto de esta calculadora, la entropía máxima se calcula a partir de la cantidad de palabras únicas que contiene.</p>
 
     <h2>Densidad del léxico</h2>
     <p>Es una medida de la variedad de palabras que se utilizan en un mensaje. En el contexto de esta calculadora, la densidad del léxico se expresa como la proporción de palabras únicas en relación al total de palabras del texto y se muestra en forma de porcentaje. Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras, lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado. A medida que el texto se hace más extenso, la densidad disminuye, proponemos usar la densidad léxica rarefactada en su lugar.</p>
@@ -93,25 +93,25 @@
         </tr>
         <tr>
             <td>Entropía</td>
-            <td>Cantidad de información en un texto</td>
+            <td>Cantidad de información que aporta cada palabra por término medio. Se expresa en bits/palabra</td>
             <td>Contenido más simple y homogéneo</td>
             <td>Mayor diversidad y complejidad en el contenido</td>
         </tr>
         <tr>
-            <td>Densidad léxica rarefactada</td>
-            <td>Variedad de palabras en un texto</td>
-            <td>Lenguaje repetitivo o limitado</td>
-            <td>Lenguaje rico y sofisticado</td>
-        </tr>
-        <tr>
-            <td>Porcentaje redundancia</td>
-            <td>Proporción del mensaje que es redundante y se repite en el texto por lo que no aporta información nueva</td>
+            <td>Porcentaje de redundancia</td>
+            <td>Proporción del texto que es redundante y se repite, por lo que no aporta información nueva</td>
             <td>Mayor cantidad de información nueva</td>
             <td>Menor cantidad de información nueva</td>
         </tr>
+        <tr>
+            <td>Densidad léxica rarefactada</td>
+            <td>Variedad de palabras distintas</td>
+            <td>Lenguaje repetitivo o limitado</td>
+            <td>Lenguaje rico y sofisticado</td>
+        </tr>
     </table>
 
-    <p>Para facilitar la interpretación de los diferentes valores, tenemos aquí unos ejemplos con diferentes niveles de complejidad:</p>
+    <p>Para facilitar la interpretación de los valores, tenemos aquí unos ejemplos con diferentes niveles de complejidad:</p>
 
     <table border="1">
         <tr>
@@ -146,9 +146,14 @@
         </tr>
         <tr>
           <td><a href="https://www.lingq.com/es/aprende-espanol-en-linea/courses/426379/los-tres-cerditos-y-el-lobo-the-three-2070248/" target="_blank">Los tres cerditos, cuento popular</a></td>
-          <td>6.989</td>
+          <td>7.00</td>
           <td>10.84%</td>
           <td>63.76%</td>
+        </tr>
+        <td>El contenido completo de esta página</a></td>
+          <td>7.17</td>
+          <td>13.93%</td>
+          <td>64.45%</td>
         </tr>
       </table>
       
