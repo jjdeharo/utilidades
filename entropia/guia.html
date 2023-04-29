@@ -55,25 +55,25 @@
 <body>
     <h1>Calculadora de Entropía, Redundancia y Densidad del Léxico</h1>
 
-    <p>El análisis desarrollado por esta herramienta se basa, por un lado, en la <strong>teoría de información de Shannon</strong> para el cálculo de la entropía y redundancia. Por otro lado la densidad léxica, sin relación con la entropia de Shannon, nos indica el porcentaje de palabras distintas en un escrito y la <strong>densidad léxica rarefactada</strong> es una propuesta del autor para evitar el efecto del tamaño del texto en el valor de la densidad léxica (que tiende a disminuir con textos muy largos). Está basada en la ecología y consiste en tomar muchas muestras aleatorias con un número de palabras constante y calcular la densidad léxica media de todas ellas. De este modo la densidad se calcula siempre sobre el mismo número de palabras con lo que se obtienen valores fácilmente comparables (está pendiente la publicación de un artículo con una justificación más completa).</p>
+    <p>El análisis desarrollado por esta herramienta se basa, por un lado, en la <strong>teoría de información de Shannon</strong> para el cálculo de la entropía y redundancia. Por otro lado, la densidad léxica, que no tiene relación con la entropía de Shannon, nos indica el porcentaje de palabras distintas en un escrito y la <strong>densidad léxica rarefactada</strong> es una propuesta del autor para evitar el efecto del tamaño del texto en el valor de la densidad léxica (que tiende a disminuir con textos muy largos). Está basada en la ecología y consiste en tomar muchas muestras aleatorias con un número de palabras constante y calcular la densidad léxica media de todas ellas. De este modo la densidad se calcula siempre sobre el mismo número de palabras, con lo que se obtienen valores fácilmente comparables (está pendiente la publicación de un artículo con una justificación más completa).</p>
 
     <h2>Entropía máxima</h2>
     <p>Es la máxima cantidad de información que puede contener un texto de cierta longitud, considerando todas las posibles combinaciones de palabras. En el contexto de esta calculadora, la entropía máxima se calcula a partir de la cantidad de palabras únicas que contiene.</p>
 
     <h2>Densidad del léxico</h2>
-    <p>Es una medida de la variedad de palabras que se utilizan en un mensaje. En el contexto de esta calculadora, la densidad del léxico se expresa como la proporción de palabras únicas en relación al total de palabras del texto y se muestra en forma de porcentaje. Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras, lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado. A medida que el texto se hace más extenso, la densidad disminuye, proponemos usar la densidad léxica rarefactada en su lugar.</p>
+    <p>Es una medida de la variedad de palabras que se utilizan en un mensaje. En el contexto de esta calculadora, la densidad del léxico se expresa como la proporción de palabras únicas en relación con el total de palabras del texto y se muestra en forma de porcentaje. Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras, lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado. A medida que el texto se hace más extenso, la densidad disminuye, proponemos usar la densidad léxica rarefactada en su lugar.</p>
 
     <h2>Entropía</h2>
     <p>Es una medida de la incertidumbre o de la información que contiene un mensaje. En el contexto de esta calculadora, la entropía se expresa en bits por palabra y representa la cantidad promedio de información que proporciona cada palabra del texto. Una mayor entropía indica un texto más complejo, es más rico en términos de información y tiene un mayor grado de complejidad.</p>
 
     <h2>Redundancia</h2>
-    <p>Es la cantidad de información que se repite en un mensaje y que por lo tanto no aporta nueva información. En el contexto de esta calculadora, la redundancia se expresa en bits por palabra y se calcula restando la entropía del texto a la entropía máxima.</p>
+    <p>Es la cantidad de información que se repite en un mensaje y que, por lo tanto, no aporta nueva información. En el contexto de esta calculadora, la redundancia se expresa en bits por palabra y se calcula restando la entropía del texto a la entropía máxima.</p>
 
     <h2>Porcentaje de redundancia</h2>
     <p>Indica qué porcentaje del mensaje no aporta nueva información y se repite en el texto. Se calcula dividiendo la redundancia por la entropía máxima y multiplicando el resultado por 100. Cuanto mayor sea este porcentaje, menor será la cantidad de información nueva que contiene el texto.</p>
 
     <h2>Densidad léxica rarefactada</h2>
-    <p>La rarefacción es un método estadístico que proviene de la ecología y se utiliza para comparar la riqueza de especies en hábitats distintos, se utiliza para que el tamaño de las muestras no influya en el resultado. Por lo tanto, es ideal para aplicar al texto escrito.</p> 
+    <p>La rarefacción es un método estadístico que proviene de la biología y se utiliza para comparar la riqueza de especies en hábitats distintos, se utiliza para que el tamaño de las muestras no influya en el resultado. Por lo tanto, es ideal para aplicar al texto escrito.</p> 
     <p>La densidad léxica rarefactada es una medida que ayuda a comprender la diversidad y variedad del vocabulario utilizado. En este programa, se toman 1000 muestras, cada una con 100 palabras aleatorias. En cada muestra, se cuentan las palabras diferentes presentes y luego se calcula el promedio de todas las muestras. A diferencia de la densidad del léxico, no es sensible a la longitud del texto. </p>
     <p>Debido a que se calcula extrayendo palabras aleatorias del texto, puede producir resultados ligeramente diferentes cada vez que se calcula.</p>
     
@@ -164,7 +164,7 @@
     
     
     <p>Esta calculadora utiliza una metodología específica para contar las palabras y calcular los resultados, estos resultados son una aproximación a la realidad y pueden variar en función de diferentes factores.</p>
-    <p style="text-align:center;"><b>Creado por <a href="https://bilateria.org">Juan José de Haro</a><br>con la ayuda de ChatGTP.</b></p>
+    <p style="text-align:center;"><b>Creado por <a href="https://bilateria.org">Juan José de Haro</a><br>con la ayuda de ChatGPT.</b></p>
     <p style="text-align:center;"><b>Licencia: <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA</a></b></p>
 
     <p style="text-align:center;">
