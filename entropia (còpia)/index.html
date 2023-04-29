@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Entropía, Redundancia y Densidad del Léxico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+    <h1>Análisis de la riqueza y complejidad léxica de los recursos de texto</h1>
+    <h2>Calculadora de Entropía, Redundancia y Densidad del Léxico</h2>
+    <div style="text-align: left;">
+        <p style="text-align: left !important;"><a href="guia.html">Guía de uso</a></p>
+      </div>
+      
+
+    <p>Esta herramienta analiza un texto y muestra qué tan diversas y repetidas son las palabras que se usan en él, dando una idea de la riqueza y complejidad léxica.</p>
+    <p>Se recomienda usar junto con la herramienta: <a href="https://jjdeharo.github.io/utilidades/legibilidad/" target="_blank">Análisis de legibilidad de recursos de texto.</a></p>
+
+
+    <p>Cargar archivo de texto:</p>
+    <input type="file" id="input-file" accept=".txt">
+    <p>Ingrese el texto a continuación:</p>
+    <textarea id="input-text" rows="15" style="width: 100%; max-width: 800px;"></textarea>
+    <br>
+    <div class="button-container">
+    <button class="button" onclick="calcularResultados()">Calcular</button>
+
+    <button onclick="borrarTextoYResultados()" style="background-color: #ff4444;" class="button">Borrar</button>
+</div>
+
+    <p id="resultado"></p>
+
+    <script>
+        document.getElementById('input-file').addEventListener('change', cargarArchivo);
+
+        function cargarArchivo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const texto = e.target.result;
+                    document.getElementById('input-text').value = texto;
+                };
+                reader.readAsText(file, 'UTF-8');
+            }
+        }
+
+        function contarPalabras(texto) {
+            const textoLimpio = texto.toLowerCase().replace(/[.,:;?!¡¿()“”"'«»_\-/]+/g, ' ').trim();
+            const palabras = textoLimpio.split(/\s+/).filter(palabra => palabra.length > 0);
+            return palabras;
+        }
+
+        function calcularRedundancia(texto) {
+            const palabras = contarPalabras(texto);
+            const contador = new Map();
+            for (const palabra of palabras) {
+                contador.set(palabra, (contador.get(palabra) || 0) + 1);
+            }
+
+            const numPalabras = palabras.length;
+            const numPalabrasUnicas = contador.size;
+            const densidadLexico = numPalabrasUnicas / numPalabras;
+
+            const probabilidades = new Map();
+            for (const [palabra, frecuencia] of contador) {
+                probabilidades.set(palabra, frecuencia / numPalabras);
+            }
+
+            let entropia = 0;
+            for (const p of probabilidades.values()) {
+                entropia -= p * Math.log2(p);
+            }
+
+            const entropiaMaxima = Math.log2(contador.size);
+            const redundancia = entropiaMaxima - entropia;
+
+            return { entropia, entropiaMaxima, redundancia, densidadLexico };
+        }
+
+        function calcularRarefaccion(texto, tamanoMuestra = 100, repeticiones = 1000) {
+            const palabras = contarPalabras(texto);
+            const contador = new Map();
+            for (const palabra of palabras) {
+                contador.set(palabra, (contador.get(palabra) || 0) + 1);
+            }
+
+            let sumaDiversidad = 0;
+            for (let i = 0; i < repeticiones; i++) {
+                const muestra = new Set();
+                for (let j = 0; j < tamanoMuestra; j++) {
+                    const palabra = palabras[Math.floor(Math.random() * palabras.length)];
+                    muestra.add(palabra);
+                }
+                sumaDiversidad += muestra.size;
+            }
+
+            return sumaDiversidad / repeticiones;
+        }
+
+        function calcularResultados() {
+    const inputText = document.getElementById("input-text").value;
+    const palabras = contarPalabras(inputText);
+    const numPalabrasTotales = palabras.length;
+    const { entropia, entropiaMaxima, redundancia, densidadLexico } = calcularRedundancia(inputText);
+    const redundanciaPorcentaje = (redundancia / entropiaMaxima) * 100;
+    const tamanoMuestra = 100;
+    const tamanoMuestraAjustado = Math.min(numPalabrasTotales, tamanoMuestra);
+    const densidadLexicaRarefactada = calcularRarefaccion(inputText, tamanoMuestraAjustado);
+    const densidadLexicaRarefactadaPorcentaje = (densidadLexicaRarefactada / tamanoMuestraAjustado) * 100;
+
+    const resultado = `
+        <strong>Palabras totales:</strong> ${numPalabrasTotales}<br><br>
+        <strong>Entropía:</strong> ${entropia.toFixed(3)} bits/palabra<br><br>
+        <strong>Entropía máxima:</strong> ${entropiaMaxima.toFixed(3)} bits/palabra<br><br>
+        <strong>Redundancia:</strong> ${redundancia.toFixed(3)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)<br><br>
+        <strong>Densidad del léxico:</strong> ${(densidadLexico * 100).toFixed(2)}%<br><br>
+        <strong>Densidad léxica rarefactada:</strong> ${densidadLexicaRarefactadaPorcentaje.toFixed(2)}%
+    `;
+
+    document.getElementById("resultado").innerHTML = resultado;
+}
+
+
+
+        function borrarTextoYResultados() {
+            document.getElementById("input-text").value = '';
+            document.getElementById("resultado").innerText = '';
+        }
+    </script>
+    <p class="center">
+        Creado por <a href="https://bilateria.org">Juan José de Haro</a><br>
+        con la ayuda de <a href="https://chat.openai.com">ChatGPT</a><br>
+        Licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC by sa</a>
+    </p>
+    </div>
+</body>
+</html>
+
+

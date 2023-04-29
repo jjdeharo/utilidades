@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Entropía, Redundancia y Densidad del Léxico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 2rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Entropía, Redundancia y Densidad del Léxico</h1>
+
+    <h2>Entropía</h2>
+    <p>Es una medida de la incertidumbre o de la información que contiene un mensaje. En el contexto de esta calculadora, la entropía se expresa en bits por palabra y representa la cantidad promedio de información necesaria para representar cada palabra del texto.</p>
+
+    <h2>Entropía máxima</h2>
+    <p>Es la máxima cantidad de información que se puede transmitir en un mensaje de cierta longitud, considerando todas las posibles combinaciones de letras o palabras. En el contexto de esta calculadora, la entropía máxima se calcula a partir de la cantidad de palabras únicas que contiene el texto.</p>
+
+    <h2>Redundancia</h2>
+    <p>Es la cantidad de información que se repite en un mensaje y que por lo tanto no aporta nueva información. En el contexto de esta calculadora, la redundancia se expresa en bits por palabra y se calcula restando la entropía del texto a la entropía máxima.</p>
+
+    <h2>Porcentaje de redundancia</h2>
+    <p>Indica qué porcentaje del mensaje no aporta nueva información y se repite en el texto. Se calcula dividiendo la redundancia por la entropía máxima y multiplicando el resultado por 100. Cuanto mayor sea este porcentaje, menor será la cantidad de información nueva que contiene el texto.</p>
+
+    <h2>Densidad del léxico</h2>
+    <p>Es una medida de la variedad de palabras que se utilizan en un mensaje. En el contexto de esta calculadora, la densidad del léxico se expresa como la proporción de palabras únicas en relación al total de palabras del texto y se muestra en forma de porcentaje. Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras, lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado. A medida que el texto se hace más extenso, la densidad disminuye, proponemos usar la densidad léxica rarefactada en su lugar.</p>
+
+    <h2>Densidad léxica rarefactada</h2>
+    <p>La rarefacción es un método estadístico que proviene de la ecología y se utiliza para comparar la riqueza de especies en hábitats distintos, se utiliza para que el tamaño de las muestras no influya en el resultado. Por lo tanto es ideal para aplicar al texto escrito. La densidad léxica rarefactada es una medida que ayuda a comprender la diversidad y variedad del vocabulario utilizado. En este programa, se toman 1000 muestras, cada una con 100 palabras aleatorias. En cada muestra, se cuentan las palabras diferentes presentes y luego se calcula el promedio de todas las muestras. A diferencia de la densidad del léxico, no es sensible a la longitud del texto. El porcentaje indica las palabras diferentes que hay con respecto al total, su interpretación, por lo tanto, es idéntica a la densidad del léxico.</p> 
+
+<p>Esta medida permite evaluar la riqueza léxica de un texto de manera más equitativa, sin importar el tamaño total del texto. Un porcentaje más alto de densidad léxica rarefactada indica un vocabulario más diverso y variado, mientras que un porcentaje más bajo sugiere un vocabulario más limitado y repetitivo. Al interpretar este valor, se puede tener una idea de la complejidad y riqueza del lenguaje utilizado en el texto.</p>
+
+    <h2>Riqueza del texto</h2>
+    <p><b>La riqueza de un texto se refiere a la cantidad de palabras distintas que se utilizan en él.</b> Cuanto mayor sea la cantidad de palabras únicas, mayor será la riqueza del texto. La riqueza de un texto es un indicador de la variedad léxica del mismo, lo que puede ser un reflejo de la complejidad y sofisticación del lenguaje utilizado.</p>
+    <p><b>La riqueza del texto es un concepto estrechamente relacionado con la densidad del léxico y se refiere a la variedad de palabras que se utilizan en un mensaje.</b> Cuanto mayor sea la variedad de palabras, mayor será la riqueza del texto. La riqueza del texto también puede tener una relación inversa con la entropía y la redundancia: si un texto tiene una alta riqueza léxica, es posible que tenga una baja redundancia y una alta entropía, ya que cada palabra aporta una cantidad significativa de información nueva al mensaje.</p>
+    <h2>Interpretación del texto</h2>
+    <p>Para interpretar los resultados que muestra esta calculadora en relación a un texto, es importante tener en cuenta que:</p>
+    <ul>
+        <li><b>Una entropía baja indica que el texto tiene una estructura predecible y una alta redundancia,</b> es decir, que hay muchas palabras que se repiten con frecuencia. Por el contrario, una entropía alta indica que el texto es menos predecible y tiene menos redundancia.</li>
+        <li><b>Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras,</b> lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado.</li>
+        <li><b>El porcentaje de redundancia indica qué porcentaje del mensaje es redundante y se repite en el texto.</b> Cuanto mayor sea este porcentaje, menor será la cantidad de información nueva que contiene el texto.</li>
+        <li><b>La riqueza del texto es una medida adicional que indica la variedad de palabras que se utilizan en el mensaje,</b> y puede complementar la información proporcionada por la densidad del léxico. Una alta riqueza léxica indica un mayor nivel de complejidad y sofisticación del lenguaje utilizado en el mensaje.</li>
+    </ul>
+    <p><b>En general, el análisis de la entropía, redundancia, densidad del léxico y riqueza del texto de un mensaje puede ser útil para entender mejor su estructura, complejidad y estilo lingüístico, así como para comparar diferentes textos entre sí.</b></p>
+    
+    
+    
+    
+    <p>Esta calculadora utiliza una metodología específica para contar las palabras y calcular los resultados, y que estos resultados son solo una aproximación a la realidad y pueden variar en función de diferentes factores.</p>
+    <p style="text-align:center;"><b>Creado por <a href="https://bilateria.org">Juan José de Haro</a><br>con la ayuda de ChatGTP.</b></p>
+    <p style="text-align:center;"><b>Licencia: <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA</a></b></p>
+
+    <p style="text-align:center;">
+        <a href="index.html" class="button">Volver a la página principal</a>
+    </p>
+</body>
+</html>
