@@ -42,11 +42,16 @@
 <body>
     <h1>Calculadora de Entropía, Redundancia y Densidad del Léxico</h1>
 
-    <h2>Entropía</h2>
-    <p>Es una medida de la incertidumbre o de la información que contiene un mensaje. En el contexto de esta calculadora, la entropía se expresa en bits por palabra y representa la cantidad promedio de información necesaria para representar cada palabra del texto.</p>
+    
 
     <h2>Entropía máxima</h2>
-    <p>Es la máxima cantidad de información que se puede transmitir en un mensaje de cierta longitud, considerando todas las posibles combinaciones de letras o palabras. En el contexto de esta calculadora, la entropía máxima se calcula a partir de la cantidad de palabras únicas que contiene el texto.</p>
+    <p>Es la máxima cantidad de información que puede contener un texto de cierta longitud, considerando todas las posibles combinaciones de palabras. En el contexto de esta calculadora, la entropía máxima se calcula a partir de la cantidad de palabras únicas que contiene el texto.</p>
+
+    <h2>Densidad del léxico</h2>
+    <p>Es una medida de la variedad de palabras que se utilizan en un mensaje. En el contexto de esta calculadora, la densidad del léxico se expresa como la proporción de palabras únicas en relación al total de palabras del texto y se muestra en forma de porcentaje. Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras, lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado. A medida que el texto se hace más extenso, la densidad disminuye, proponemos usar la densidad léxica rarefactada en su lugar.</p>
+
+    <h2>Entropía</h2>
+    <p>Es una medida de la incertidumbre o de la información que contiene un mensaje. En el contexto de esta calculadora, la entropía se expresa en bits por palabra y representa la cantidad promedio de información que proporciona cada palabra del texto. Una mayor entropía indica un texto más complejo, es más rico en términos de información y tiene un mayor grado de complejidad.</p>
 
     <h2>Redundancia</h2>
     <p>Es la cantidad de información que se repite en un mensaje y que por lo tanto no aporta nueva información. En el contexto de esta calculadora, la redundancia se expresa en bits por palabra y se calcula restando la entropía del texto a la entropía máxima.</p>
@@ -54,13 +59,11 @@
     <h2>Porcentaje de redundancia</h2>
     <p>Indica qué porcentaje del mensaje no aporta nueva información y se repite en el texto. Se calcula dividiendo la redundancia por la entropía máxima y multiplicando el resultado por 100. Cuanto mayor sea este porcentaje, menor será la cantidad de información nueva que contiene el texto.</p>
 
-    <h2>Densidad del léxico</h2>
-    <p>Es una medida de la variedad de palabras que se utilizan en un mensaje. En el contexto de esta calculadora, la densidad del léxico se expresa como la proporción de palabras únicas en relación al total de palabras del texto y se muestra en forma de porcentaje. Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras, lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado. A medida que el texto se hace más extenso, la densidad disminuye, proponemos usar la densidad léxica rarefactada en su lugar.</p>
-
     <h2>Densidad léxica rarefactada</h2>
-    <p>La rarefacción es un método estadístico que proviene de la ecología y se utiliza para comparar la riqueza de especies en hábitats distintos, se utiliza para que el tamaño de las muestras no influya en el resultado. Por lo tanto es ideal para aplicar al texto escrito. La densidad léxica rarefactada es una medida que ayuda a comprender la diversidad y variedad del vocabulario utilizado. En este programa, se toman 1000 muestras, cada una con 100 palabras aleatorias. En cada muestra, se cuentan las palabras diferentes presentes y luego se calcula el promedio de todas las muestras. A diferencia de la densidad del léxico, no es sensible a la longitud del texto. El porcentaje indica las palabras diferentes que hay con respecto al total, su interpretación, por lo tanto, es idéntica a la densidad del léxico.</p> 
-
-<p>Esta medida permite evaluar la riqueza léxica de un texto de manera más equitativa, sin importar el tamaño total del texto. Un porcentaje más alto de densidad léxica rarefactada indica un vocabulario más diverso y variado, mientras que un porcentaje más bajo sugiere un vocabulario más limitado y repetitivo. Al interpretar este valor, se puede tener una idea de la complejidad y riqueza del lenguaje utilizado en el texto.</p>
+    <p>La rarefacción es un método estadístico que proviene de la ecología y se utiliza para comparar la riqueza de especies en hábitats distintos, se utiliza para que el tamaño de las muestras no influya en el resultado. Por lo tanto, es ideal para aplicar al texto escrito.</p> 
+    <p>La densidad léxica rarefactada es una medida que ayuda a comprender la diversidad y variedad del vocabulario utilizado. En este programa, se toman 1000 muestras, cada una con 100 palabras aleatorias. En cada muestra, se cuentan las palabras diferentes presentes y luego se calcula el promedio de todas las muestras. A diferencia de la densidad del léxico, no es sensible a la longitud del texto. </p>
+    
+    <p>Esta medida permite evaluar la riqueza léxica de un texto de manera más equitativa, sin importar la extensión del texto. Un porcentaje más alto de densidad léxica rarefactada indica un vocabulario más diverso y variado, mientras que un porcentaje más bajo sugiere un vocabulario más limitado y repetitivo. Al interpretar este valor, se puede tener una idea de la complejidad y riqueza del lenguaje utilizado en el texto.</p>
 
     <h2>Riqueza del texto</h2>
     <p><b>La riqueza de un texto se refiere a la cantidad de palabras distintas que se utilizan en él.</b> Cuanto mayor sea la cantidad de palabras únicas, mayor será la riqueza del texto. La riqueza de un texto es un indicador de la variedad léxica del mismo, lo que puede ser un reflejo de la complejidad y sofisticación del lenguaje utilizado.</p>
