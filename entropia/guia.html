@@ -55,14 +55,58 @@
 <body>
     <h1>Calculadora de Entropía, Redundancia y Densidad del Léxico</h1>
 
-    <h2>Interpretación de los resultados</h2>
+    
+
+    <h2>Interpretación de la entropía y la densidad léxica rarefactada según niveles educativos</h2>
+
+<table border="1">
+    <tr>
+        <th>Nivel educativo</th>
+        <th>Entropía (bits/palabra)</th>
+        <th>Descripción Entropía</th>
+        <th>Densidad léxica rarefactada</th>
+        <th>Descripción Densidad</th>
+    </tr>
+    <tr>
+        <td>Primaria</td>
+        <td>&lt; 7</td>
+        <td>Contenido simple y limitado</td>
+        <td>&lt; 65%</td>
+        <td>Lenguaje repetitivo o limitado</td>
+    </tr>
+    <tr>
+        <td>Secundaria</td>
+        <td>&lt; 8</td>
+        <td>Contenido moderadamente complejo</td>
+        <td>&lt; 75%</td>
+        <td>Lenguaje variado y enriquecido</td>
+    </tr>
+    <tr>
+        <td>Bachillerato</td>
+        <td>&lt; 9</td>
+        <td>Contenido complejo y diverso</td>
+        <td>&lt; 80%</td>
+        <td>Lenguaje rico y sofisticado</td>
+    </tr>
+    <tr>
+        <td>Estudios superiores e Investigación</td>
+        <td>&gt; 9</td>
+        <td>Contenido muy complejo y especializado</td>
+        <td>&gt; 80%</td>
+        <td>Lenguaje muy rico y sofisticado</td>
+    </tr>
+</table>
+
+<p>Esta tabla ofrece una interpretación basada en los niveles educativos junto con una descripción cualitativa de cada valor, donde '&lt;' significa menor y '&gt;', mayor. Estos rangos pueden variar dependiendo del tema y del estilo de escritura de cada autor. Además, estos rangos no son absolutos, sino que proporcionan una referencia aproximada para la interpretación de la entropía y densidad léxica rarefactada en función del nivel educativo.</p>
+
+<h2>Descripción de los conceptos</h2>
 
     <table>
         <tr>
             <th>Concepto</th>
             <th>Definición</th>
-            <th>Bajo</th>
-            <th>Alto</th>
+            <th>Valor bajo</th>
+            <th>Valor alto</th>
         </tr>
         <tr>
             <td><strong>Entropía</strong></td>
@@ -97,7 +141,7 @@
         
     </table>
 
-    <p>Para facilitar la interpretación de los valores, tenemos aquí unos ejemplos con diferentes niveles de complejidad:</p>
+    <p>A continuación presentamos ejemplos concretos con diferentes niveles de complejidad:</p>
 
     <table border="1">
         <tr>
@@ -107,39 +151,46 @@
           <th>Densidad léxica rarefactada</th>
         </tr>
         <tr>
-          <td><a href="https://www.gutenberg.org/cache/epub/14816/pg14816.txt" target="_blank">La Mare Balena, cuento por Victor Català</a></td>
-          <td>9.71</td>
-          <td>22.55%</td>
-          <td>79.21%</td>
+          <td><a href="https://www.gutenberg.org/cache/epub/14816/pg14816.txt" target="_blank">La Mare Balena</a> (cuento por Caterina Albert / Víctor Català)</td>
+          <td>9.41</td>
+          <td>23.96%</td>
+          <td>76.1%</td>
         </tr>
         <tr>
-          <td><a href="https://www.gutenberg.org/files/2000/2000-0.txt" target="_blank">El ingenioso hidalgo don Quijote de la Mancha por Miguel de Cervantes</a></td>
-          <td>9.65</td>
-          <td>33.66%</td>
-          <td>74.78%</td>
+          <td><a href="https://www.gutenberg.org/files/2000/2000-0.txt" target="_blank">El ingenioso hidalgo don Quijote de la Mancha</a> (Miguel de Cervantes)</td>
+          <td>9.62</td>
+          <td>33.75%</td>
+          <td>74.7%</td>
         </tr>
         <tr>
-          <td><a href="https://www.gutenberg.org/cache/epub/1228/pg1228.txt" target="_blank">On the Origin of Species by Charles Darwin</a></td>
-          <td>9.27</td>
-          <td>28.28%</td>
-          <td>76.43%</td>
+          <td><a href="https://www.gutenberg.org/cache/epub/1228/pg1228.txt" target="_blank">On the Origin of Species</a> (Ch. Darwin)</td>
+          <td>9.16</td>
+          <td>28.62%</td>
+          <td>76.2%</td>
         </tr>
         <tr>
-          <td><a href="https://drive.google.com/file/d/1Z5uU93IfXohu09d236MpSyBjICno2urZ/view" target="_blank">Los cómics como fuente histórica, trabajo de investigación de bachillerato de J. Zhan</a></td>
+          <td><a href="https://drive.google.com/file/d/1Z5uU93IfXohu09d236MpSyBjICno2urZ/view" target="_blank">Los cómics como fuente histórica</a> (trabajo de investigación de bachillerato de J. Zhan)</td>
           <td>8.84</td>
           <td>17.75%</td>
-          <td>74.67%</td>
+          <td>74.7%</td>
         </tr>
         <tr>
-          <td><a href="https://www.lingq.com/es/aprende-espanol-en-linea/courses/426379/los-tres-cerditos-y-el-lobo-the-three-2070248/" target="_blank">Los tres cerditos, cuento popular</a></td>
+          <td><a href="https://www.lingq.com/es/aprende-espanol-en-linea/courses/426379/los-tres-cerditos-y-el-lobo-the-three-2070248/" target="_blank">Los tres cerditos</a> (cuento popular)</td>
           <td>7.00</td>
           <td>10.84%</td>
           <td>63.76%</td>
         </tr>
+        <tr>
+            <td><a href="https://www.gutenberg.org/cache/epub/68525/pg68525.txt" target="_blank">A un olmo seco</a> (Antonio Machado)</td>
+            <td>6.37</td>
+            <td>7.19%</td>
+            <td>56.6%</td>
+          </tr>
         
       </table>
 
 
+      
    
 
     <h2>Densidad léxica rarefactada</h2>
