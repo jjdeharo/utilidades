@@ -82,10 +82,13 @@
         }
 
         function contarPalabras(texto) {
-            const textoLimpio = texto.toLowerCase().replace(/[.,:;?!¡¿()“”"'«»_\-/]+/g, ' ').trim();
-            const palabras = textoLimpio.split(/\s+/).filter(palabra => palabra.length > 0);
-            return palabras;
-        }
+    const textoLimpio = texto.toLowerCase().replace(/["“”"'«»_\-/]+/g, ' ').trim();
+    const palabras = textoLimpio.split(/[\s,.!?;:()]+/).filter(Boolean);
+    return palabras;
+}
+
+
+        
 
         function calcularRedundancia(texto) {
             const palabras = contarPalabras(texto);
@@ -155,7 +158,7 @@
 
             <strong>Redundancia:</strong> <span style="color: #0000FF;">${redundancia.toFixed(2)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)</span><br><br>
 
-            <strong>Densidad léxica rarefactada:</strong> <span style="color: #0000FF;">${densidadLexicaRarefactadaPorcentaje.toFixed(2)}%</span>
+            <strong>Densidad léxica rarefactada:</strong> <span style="color: #0000FF;">${densidadLexicaRarefactadaPorcentaje.toFixed(1)}%</span>
             </div>
             `;
 

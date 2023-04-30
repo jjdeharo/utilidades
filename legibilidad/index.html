@@ -438,9 +438,10 @@
 
 
   function splitWords(text) {
-  const words = text.split(/[\s,.!?;:()]+/).filter(Boolean);
-  return words;
-}
+    const texto = text.toLowerCase().replace(/["“”"'«»_\-/]+/g, ' ').trim();
+    const words = texto.split(/[\s,.!?;:()]+/).filter(Boolean);
+    return words;
+  }
 
 
   function calculateLegibility() {
