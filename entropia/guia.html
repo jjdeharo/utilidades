@@ -84,7 +84,7 @@
         </tr>
         <tr>
             <td>Entropía máxima</td>
-            <td>Máxima cantidad de información que puede contener un texto de cierta longitud, considerando todas las posibles combinaciones de palabras</td>
+            <td>Máxima cantidad de información que puede contener el texto considerando todas las posibles combinaciones de palabras</td>
             <td>-</td>
             <td>-</td>
         </tr>
@@ -107,13 +107,13 @@
           <th>Densidad léxica rarefactada</th>
         </tr>
         <tr>
-          <td><a href="https://www.gutenberg.org/cache/epub/14816/pg14816.txt" target="_blank">La Mare Balena por Victor Catala</a></td>
+          <td><a href="https://www.gutenberg.org/cache/epub/14816/pg14816.txt" target="_blank">La Mare Balena, cuento por Victor Català</a></td>
           <td>9.71</td>
           <td>22.55%</td>
           <td>79.21%</td>
         </tr>
         <tr>
-          <td><a href="https://www.gutenberg.org/files/2000/2000-0.txt" target="_blank">El ingenioso hidalgo don Quijote de la Mancha por Miguel de Cervantes Saavedra</a></td>
+          <td><a href="https://www.gutenberg.org/files/2000/2000-0.txt" target="_blank">El ingenioso hidalgo don Quijote de la Mancha por Miguel de Cervantes</a></td>
           <td>9.65</td>
           <td>33.66%</td>
           <td>74.78%</td>
@@ -136,29 +136,16 @@
           <td>10.84%</td>
           <td>63.76%</td>
         </tr>
-        <td>El contenido completo de esta página</a></td>
-          <td>7.17</td>
-          <td>13.93%</td>
-          <td>64.45%</td>
-        </tr>
+        
       </table>
 
 
-    <h2>Entropía máxima</h2>
-    <p>Es la máxima cantidad de información que puede contener un texto de cierta longitud, considerando todas las posibles combinaciones de palabras. En el contexto de esta calculadora, la entropía máxima se calcula a partir de la cantidad de palabras únicas que contiene.</p>
-
-    <h2>Densidad del léxico</h2>
-    <p>Es una medida de la variedad de palabras que se utilizan en un mensaje. En el contexto de esta calculadora, la densidad del léxico se expresa como la proporción de palabras únicas en relación con el total de palabras del texto y se muestra en forma de porcentaje. Una alta densidad del léxico indica que el texto tiene una amplia variedad de palabras, lo que puede ser indicativo de un lenguaje más rico y sofisticado. Por el contrario, una baja densidad del léxico puede indicar un lenguaje más repetitivo o limitado. A medida que el texto se hace más extenso, la densidad disminuye, para evitarlo proponemos usar la densidad léxica rarefactada en su lugar.</p>
-
-    <h2>Entropía</h2>
-    <p>Es una medida de la incertidumbre o de la información que contiene un escrito. En el contexto de esta calculadora, la entropía se expresa en bits por palabra y representa la cantidad promedio de información que proporciona cada palabra del texto. Una mayor entropía indica un texto más complejo, es más rico en términos de información y tiene un mayor grado de complejidad.</p>
-
-    <h2>Redundancia</h2>
-    <p>La redundancia es la cantidad de información que se repite en un mensaje y no aporta nueva información. En esta calculadora, se expresa en bits por palabra y se obtiene restando la entropía del texto a la entropía máxima. El porcentaje de redundancia indica qué proporción del mensaje se repite y se calcula dividiendo la redundancia por la entropía máxima, multiplicando el resultado por 100. Un porcentaje más alto implica menor cantidad de información nueva en el texto.</p>
+   
 
     <h2>Densidad léxica rarefactada</h2>
-    <p>La rarefacción es un método estadístico que proviene de la biología y se utiliza para comparar la riqueza de especies en hábitats distintos, se utiliza para que el tamaño de las muestras no influya en el resultado. Por lo tanto, es ideal para aplicar al texto escrito.</p> 
-    <p>La densidad léxica rarefactada es una medida que ayuda a comprender la diversidad y variedad del vocabulario utilizado. En este programa, se toman 1000 muestras, cada una con 100 palabras aleatorias. En cada muestra, se cuentan las palabras diferentes presentes y luego se calcula el promedio de todas las muestras. A diferencia de la densidad del léxico, no es sensible a la longitud del texto. </p>
+    <p>Este concepto requiere una explicación adicional, ya que su aplicación es nueva para el fin con el que se usa aquí. La rarefacción es un método estadístico que proviene de la Biología y se utiliza para comparar la riqueza (diversidad) de especies en hábitats distintos. El tamaño de las muestras (en nuestro caso, la longitud del texto) no influye en el resultado y, por lo tanto, es ideal para aplicar a los documentos escrito.</p> 
+    <p><strong>La densidad léxica rarefactada</strong> es una medida que ayuda a comprender la diversidad y variedad del vocabulario utilizado. Para su aplicación, se toman 1000 muestras, cada una formada 100 palabras aleatorias. En cada muestra se cuentan las palabras diferentes presentes y luego se calcula el promedio de todas las muestras. A diferencia de la densidad del léxico, no es sensible a la longitud del texto. La interpretación de la densidad léxica rarefactada es exactamente la misma que la densidad léxica, únicamente se diferencian en que es un método más robusto de obtener la riqueza léxica.</p>
+
     <p>Debido a que se calcula extrayendo palabras aleatorias del texto, puede producir resultados ligeramente diferentes cada vez que se calcula.</p>
     
     <p>Esta medida permite evaluar la riqueza léxica de un texto de manera más equitativa, sin importar su extensión. Un porcentaje más alto de densidad léxica rarefactada indica un vocabulario más diverso y variado, mientras que un porcentaje más bajo sugiere un vocabulario más limitado y repetitivo. Al interpretar este valor, se puede tener una idea de la complejidad y riqueza del lenguaje utilizado en el texto.</p>
