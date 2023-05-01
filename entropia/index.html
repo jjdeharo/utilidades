@@ -149,26 +149,32 @@
             const densidadLexicaRarefactadaPorcentaje = (densidadLexicaRarefactada / tamanoMuestraAjustado) * 100;
             const numPalabrasDistintas = contador.size;
 
+            const interpretacionEntropia = entropia < 7 ? 'Contenido simple y limitado' :
+                entropia >= 7 && entropia <= 8 ? 'Contenido moderadamente complejo' : 'Contenido complejo y diverso';
+
+            const interpretacionDensidadLexicaRarefactada = densidadLexicaRarefactadaPorcentaje < 65 ? 'Lenguaje repetitivo o limitado' :
+                densidadLexicaRarefactadaPorcentaje >= 65 && densidadLexicaRarefactadaPorcentaje <= 75 ? 'Lenguaje variado y enriquecido' : 'Lenguaje rico y sofisticado';
+
+            const interpretacionRedundancia = redundanciaPorcentaje < 15 ? 'Gran cantidad de información nueva y conocimientos adicionales' :
+                redundanciaPorcentaje >= 15 && redundanciaPorcentaje <= 30 ? 'Equilibrio entre información nueva y repetición de conceptos' : 'Mayor repetición de conceptos y menor cantidad de información nueva';
+
             const resultado = `
-    
+
             <strong>Palabras totales:</strong> ${numPalabrasTotales}<br>
             <strong>Palabras distintas:</strong> ${numPalabrasDistintas}<br>
             
             <strong>Densidad del léxico:</strong> ${(densidadLexico * 100).toFixed(2)}%<br>
             <strong>Entropía máxima:</strong> ${entropiaMaxima.toFixed(2)} bits/palabra<br><br>
             <div style="border: 1px solid black; padding: 1rem; display: inline-block;">
-            <strong>Entropía:</strong> <span style="color: #0000FF;">${entropia.toFixed(2)} bits/palabra</span><br><br>
-
-            <strong>Redundancia:</strong> <span style="color: #0000FF;">${redundancia.toFixed(2)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)</span><br><br>
-
-            <strong>Densidad léxica rarefactada:</strong> <span style="color: #0000FF;">${densidadLexicaRarefactadaPorcentaje.toFixed(1)}%</span>
+                <strong>Entropía:</strong> <span style="color: #0000FF;">${entropia.toFixed(2)} bits/palabra</span> - ${interpretacionEntropia}<br><br>
+                <strong>Redundancia:</strong> <span style="color: #0000FF;">${redundancia.toFixed(2)} bits/palabra (${redundanciaPorcentaje.toFixed(2)}%)</span> - ${interpretacionRedundancia}<br><br>
+                <strong>Densidad léxica rarefactada:</strong> <span style="color: #0000FF;">${densidadLexicaRarefactadaPorcentaje.toFixed(1)}%</span> - ${interpretacionDensidadLexicaRarefactada}
             </div>
             `;
 
-
-
             document.getElementById("resultado").innerHTML = resultado;
         }
+
 
 
 
