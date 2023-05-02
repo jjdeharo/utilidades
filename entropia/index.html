@@ -59,11 +59,10 @@
     <textarea id="input-text" rows="15" style="width: 100%; max-width: 800px;"></textarea>
     <br>
     <div class="button-container">
-    <button class="button" id="calcular-button" onclick="calcularResultados()">Calcular</button>
-
-
-    <button onclick="borrarTextoYResultados()" style="background-color: #ff4444;" class="button">Borrar</button>
-</div>
+        <button class="button" id="eliminar-numeros-button" onclick="eliminarNumeros()" style="background-color: #FFA500;">Eliminar números</button>
+        <button class="button" id="calcular-button" onclick="calcularResultados()">Calcular</button>
+        <button onclick="borrarTextoYResultados()" style="background-color: #ff4444;" class="button">Borrar</button>
+    </div>
 
     <p id="resultado"></p>
 
@@ -145,6 +144,11 @@ function calcularestandarizacion(texto, tamanoMuestra = 100, repeticiones = 1000
     return sumaDiversidad / repeticiones; // Devuelva la media de las DL
 }
 
+function eliminarNumeros() {
+    const inputText = document.getElementById("input-text");
+    inputText.value = inputText.value.replace(/\d+/g, '');
+}
+
 
 
         function calcularResultados() {
@@ -169,7 +173,7 @@ function calcularestandarizacion(texto, tamanoMuestra = 100, repeticiones = 1000
                     densidadLexicaestandarizadaPorcentaje >= 65 && densidadLexicaestandarizadaPorcentaje <= 75 ? 'Lenguaje variado y enriquecido' : 'Lenguaje rico y sofisticado';
 
                 const interpretacionRedundancia = redundanciaPorcentaje < 15 ? 'Gran cantidad de información nueva y conocimientos adicionales' :
-                    redundanciaPorcentaje >= 15 && redundanciaPorcentaje <= 30 ? 'Equilibrio entre información nueva y repetición de conceptos' : 'Mayor repetición de conceptos y menor cantidad de información nueva';
+                    redundanciaPorcentaje >= 15 && redundanciaPorcentaje <= 35 ? 'Equilibrio entre información nueva y repetición de conceptos' : 'Mayor repetición de conceptos y menor cantidad de información nueva';
 
                 const resultado = `
 
