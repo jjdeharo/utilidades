@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intervalo de Confianza Bootstrap</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #mean {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Intervalo de Confianza Bootstrap</h1>
+        <div class="form-group">
+            <label for="data">Datos (separados por comas, espacios o tabulaciones):</label>
+            <textarea class="form-control" id="data" rows="5" placeholder="Ejemplo: 1, 2, 3, 4, 5">12, 25, 34, 18, 46, 29, 30, 41, 9, 52</textarea>
+        </div>
+        <div class="form-group">
+            <label for="confidence">Nivel de confianza (%):</label>
+            <input type="number" class="form-control" id="confidence" min="0" max="100" value="95">
+        </div>
+        <button id="calculate" class="btn btn-primary">Calcular</button>
+        <button id="clear" class="btn btn-secondary">Borrar</button>
+        <p id="mean"></p>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function bootstrapCI(data, numSamples, alpha) {
+            let means = [];
+            for (let i = 0; i < numSamples; i++) {
+                let sample = data.map(() => data[Math.floor(Math.random() * data.length)]);
+                means.push(sample.reduce((a, b) => a + b, 0) / sample.length);
+            }
+            means.sort((a, b) => a - b);
+            return [means[Math.floor(alpha / 2 * numSamples)], means[Math.floor((1 - alpha / 2) * numSamples)]];
+        }
+
+        function calculateMean(data) {
+            return data.reduce((a, b) => a + b, 0) / data.length;
+        }
+
+        $(document).ready(function () {
+            $("#calculate").click(function () {
+                let data = $("#data").val().split(/[\s,]+/).map(Number);
+                let mean = calculateMean(data);
+                let confidence = parseFloat($("#confidence").val()) / 100;
+                let alpha = 1 - confidence;
+                let interval = bootstrapCI(data, 1000, alpha);
+                $("#mean").text("Media: " + mean.toFixed(2));
+                $("#result").text("Intervalo de confianza al " + (confidence * 100).toFixed(0) + "%: [" + interval[0].toFixed(2) + ", " + interval[1].toFixed(2) + "]");
+            });
+
+            $("#clear").click(function () {
+                $("#data").val("");
+                $("#mean").text("");
+                $("#result").text("");
+            });
+        });
+    </script>
+</body>
+</html>

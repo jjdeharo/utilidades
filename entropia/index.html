@@ -59,7 +59,8 @@
     <textarea id="input-text" rows="15" style="width: 100%; max-width: 800px;"></textarea>
     <br>
     <div class="button-container">
-        <button class="button" id="eliminar-numeros-button" onclick="eliminarNumeros()" style="background-color: #FFA500;">Eliminar números</button>
+        <button class="button" id="eliminar-no-letras-button" onclick="eliminarNoLetras()" style="background-color: #FFA500;">Eliminar números y símbolos</button>
+
         <button class="button" id="calcular-button" onclick="calcularResultados()">Calcular</button>
         <button onclick="borrarTextoYResultados()" style="background-color: #ff4444;" class="button">Borrar</button>
     </div>
@@ -118,36 +119,39 @@
         }
 
         function muestreoSinReemplazo(palabras, tamanoMuestra) {
-    const palabrasCopia = [...palabras];
-    const muestra = [];
+            const palabrasCopia = [...palabras];
+            const muestra = [];
 
-    for (let i = 0; i < tamanoMuestra; i++) {
-        const indiceAleatorio = Math.floor(Math.random() * palabrasCopia.length);
-        const palabraSeleccionada = palabrasCopia[indiceAleatorio];
-        muestra.push(palabraSeleccionada);
-        palabrasCopia.splice(indiceAleatorio, 1);
-    }
+            for (let i = 0; i < tamanoMuestra; i++) {
+                const indiceAleatorio = Math.floor(Math.random() * palabrasCopia.length);
+                const palabraSeleccionada = palabrasCopia[indiceAleatorio];
+                muestra.push(palabraSeleccionada);
+                palabrasCopia.splice(indiceAleatorio, 1);
+            }
 
-    return muestra;
-}
+            return muestra;
+        }
 
-function calcularestandarizacion(texto, tamanoMuestra = 100, repeticiones = 1000) {
-    const palabras = contarPalabras(texto);
+        function calcularestandarizacion(texto, tamanoMuestra = 100, repeticiones = 1000) {
+            const palabras = contarPalabras(texto);
 
-    let sumaDiversidad = 0;
-    for (let i = 0; i < repeticiones; i++) {
-        const muestra = muestreoSinReemplazo(palabras, tamanoMuestra);
-        const palabrasUnicas = new Set(muestra);
-        sumaDiversidad += palabrasUnicas.size / tamanoMuestra;
-    }
+            let sumaDiversidad = 0;
+            for (let i = 0; i < repeticiones; i++) {
+                const muestra = muestreoSinReemplazo(palabras, tamanoMuestra);
+                const palabrasUnicas = new Set(muestra);
+                sumaDiversidad += palabrasUnicas.size / tamanoMuestra;
+            }
 
-    return sumaDiversidad / repeticiones; // Devuelva la media de las DL
-}
+            return sumaDiversidad / repeticiones; // Devuelva la media de las DL
+        }
 
-function eliminarNumeros() {
+        function eliminarNoLetras() {
     const inputText = document.getElementById("input-text");
-    inputText.value = inputText.value.replace(/\d+/g, '');
+    inputText.value = inputText.value.replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s.,?!]+/g, '');
 }
+
+
+
 
 
 
