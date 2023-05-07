@@ -35,23 +35,18 @@
       const after = form.after.value.split(',').map(Number);
       const iterations = 1000;
       const differences = [];
-      const observedDifference = mean(after) - mean(before);
       
       for (let i = 0; i < iterations; i++) {
         const beforeSample = resample(before);
         const afterSample = resample(after);
-        const sampleDifference = mean(afterSample) - mean(beforeSample);
-        differences.push(sampleDifference);
+        const beforeMean = mean(beforeSample);
+        const afterMean = mean(afterSample);
+        differences.push(afterMean - beforeMean);
       }
       
-      const pValue = pValueCalculation(differences, observedDifference);
+      const pValue = pValueCalculation(differences);
       result.textContent = `El p-valor obtenido es: ${pValue.toFixed(4)}. `;
-      if (pValue < 0.05) {
-        result.textContent += 'Hay una diferencia significativa entre los dos conjuntos de notas. ';
-        result.textContent += observedDifference > 0 ? 'El segundo conjunto de notas es mejor.' : 'El primer conjunto de notas es mejor.';
-      } else {
-        result.textContent += 'No hay una diferencia significativa entre los dos conjuntos de notas.';
-      }
+      result.textContent += pValue < 0.05 ? 'El cambio en el método de enseñanza es significativo.' : 'El cambio en el método de enseñanza no es significativo.';
     });
   
     function resample(data) {
@@ -67,10 +62,11 @@
       return data.reduce((acc, val) => acc + val) / data.length;
     }
     
-    function pValueCalculation(differences, observedDifference) {
-      const extremeDifferences = differences.filter(x => x >= observedDifference).length;
-      return extremeDifferences / differences.length;
+    function pValueCalculation(differences) {
+      const positives = differences.filter(x => x > 0).length;
+      return positives / differences.length;
     }
   </script>
 </body>
 </html>
+
