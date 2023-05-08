@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Hipótesis Bootstrap</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Prueba de Hipótesis Bootstrap</h1>
+    <div class="input-container">
+        <label for="grupo1">Grupo 1 (separar valores por comas):</label>
+        <textarea id="grupo1" rows="4" cols="50"></textarea>
+    </div>
+    <div class="input-container">
+        <label for="grupo2">Grupo 2 (separar valores por comas):</label>
+        <textarea id="grupo2" rows="4" cols="50"></textarea>
+    </div>
+    <div class="input-container">
+        <label for="numSamples">Número de muestras (numSamples):</label>
+        <input type="number" id="numSamples" value="1000" min="1">
+    </div>
+    <button onclick="calcularBootstrap()">Calcular Bootstrap</button>
+    <p id="resultado"></p>
+    <script src="script.js"></script>
+</body>
+</html>
