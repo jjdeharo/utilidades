@@ -90,8 +90,9 @@
     <p id="resultado"></p>
     <script>
         function calcular() {
-          calcularBootstrap();
-          calcularTStudent();
+            document.getElementById('resultado').innerHTML = '';
+            calcularTStudent();
+            calcularBootstrap();
         }
 
         function calcularBootstrap() {
@@ -117,27 +118,34 @@
 
     const pValueBootstrap = numGreaterThanMeanDiff / numSamples;
     const resultado = document.getElementById('resultado');
-    resultado.innerHTML = `Bootstrap p-valor: ${pValueBootstrap.toFixed(4)} (${pValueBootstrap < alpha ? 'Diferencia significativa' : 'No hay diferencia significativa'})<br>`;
+    resultado.innerHTML += `Bootstrap p-valor: ${pValueBootstrap.toFixed(4)} (${pValueBootstrap < alpha ? 'Diferencia significativa' : 'No hay diferencia significativa'})<br>`;
+
     }
 
     function calcularTStudent() {
-      const grupo1 = document.getElementById('grupo1').value.split(/[\s,]+/).map(Number);
-      const grupo2 = document.getElementById('grupo2').value.split(/[\s,]+/).map(Number);
-      const alpha = parseFloat(document.getElementById('alfa').value);
+  const grupo1 = document.getElementById('grupo1').value.split(/[\s,]+/).map(Number);
+  const grupo2 = document.getElementById('grupo2').value.split(/[\s,]+/).map(Number);
+  const alpha = parseFloat(document.getElementById('alfa').value);
 
-      const mean1 = mean(grupo1);
-      const mean2 = mean(grupo2);
-      const sd1 = sd(grupo1);
-      const sd2 = sd(grupo2);
-      const se1 = sd1 / Math.sqrt(grupo1.length);
-      const se2 = sd2 / Math.sqrt(grupo2.length);
-      const sed = Math.sqrt(se1 * se1 + se2 * se2);
-      const tValue = (mean1 - mean2) / sed;
+  const mean1 = mean(grupo1);
+  const mean2 = mean(grupo2);
+  const n1 = grupo1.length;
+  const n2 = grupo2.length;
+  const sd1 = sd(grupo1);
+  const sd2 = sd(grupo2);
+  const se1 = sd1 / Math.sqrt(grupo1.length);
+  const se2 = sd2 / Math.sqrt(grupo2.length);
+  const sed = Math.sqrt(se1 * se1 + se2 * se2);
+  const tValue = (mean1 - mean2) / sed;
 
-      const pValueTStudent = jStat.ttest(tValue, grupo1.length + grupo2.length - 2, 2);
-      const resultado = document.getElementById('resultado');
-      resultado.innerHTML += `t-Student p-valor: ${pValueTStudent.toFixed(4)} (${pValueTStudent < alpha ? 'Diferencia significativa' : 'No hay diferencia significativa'})`;
-    }
+  const pValueTStudent = jStat.ttest(tValue, grupo1.length + grupo2.length - 2, 2);
+  const resultado = document.getElementById('resultado');
+  resultado.innerHTML += `Media del Grupo 1 (n = ${n1}): ${mean1.toFixed(4)}<br>`;
+  resultado.innerHTML += `Media del Grupo 2 (n = ${n2}): ${mean2.toFixed(4)}<br>`;
+  resultado.innerHTML += `t-Student p-valor: ${pValueTStudent.toFixed(4)} (${pValueTStudent < alpha ? 'Diferencia significativa' : 'No hay diferencia significativa'})<br>`;
+}
+
+
 
     function mean(arr) {
       return arr.reduce((sum, val) => sum + val, 0) / arr.length;
