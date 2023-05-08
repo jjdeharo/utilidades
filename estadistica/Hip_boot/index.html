@@ -3,12 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba de Hipótesis de igualdad de medias Bootstrap</title>
+    <title>Prueba de Hipótesis de igualdad de medias Bootstrap y t-Student</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.4/jstat.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        input {
+            font-size: 1.2rem;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Prueba de Hipótesis de igualdad de medias Bootstrap</h1>
+    <h1>Prueba de Hipótesis de igualdad de medias Bootstrap y t-Student</h1>
     <div class="input-container">
         <label for="grupo1">Grupo 1 (separar valores por comas):</label>
         <textarea id="grupo1" rows="4" cols="50"></textarea>
@@ -21,8 +82,79 @@
         <label for="numSamples">Número de muestras (numSamples):</label>
         <input type="number" id="numSamples" value="1000" min="1">
     </div>
-    <button onclick="calcularBootstrap()">Calcular Bootstrap</button>
+    <div class="input-container">
+        <label for="alfa">Valor de p (alfa):</label>
+        <input type="number" id="alfa" value="0.05" step="0.01" min="0" max="1">
+    </div>
+    <button onclick="calcular()">Calcular</button>
     <p id="resultado"></p>
-    <script src="script.js"></script>
+    <script>
+        function calcular() {
+          calcularBootstrap();
+          calcularTStudent();
+        }
+
+        function calcularBootstrap() {
+          const grupo1 = document.getElementById('grupo1').value.split(/[\s,]+/).map(Number);
+          const grupo2 = document.getElementById('grupo2').value.split    (/[\s,]+/).map(Number);
+    const numSamples = parseInt(document.getElementById('numSamples').value) || 1000; // Si el valor es inválido, se utilizará 1000 por defecto.
+    const alpha = parseFloat(document.getElementById('alfa').value);
+
+    const meanDiff = mean(grupo1) - mean(grupo2);
+    const combined = grupo1.concat(grupo2);
+    let numGreaterThanMeanDiff = 0;
+
+    for (let i = 0; i < numSamples; i++) {
+        const resampled = resample(combined, grupo1.length + grupo2.length);
+        const resampledGrupo1 = resampled.slice(0, grupo1.length);
+        const resampledGrupo2 = resampled.slice(grupo1.length);
+        const resampledMeanDiff = mean(resampledGrupo1) - mean(resampledGrupo2);
+
+        if (Math.abs(resampledMeanDiff) >= Math.abs(meanDiff)) {
+            numGreaterThanMeanDiff++;
+        }
+    }
+
+    const pValueBootstrap = numGreaterThanMeanDiff / numSamples;
+    const resultado = document.getElementById('resultado');
+    resultado.innerHTML = `Bootstrap p-valor: ${pValueBootstrap.toFixed(4)} (${pValueBootstrap < alpha ? 'Diferencia significativa' : 'No hay diferencia significativa'})<br>`;
+    }
+
+    function calcularTStudent() {
+      const grupo1 = document.getElementById('grupo1').value.split(/[\s,]+/).map(Number);
+      const grupo2 = document.getElementById('grupo2').value.split(/[\s,]+/).map(Number);
+      const alpha = parseFloat(document.getElementById('alfa').value);
+
+      const mean1 = mean(grupo1);
+      const mean2 = mean(grupo2);
+      const sd1 = sd(grupo1);
+      const sd2 = sd(grupo2);
+      const se1 = sd1 / Math.sqrt(grupo1.length);
+      const se2 = sd2 / Math.sqrt(grupo2.length);
+      const sed = Math.sqrt(se1 * se1 + se2 * se2);
+      const tValue = (mean1 - mean2) / sed;
+
+      const pValueTStudent = jStat.ttest(tValue, grupo1.length + grupo2.length - 2, 2);
+      const resultado = document.getElementById('resultado');
+      resultado.innerHTML += `t-Student p-valor: ${pValueTStudent.toFixed(4)} (${pValueTStudent < alpha ? 'Diferencia significativa' : 'No hay diferencia significativa'})`;
+    }
+
+    function mean(arr) {
+      return arr.reduce((sum, val) => sum + val, 0) / arr.length;
+    }
+
+    function sd(arr) {
+      const m = mean(arr);
+      return Math.sqrt(arr.reduce((sum, val) => sum + (val - m) * (val - m), 0) / (arr.length - 1));
+    }
+
+    function resample(arr, size) {
+      const resampled = [];
+      for (let i = 0; i < size; i++) {
+        resampled.push(arr[Math.floor(Math.random() * arr.length)]);
+      }
+      return resampled;
+    }
+</script>
 </body>
 </html>
