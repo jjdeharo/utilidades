@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVOTE: Conversor de Voz a Texto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .contenedor {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        textarea {
+            margin: 20px 0;
+            resize: none;
+            width: 100%;
+        }
+        
+        .footer {
+          position: fixed;
+          bottom: 10px;
+          text-align: center;
+          width: 100%;
+          font-size: 14px;
+}
+
+    </style>
+</head>
+<body>
+    
+    <div class="contenedor">
+        <h1>COVOTE: Conversor de Voz a Texto</h1>
+        Transforma la voz en texto que irá apareciendo por bloques y no de forma contínua.
+        <br><br>
+        Utiliza el micrófono del equipo a través del navegador.<br>
+    <b>Atención</b>:<br> No funciona con Firefox, ni con los navegadores basados en él. El texto puede tardar hasta 20 segundos en aparecer.
+    <br>
+    <br>
+        <label for="idioma">Selecciona el idioma en el que se va a leer:</label>
+        <select id="idioma">
+            <option value="es-ES">Español (España)</option>
+            <option value="es-AR">Español (Argentina)</option>
+            <option value="es-CL">Español (Chile)</option>
+            <option value="es-CO">Español (Colombia)</option>
+            <option value="es-CR">Español (Costa Rica)</option>
+            <option value="es-EC">Español (Ecuador)</option>
+            <option value="es-SV">Español (El Salvador)</option>
+            <option value="es-GT">Español (Guatemala)</option>
+            <option value="es-HN">Español (Honduras)</option>
+            <option value="es-MX">Español (México)</option>
+            <option value="es-NI">Español (Nicaragua)</option>
+            <option value="es-PA">Español (Panamá)</option>
+            <option value="es-PY">Español (Paraguay)</option>
+            <option value="es-PE">Español (Perú)</option>
+            <option value="es-PR">Español (Puerto Rico)</option>
+            <option value="es-UY">Español (Uruguay)</option>
+            <option value="es-VE">Español (Venezuela)</option>
+            <option value="ca-ES">Catalán </option>
+            <option value="eu-ES">Euskera </option>
+            <option value="gl-ES">Gallego </option>
+        </select>
+        <br><br>
+        <button id="boton-grabar">Iniciar grabación</button>
+        <button id="boton-detener" disabled>Detener</button>
+        <textarea id="texto" rows="20" cols="50" readonly></textarea>
+        <button id="boton-copiar">Copiar</button>
+        <button id="boton-borrar">Borrar</button>
+    </div>
+    
+    <div class="footer">
+      Juan José de Haro | Licencia: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+    </div>
+
+    
+    <script>
+        const botonGrabar = document.getElementById('boton-grabar');
+        const botonDetener = document.getElementById('boton-detener');
+        const botonCopiar = document.getElementById('boton-copiar');
+        const botonBorrar = document.getElementById('boton-borrar');
+        const texto = document.getElementById('texto');
+        const idioma = document.getElementById('idioma');
+
+        const reconocimiento = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+        reconocimiento.interimResults = true;
+        reconocimiento.maxAlternatives = 1;
+        reconocimiento.continuous = false;
+
+        let reiniciarReconocimiento = true;
+        
+        reconocimiento.lang = "es-ES"
+
+        idioma.addEventListener('change', () => {
+            reconocimiento.lang = idioma.value;
+        });
+
+        botonGrabar.addEventListener('click', () => {
+            reconocimiento.start();
+            reiniciarReconocimiento = true;
+            botonGrabar.disabled = true;
+            botonDetener.disabled = false;
+            botonGrabar.style.backgroundColor = "#FFA07A";
+        });
+
+                botonDetener.addEventListener('click', () => {
+            reconocimiento.stop();
+            reiniciarReconocimiento = false;
+            botonGrabar.disabled = false;
+            botonDetener.disabled = true;
+            botonGrabar.style.backgroundColor = "#007BFF";
+        });
+
+        reconocimiento.addEventListener('result', (event) => {
+            let vozATexto = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    vozATexto += event.results[i][0].transcript;
+                }
+            }
+            texto.value += vozATexto;
+        });
+
+        reconocimiento.addEventListener('end', () => {
+            if (reiniciarReconocimiento) {
+                reconocimiento.start();
+            }
+        });
+
+        botonCopiar.addEventListener('click', () => {
+            texto.select();
+            document.execCommand('copy');
+            alert('Texto copiado al portapapeles');
+        });
+
+        botonBorrar.addEventListener('click', () => {
+            texto.value = '';
+        });
+
+    </script>
+</body>
+</html>
+
+
