@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test de Proporciones y Bootstrap</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.7.0/simple-statistics.min.js"></script>
+
+    <style>
+        html {
+            font-size: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #result p {
+            margin-bottom: 1em;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="container">
+        <h1>Test de Proporciones y Bootstrap</h1>
+        
+        <h2>Grupo 1</h2>
+        <div class="input-group">
+            <label>Proporción 1:</label>
+            <input id="prop1" type="number" step="0.01" value="0.60" />
+        </div>
+        <div class="input-group">
+            <label>Tamaño de muestra 1:</label>
+            <input id="size1" type="number" value="100" />
+        </div>
+
+        <h2>Grupo 2</h2>
+        <div class="input-group">
+            <label>Proporción 2:</label>
+            <input id="prop2" type="number" step="0.01" value="0.45" />
+        </div>
+        <div class="input-group">
+            <label>Tamaño de muestra 2:</label>
+            <input id="size2" type="number" value="120" />
+        </div>
+
+        <h2>Configuración</h2>
+        <div class="input-group">
+            <label>Nivel de significación:</label>
+            <input id="alpha" type="number" step="0.01" value="0.05" />
+        </div>
+        <div class="input-group">
+            <label>Número de remuestras:</label>
+            <input id="resamples" type="number" value="1000" />
+        </div>
+        
+        <button onClick="calculate()">Calcular</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function bootstrap(data, resamples) {
+            let results = [];
+            for (let i = 0; i < resamples; i++) {
+                let sample = [];
+                for (let j = 0; j < data.length; j++) {
+                    let idx = Math.floor(Math.random() * data.length);
+                    sample.push(data[idx]);
+                }
+                results.push(ss.mean(sample));
+            }
+            return results;
+        }
+    
+        function calculate() {
+            let prop1 = parseFloat(document.getElementById("prop1").value);
+            let size1 = parseInt(document.getElementById("size1").value);
+            let prop2 = parseFloat(document.getElementById("prop2").value);
+            let size2 = parseInt(document.getElementById("size2").value);
+            let alpha = parseFloat(document.getElementById("alpha").value);
+            let resamples = parseInt(document.getElementById("resamples").value);
+    
+            // Test de proporciones
+            let p = (prop1 * size1 + prop2 * size2) / (size1 + size2);
+            let se = Math.sqrt(p * (1 - p) * (1 / size1 + 1 / size2));
+            let z = (prop1 - prop2) / se;
+            let p_value = 2 * (1 - ss.cumulativeStdNormalProbability(Math.abs(z)));
+    
+            let interpretation_prop = p_value > alpha ? 
+                "Las proporciones no son significativamente diferentes" : "Las proporciones son significativamente diferentes";
+    
+            // Bootstrap
+            let data1 = Array(Math.round(size1 * prop1)).fill(1).concat(Array(size1 - Math.round(size1 * prop1)).fill(0));
+            let data2 = Array(Math.round(size2 * prop2)).fill(1).concat(Array(size2 - Math.round(size2 * prop2)).fill(0));
+    
+            let bootstrap1 = bootstrap(data1, resamples);
+            let bootstrap2 = bootstrap(data2, resamples);
+    
+            let bootstrapDifferences = [];
+            for (let i = 0; i < resamples; i++) {
+                bootstrapDifferences.push(bootstrap1[i] - bootstrap2[i]);
+            }
+    
+            let meanDiff = ss.mean(bootstrapDifferences);
+    
+            let lower = ss.quantile(bootstrapDifferences, alpha / 2);
+            let upper = ss.quantile(bootstrapDifferences, 1 - alpha / 2);
+    
+            let observedDiff = prop1 - prop2;  // Diferencia observada
+
+let bootstrap_p_value = (ss.sum(bootstrapDifferences.map(x => Math.abs(x - meanDiff) >= Math.abs(observedDiff - meanDiff)))) / resamples;
+
+if (bootstrap_p_value > 1 - alpha) {
+    bootstrap_p_value = 2 * (1 - bootstrap_p_value);
+} else {
+    bootstrap_p_value = 2 * bootstrap_p_value;
+}
+
+
+
+    
+            let interpretation_boot = bootstrap_p_value > alpha ? 
+                "Las medias no son significativamente diferentes con Bootstrap" : "Las medias son significativamente diferentes con Bootstrap";
+    
+                document.getElementById("result").innerHTML = "<p><strong>Test de proporciones</strong> - Valor Z: " + z.toFixed(2) + ", Valor p: " + p_value.toFixed(2) + "</p><p>Interpretación (Proporciones): " + interpretation_prop + "</p><p><strong>Bootstrap</strong> - Media de las diferencias de proporciones: " + meanDiff.toFixed(2) + ", Intervalo de confianza: [" + lower.toFixed(2) + ", " + upper.toFixed(2) + "], Valor p: " + bootstrap_p_value.toFixed(2) + "</p><p>Interpretación (Bootstrap): " + interpretation_boot + "</p>";
+
+    }
+</script>
+
+               
+    
+    
+</body>
+</html>
