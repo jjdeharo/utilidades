@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba de Kolmogorov-Smirnov</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.5.1/math.min.js"></script>
+</head>
+<body>
+    <h1>Prueba de Kolmogorov-Smirnov</h1>
+    <textarea id="data-input" rows="10" cols="50"></textarea><br>
+    <label for="alpha-input">Nivel de significancia: </label>
+    <select id="alpha-input">
+        <option value="0.05">0.05</option>
+        <option value="0.01">0.01</option>
+    </select><br>
+    <button onclick="calculate()">Calcular</button>
+    <button onclick="clearAll()">Borrar todo</button>
+    <p id="result"></p>
+<script>
+
+function calculate() {
+    // Get the data from the input
+    let data = document.getElementById('data-input').value.split(',').map(Number);
+
+    // Sort the data
+    data.sort((a, b) => a - b);
+
+    // Calculate the theoretical CDF values
+    let n = data.length;
+    let theoretical = data.map((d, i) => (i + 1) / n);
+
+    // Calculate the empirical CDF values
+    let mean = math.mean(data);
+    let stdDev = math.std(data);
+    let empirical = data.map(d => 0.5 * (1 + math.erf((d - mean) / (Math.sqrt(2) * stdDev))));
+
+    // Calculate the maximum absolute difference
+    let d = Math.max(...theoretical.map((t, i) => Math.abs(t - empirical[i])));
+
+    // Interpret the result
+    let alpha = parseFloat(document.getElementById('alpha-input').value);
+    let D_critico;
+    if (alpha === 0.05) {
+        D_critico = n <= 20 ? 0.294 : (n <= 30 ? 0.242 : 0.211);
+    } else {
+        D_critico = n <= 20 ? 0.326 : (n <= 30 ? 0.272 : 0.237);
+    }
+    let interpretation = d < D_critico ? "Los datos probablemente siguen una distribución normal." : "Los datos probablemente no siguen una distribución normal.";
+
+    // Display the result
+    document.getElementById('result').innerText = `D = ${d}\n${interpretation}`;
+}
+
+function clearAll() {
+    document.getElementById('data-input').value = '';
+    document.getElementById('result').innerText = '';
+}
+
+
+</script>
+
+</body>
+</html>
