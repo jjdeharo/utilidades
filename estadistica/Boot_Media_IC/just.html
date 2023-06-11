@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metodología de la Calculadora de Media e Intervalo de Confianza usando Bootstrap</title>
+  <style>
+    html {
+      font-size: 20px;
+    }
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Metodología de la Calculadora de Media e Intervalo de Confianza usando Bootstrap</h1>
+    <h2>Método Bootstrap</h2>
+    <p>
+        El Bootstrap es una técnica estadística que estima la distribución de muestreo de un estimador al generar nuevas muestras de los datos observados con reemplazo. En este caso, se utiliza para calcular la media y el intervalo de confianza de los datos.
+    </p>
+    <h2>Cálculo de la media</h2>
+    <p>
+        Se calcula la media aritmética de los datos ingresados. La media aritmética es la suma de todos los datos dividida entre el número total de datos.
+    </p>
+    <h2>Generación de Muestras Bootstrap</h2>
+    <p>
+        Se generan nuevas muestras a partir de los datos ingresados. Cada nueva muestra tiene el mismo tamaño que el conjunto de datos original. Para cada muestra generada, se calcula su media y se almacena en una lista.
+    </p>
+    <h2>Cálculo del Intervalo de Confianza</h2>
+    <p>
+        Las medias de las muestras generadas se ordenan de menor a mayor. El intervalo de confianza se calcula como el rango en el que cae una cierta proporción (el nivel de confianza) de las medias de las muestras. El límite inferior del intervalo se toma como el percentil correspondiente a la mitad de la diferencia entre 100% y el nivel de confianza, y el límite superior como el percentil correspondiente a la mitad de la suma entre 100% y el nivel de confianza.
+    </p>
+  </div>
+</body>
+</html>

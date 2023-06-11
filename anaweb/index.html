@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Explorador de Páginas Web</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container py-5">
+    <h2 class="mb-4">Explorador de Páginas Web</h2>
+
+    <div class="form-group">
+        <label for="url">URL inicial:</label>
+        <input type="text" id="url" class="form-control">
+        <button class="btn btn-primary mt-3" onclick="explorar()">Explorar</button>
+    </div>
+
+    <div class="form-group">
+        <label for="resultado">Resultado:</label>
+        <textarea id="resultado" class="form-control" rows="6"></textarea>
+        <button class="btn btn-primary mt-3" onclick="copiarResultado()">Copiar</button>
+    </div>
+
+    <h2 class="mt-5 mb-4">Prompt</h2>
+
+    <div class="form-group">
+        <textarea id="prompt" class="form-control" rows="6">Examina las siguientes páginas correspondientes a un mismo trabajo y analiza la coherencia, utilidad del contenido y da un informe que incluya la descripción de los errores y una lista de mejoras, tanto en el contenido como en el diseño</textarea>
+        <button class="btn btn-primary mt-3" onclick="combinar()">Combinar</button>
+    </div>
+
+    <div class="form-group">
+        <label for="combinado">Combinado:</label>
+        <textarea id="combinado" class="form-control" rows="6"></textarea>
+        <button class="btn btn-primary mt-3" onclick="copiarCombinado()">Copiar</button>
+    </div>
+
+    <button class="btn btn-danger mt-5" onclick="resetear()">Resetear</button>
+
+</div>
+
+<script>
+function explorar() {
+    let baseUrl = document.getElementById('url').value;
+
+    let urls = Array.from(document.querySelectorAll('a'))
+        .map(a => a.href)
+        .filter(u => u.startsWith(baseUrl));
+
+    document.getElementById('resultado').value = urls.join('\n');
+}
+
+function copiarResultado() {
+    let textarea = document.getElementById('resultado');
+    textarea.select();
+    document.execCommand('copy');
+}
+
+function combinar() {
+    let prompt = document.getElementById('prompt').value;
+    let urls = document.getElementById('resultado').value;
+
+    document.getElementById('combinado').value = `${prompt}\n${urls}`;
+}
+
+function copiarCombinado() {
+    let textarea = document.getElementById('combinado');
+    textarea.select();
+    document.execCommand('copy');
+}
+
+function resetear() {
+    document.getElementById('url').value = '';
+    document.getElementById('resultado').value = '';
+    document.getElementById('combinado').value = '';
+    document.getElementById('prompt').value = '';
+}
+</script>
+
+</body>
+</html>
