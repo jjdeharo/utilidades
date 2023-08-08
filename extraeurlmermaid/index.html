@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extraer URL</title>
+    <title>URL Modificador</title>
+    <script>
+        function modifyURL() {
+            // Obtener URL
+            const originalURL = document.getElementById("originalURL").value;
+
+            // Modificar URL para imagen
+            const imageURL = originalURL.replace('mermaid.live/edit#', 'mermaid.ink/img/') + '?type=png';
+            document.getElementById("imageURL").value = imageURL;
+
+            // Modificar URL para iframe
+            const iframeURL = originalURL.replace('mermaid.live/edit#', 'mermaid.live/view#');
+            document.getElementById("iframeCode").innerHTML = `<center><iframe src="${iframeURL}" width="90%" height="400" frameborder="0"></iframe></center>`;
+        }
+
+        function copyToClipboard(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+        }
+
+        function selectText(elementId) {
+            const text = document.getElementById(elementId);
+            text.select();
+        }
+    </script>
 </head>
+
 <body>
 
-<h3>Pega el código que contiene la dirección:</h3>
-<textarea id="inputText" rows="10" cols="70"></textarea><br><br>
-<button onclick="extractURL()">Extraer URL</button><br><br>
+    <h2>Dirección de mermaid.live:</h2>
+    <input type="text" id="originalURL" style="width: 80%;" value="https://mermaid.live/edit#..." onclick="selectText('originalURL')">
+    <button onclick="modifyURL()">Procesar</button>
 
-<h3>URL extraída:</h3>
-<textarea id="outputText" rows="10" cols="70" readonly></textarea><br><br>
-<button onclick="copyToClipboard()">Copiar URL</button>
+    <h2>Visualizar como imagen</h2>
+    <input type="text" id="imageURL" style="width: 80%;" onclick="selectText('imageURL')">
+    <button onclick="copyToClipboard('imageURL')">Copiar</button>
 
-<script>
-    function extractURL() {
-        let inputText = document.getElementById("inputText").value;
-        let regex = /(https:\/\/mermaid\.ink\/img\/[^"]+)/;
-        let match = inputText.match(regex);
-        
-        if(match && match[1]) {
-            document.getElementById("outputText").value = match[1];
-        } else {
-            document.getElementById("outputText").value = "No se encontró la URL.";
-        }
-    }
-
-    function copyToClipboard() {
-        let outputText = document.getElementById("outputText");
-        outputText.select();
-        document.execCommand("copy");
-        alert("URL copiada al portapapeles.");
-    }
-</script>
+    <h2>Insertar como iframe</h2>
+    <textarea id="iframeCode" style="width: 80%; height: 100px;" onclick="selectText('iframeCode')"></textarea>
+    <button onclick="copyToClipboard('iframeCode')">Copiar</button>
 
 </body>
+
 </html>
