@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Modificador</title>
-    <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>URL Modificador</title>
+<script>
         function modifyURL() {
             // Obtener URL
             const originalURL = document.getElementById("originalURL").value;
@@ -32,21 +32,19 @@
         }
     </script>
 </head>
-
 <body>
+<h2>Dirección de mermaid.live:</h2>
+<input id="originalURL" onclick="
+        this.value = '';
+        document.getElementById('imageURL').value = '';
+        document.getElementById('iframeCode').innerHTML = '';
+    " onpaste="setTimeout(function(){ modifyURL(); }, 50);" style="width: 80%;" type="text" value="https://mermaid.live/edit#..."/>
 
-    <h2>Dirección de mermaid.live:</h2>
-    <input type="text" id="originalURL" style="width: 80%;" value="https://mermaid.live/edit#..." onclick="selectText('originalURL')">
-    <button onclick="modifyURL()">Procesar</button>
-
-    <h2>Visualizar como imagen</h2>
-    <input type="text" id="imageURL" style="width: 80%;" onclick="selectText('imageURL')">
-    <button onclick="copyToClipboard('imageURL')">Copiar</button>
-
-    <h2>Insertar como iframe</h2>
-    <textarea id="iframeCode" style="width: 80%; height: 100px;" onclick="selectText('iframeCode')"></textarea>
-    <button onclick="copyToClipboard('iframeCode')">Copiar</button>
-
+<h2>Visualizar como imagen</h2>
+<input id="imageURL" onclick="selectText('imageURL')" style="width: 80%;" type="text"/>
+<button onclick="copyToClipboard('imageURL')">Copiar</button>
+<h2>Insertar como iframe</h2>
+<textarea id="iframeCode" onclick="selectText('iframeCode')" style="width: 80%; height: 100px;"></textarea>
+<button onclick="copyToClipboard('iframeCode')">Copiar</button>
 </body>
-
 </html>
