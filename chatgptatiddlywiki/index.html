@@ -25,6 +25,7 @@
             texto = texto.replace(/\*(.*?)\*/g, '//$1//');
             
             // Realizar las otras sustituciones
+            texto = texto.replace(/  - /g, '  ** ');
             texto = texto.replace(/- /g, '* ');
             texto = texto.replace(/#/g, '!');
             texto = texto.replace(/\\\(/g, '$$$$');     
