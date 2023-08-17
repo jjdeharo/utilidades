@@ -11,7 +11,7 @@
 <p>Este programa formatea el texto de ChatGPT para añadirlo a TiddlyWiki</p>
 
 <input id="formatSecondLevel" name="formatSecondLevel" onchange="formatearTexto()" type="checkbox"/>
-<label for="formatSecondLevel">Formatear también lista de viñetas de 2º nivel (puede interferir con otros formatos).</label>
+<label for="formatSecondLevel">Formatear también lista de viñetas de 2º nivel creadas con guiones (-) (puede interferir con otros formatos).</label>
 <br/><br/>
 <label for="entrada">Pegue su texto aquí:</label>
 <br>
@@ -25,18 +25,27 @@
 <script>
 function formatearTexto() {
     let texto = document.getElementById("entrada").value;
+
+    // Formatear negrita
     texto = texto.replace(/\*\*/g, "''");
+
     // Reemplazar cursivas de Markdown a TiddlyWiki
     texto = texto.replace(/\*(.*?)\*/g, '//$1//');
     
+    // Listas de Markdown a TiddlyWiki
+
     // Check the state of the checkbox
     if (document.getElementById("formatSecondLevel").checked) {
-        texto = texto.replace(/  - /g, '  ** ');
+        texto = texto.replace(/  - /g, '  ** '); // Formatea listas de 2º nivel hechas con -
     }
 
-    // Realizar las otras sustituciones
-    texto = texto.replace(/- /g, '* ');
-    texto = texto.replace(/#/g, '!');
+    texto = texto.replace(/- /g, '* '); //Formatea listas de viñetas 1er nivel hechas con -
+    texto = texto.replace(/  \*/g, '  **'); // Formatea listas de viñetas de 2º nivel hechas con *
+
+    // Formatear títulos
+    texto = texto.replace(/#/g, '!'); 
+
+    // Formateo de fórmulas
     texto = texto.replace(/\\\(/g, '$$$$');     
     texto = texto.replace(/\\\)/g, '$$$$');     
     texto = texto.replace(/\\\[/g, '$$$$');     
