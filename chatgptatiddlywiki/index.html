@@ -1,53 +1,63 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT > TiddlyWiki</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ChatGPT &gt; TiddlyWiki</title>
 </head>
 <body>
-    <h1>ChatGPT > TiddlyWiki</h1>
-    <p>Este programa formatea el texto de ChatGPT para añadirlo a TiddlyWiki</p>
-    
-    <label for="entrada">Pegue su texto aquí:</label>
-    <textarea id="entrada" oninput="formatearTexto()" onclick="borrarTexto()" style="width:100%; height:150px;"></textarea>
-    
-    <label for="salida">Texto formateado:</label>
-    <textarea id="salida" style="width:100%; height:150px;" readonly></textarea>
-    
-    <button onclick="copiarTexto()">Copiar</button>
-    
-    <script>
-        function formatearTexto() {
-            let texto = document.getElementById("entrada").value;
-            texto = texto.replace(/\*\*/g, "''");
-            // Reemplazar cursivas de Markdown a TiddlyWiki
-            texto = texto.replace(/\*(.*?)\*/g, '//$1//');
-            
-            // Realizar las otras sustituciones
-            texto = texto.replace(/  - /g, '  ** ');
-            texto = texto.replace(/- /g, '* ');
-            texto = texto.replace(/#/g, '!');
-            texto = texto.replace(/\\\(/g, '$$$$');     
-            texto = texto.replace(/\\\)/g, '$$$$');     
-            texto = texto.replace(/\\\[/g, '$$$$');     
-            texto = texto.replace(/\\\]/g, '$$$$');     
-            
+<h1>ChatGPT &gt; TiddlyWiki</h1>
+<p>Este programa formatea el texto de ChatGPT para añadirlo a TiddlyWiki</p>
 
-            // Mostrar el resultado
-            document.getElementById("salida").value = texto;
-        }
+<input id="formatSecondLevel" name="formatSecondLevel" onchange="formatearTexto()" type="checkbox"/>
+<label for="formatSecondLevel">Formatear también lista de viñetas de 2º nivel (puede interferir con otros formatos).</label>
+<br/><br/>
+<label for="entrada">Pegue su texto aquí:</label>
+<br>
+<textarea id="entrada" onclick="borrarTexto()" oninput="formatearTexto()" style="width:100%; height:150px;"></textarea>
+<label for="salida">Texto formateado:</label>
+<textarea id="salida" style="width:100%; height:150px;"></textarea>
+<br/>
 
-        function borrarTexto() {
-            document.getElementById("entrada").value = "";
-            document.getElementById("salida").value = "";
-        }
+<br/>
+<button onclick="copiarTexto()">Copiar</button>
+<script>
+function formatearTexto() {
+    let texto = document.getElementById("entrada").value;
+    texto = texto.replace(/\*\*/g, "''");
+    // Reemplazar cursivas de Markdown a TiddlyWiki
+    texto = texto.replace(/\*(.*?)\*/g, '//$1//');
+    
+    // Check the state of the checkbox
+    if (document.getElementById("formatSecondLevel").checked) {
+        texto = texto.replace(/  - /g, '  ** ');
+    }
 
-        function copiarTexto() {
-            const textarea = document.getElementById("salida");
-            textarea.select();
-            document.execCommand('copy');
-        }
-    </script>
+    // Realizar las otras sustituciones
+    texto = texto.replace(/- /g, '* ');
+    texto = texto.replace(/#/g, '!');
+    texto = texto.replace(/\\\(/g, '$$$$');     
+    texto = texto.replace(/\\\)/g, '$$$$');     
+    texto = texto.replace(/\\\[/g, '$$$$');     
+    texto = texto.replace(/\\\]/g, '$$$$');     
+
+    // Mostrar el resultado
+    document.getElementById("salida").value = texto;
+}
+
+function copiarTexto() {
+    let textarea = document.getElementById("salida");
+    textarea.select();
+    document.execCommand("copy");
+}
+
+
+function borrarTexto() {
+    document.getElementById("entrada").value = "";
+    document.getElementById("salida").value = "";
+}
+</script>
+
 </body>
 </html>
