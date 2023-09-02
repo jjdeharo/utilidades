@@ -122,8 +122,7 @@ window.loadSelectedTemplate = function() {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-    // Contador para los títulos de los prompts, iniciará cuando se presione el botón "Generar" por primera vez
-    var promptCounter = 1;
+    
 
     // Comprobar si la función generateOutput existe antes de intentar modificarla
     if (typeof generateOutput !== "undefined") {
@@ -251,7 +250,8 @@ function analyzePrompt() {
         dynamicFields.appendChild(textarea);
     });
 }
-
+// Contador para los títulos de los prompts, iniciará cuando se presione el botón "Generar" por primera vez
+let promptCounter = 1;
 // Generar el prompt final
 function generateOutput() {
     let promptText = document.getElementById("promptInput").value;
@@ -286,7 +286,9 @@ function clearAll() {
     document.getElementById("output").value = "";
     prompts = [];
     currentPromptIndex = 0;
-    readPromptsFromFile();
+    promptCounter = 1;
+    document.getElementById('promptTitle').innerHTML = "Prompt final ";
+    //readPromptsFromFile();
 }
 
 
