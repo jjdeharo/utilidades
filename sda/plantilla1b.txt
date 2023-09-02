@@ -1,3 +1,4 @@
+
 Prompt 1
 Llegeix el que hi ha a continuació, però no diguis res ni facis cap comentari fins que et doni més instruccions. Volem fer una situació d'aprenentatge amb aquesta activitat per alumnes de [matèria i nivell educatiu]. Recorda que les situacions són escenaris que l’alumnat es troba a la vida real.
 
