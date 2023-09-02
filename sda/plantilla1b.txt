@@ -1,6 +1,6 @@
 
 Prompt 1
-Llegeix el que hi ha a continuació, però no diguis res ni facis cap comentari fins que et doni més instruccions. Volem fer una situació d'aprenentatge amb aquesta activitat per alumnes de [matèria i nivell educatiu]. Recorda que les situacions són escenaris que l’alumnat es troba a la vida real.
+Llegeix el que hi ha a continuació, però no diguis res ni facis cap comentari fins que et doni més instruccions. Volem fer una situació d'aprenentatge amb aquesta activitat per alumnes de [mMtèria i nivell educatiu. Per exemple: Ciències Socials de 1r d'ESO]. Recorda que les situacions són escenaris que l’alumnat es troba a la vida real.
 
 [Descripció de la situació d’aprenentatge que volem fer o de l’activitat que volem convertir en SA. Si teniu el treball original, li podeu demanar a  ChatPDF que us faci un extracte, fent servir el següent prompt:
 
