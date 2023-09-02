@@ -77,6 +77,6 @@ Fes una rúbrica per avaluar l’activitat anterior en forma de taula. Amb els a
 
 
 
-12
+Prompt 12
 Fes un resum de menys de 300 paraules de la SA de [Escriviu aquí l'assignatura. Per exemple: Matemàtiques] de [Escriviu aquí el nivell a qui va adreçat. Per exemple: 3r d'ESO]. Titulada: [Escriviu aquí el títol de la SdA]. Aquest resum servirà d'introducció per als alumnes abans de començar-la
 
