@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Generador de SdA</title>
+<style>
+        
+/* Reset some default browser styles */
+body, h1, h2, textarea, button, label, input {
+    margin: 0;
+    padding: 0;
+}
+
+/* Make a background color */
+body {
+    background: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+/* Create a container for our app */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Style headings */
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+/* Style the textareas */
+textarea {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow-y: auto;
+}
+
+/* Style the buttons */
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Style the dynamic section */
+.dynamic-section label, .dynamic-section input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.dynamic-section input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+
+    </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('input', function(e) {
+        if (e.target.tagName.toLowerCase() === 'textarea') {
+          autoExpand(e.target);
+        }
+      });
+      
+      function autoExpand(element) {
+        element.style.height = '5px';
+        element.style.height = (element.scrollHeight) + 'px';
+      }
+    });
+  
+window.loadSelectedTemplate = function() {
+  const selectedTemplateRadio = document.querySelector('input[name="template"]:checked');
+  if (selectedTemplateRadio) {
+    let selectedTemplate;
+    switch (selectedTemplateRadio.id) {
+      case 'template1a':
+        selectedTemplate = 'plantilla1a.txt';
+        break;
+      case 'template1b':
+        selectedTemplate = 'plantilla1b.txt';
+        break;
+      case 'template2':
+        selectedTemplate = 'plantilla2.txt';
+        break;
+    }
+    readPromptsFromFile(selectedTemplate);
+  } else {
+    alert("Por favor, selecciona una plantilla antes de cargar.");
+  }
+}
+
+
+
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // Contador para los títulos de los prompts, iniciará cuando se presione el botón "Generar" por primera vez
+    var promptCounter = 1;
+
+    // Comprobar si la función generateOutput existe antes de intentar modificarla
+    if (typeof generateOutput !== "undefined") {
+        // Modificar la función generateOutput para actualizar el título
+        var originalGenerateOutput = generateOutput;
+        generateOutput = function() {
+            // Obtener el elemento h3 del título
+            var title = document.getElementById('promptTitle');
+
+            // Actualizar el título
+            if (title) {
+                title.innerHTML = "Prompt final " + promptCounter;
+            }
+
+            // Llamar a la función original generateOutput
+            originalGenerateOutput();
+
+            // Incrementar el contador para el siguiente título
+            promptCounter++;
+        };
+    } else {
+        console.error("La función generateOutput no está definida.");
+    }
+});
+</script></head>
+<body>
+
+
+
+<div class="container">
+<h1>Generador de Prompts per Crear Situacions d'Aprenentatge</h1><hr>
+
+<div style="text-align: center;">
+    <a href="instruccions.html" target="_blank">Instruccions</a>
+  </div>
+  <br>
+<h2>Selecciona la plantilla que utilitzaràs:</h2>
+<div id="templateSelection">
+    <input type="radio" id="template1a" name="template" value="plantilla1a.txt" checked>
+    <label for="template1a">Plantilla 1(a): Per crear SdA a partir dels sabers.</label><br>
+    <input type="radio" id="template1b" name="template" value="plantilla1b.txt">
+    <label for="template1b">Plantilla 1(b): Per fer SdA a partir de la seva descripció o d'una activitat ja elaborada.</label><br>
+    <input type="radio" id="template2" name="template" value="plantilla2.txt">
+    <label for="template2">Plantilla 2: Desenvolupament i concreció de les activitats fetes amb les plantilles anteriors.</label><br><br>
+    <button onclick="loadSelectedTemplate()">Carregar Plantilla</button>
+  </div>
+  <hr>
+<div class="input-section">
+<h2>Prompt que serà processat</h2>
+<textarea id="promptInput" placeholder='Aquí aniran apareixent els prompts inicials quan premis el botó "Carregar plantilla"...'></textarea>
+
+</div><hr>
+<h2>Dades per omplir</h2>
+<h4>Omple les dades necessàries per completar aquest prompt (si no apareix res aquí sota és que aquest prompt no necessita dades, prem el botó "Generar Prompt" i copia'l directament):</h4>
+<div class="dynamic-section" id="dynamicFields">
+<!-- Campos dinámicos aparecerán aquí -->
+</div><hr>
+<h2>Generació del prompt final</h2>
+<div class="output-section">
+    <h4>Quan premis el botó "Generar prompt" el prompt final apareixerà sota el botó, el "Prompt que serà processat" (al principi de la pàgina) serà substituït pel següent i totes les dades que acabes d'introduir desapareixeran.</h3>
+    <button onclick="generateOutput()" style="background-color: green;">Generar prompt</button><h3 id="promptTitle">
+    </h4>
+    <textarea id="output" style="font-size: 18px; color: #333; background-color: #f9f9f9; font-family: 'Arial', sans-serif; padding: 10px; border: 2px solid #ccc; border-radius: 4px;"></textarea>
+
+<button onclick="copyToClipboard()">Copiar</button> (Copia i enganxa aquest prompt al ChatGPT)
+</div>
+<button onclick="clearAll()">Tornar a començar</button> (Esborra-ho tot i torna a carregar la plantilla)
+</div>
+<script>
+        
+// Variables globales para manejar múltiples prompts
+let prompts = [];
+var currentPromptIndex = 0;
+
+// Leer los prompts desde un archivo de texto
+function readPromptsFromFile(archivo="plantilla1.txt") {
+    fetch(archivo)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("No se pudo leer el archivo");
+            }
+            return response.text();
+        })
+        .then(text => {
+            const promptSections = text.split("Prompt ");
+            if (promptSections.length > 1) {
+                prompts = promptSections.slice(1).map(section => {
+                    const lines = section.split("\n");
+                    const promptNumber = lines.shift();
+                    return lines.join("\n").trim();
+                });
+            } else {
+                prompts = [text.trim()];
+            }
+            if (prompts.length > 0) {
+                loadNextPrompt();
+            }
+        })
+        .catch(error => {
+            console.error("Error al leer el archivo:", error);
+        });
+}
+
+// Cargar el siguiente prompt en el área de entrada
+function loadNextPrompt() {
+    if (currentPromptIndex < prompts.length) {
+        document.getElementById("promptInput").value = prompts[currentPromptIndex];
+        analyzePrompt();
+    }
+}
+
+// Analizar el prompt actual y crear campos de entrada dinámicos
+function analyzePrompt() {
+    const promptText = document.getElementById("promptInput").value;
+    const matches = promptText.match(/\[[^\]]+\]/g) || [];
+    const dynamicFields = document.getElementById("dynamicFields");
+    dynamicFields.innerHTML = "";
+    matches.forEach((match, index) => {
+        const label = document.createElement("label");
+        label.innerText = match;
+        const textarea = document.createElement("textarea");
+        textarea.id = `input${index}`;
+        dynamicFields.appendChild(label);
+        dynamicFields.appendChild(textarea);
+    });
+}
+
+// Generar el prompt final
+function generateOutput() {
+    let promptText = document.getElementById("promptInput").value;
+    const matches = promptText.match(/\[[^\]]+\]/g) || [];
+    matches.forEach((match, index) => {
+        const inputValue = document.getElementById(`input${index}`).value;
+        promptText = promptText.replace(match, inputValue);
+    });
+    document.getElementById("output").value = promptText;
+    if (currentPromptIndex >= prompts.length) {
+    alert("Has arribat al final, no hi ha més prompts");
+    } 
+    currentPromptIndex++;
+    if (currentPromptIndex < prompts.length) {
+    loadNextPrompt();
+    } 
+}
+
+
+
+// Copiar el texto al portapapeles
+function copyToClipboard() {
+    const output = document.getElementById("output");
+    output.select();
+    document.execCommand("copy");
+}
+
+// Borrar todo y restablecer al estado inicial
+function clearAll() {
+    document.getElementById("promptInput").value = "";
+    document.getElementById("dynamicFields").innerHTML = "";
+    document.getElementById("output").value = "";
+    prompts = [];
+    currentPromptIndex = 0;
+    readPromptsFromFile();
+}
+
+
+
+</script>
+<div style="text-align: center;">
+    Aplicació feta per <a href="https://bilateria.org" target="_blank">Juan José de Haro</a> amb ChatGPT-4 (versió 3 d'agost)<br> 
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      <img alt="Llicència de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+    </a><br />
+    Aquesta obra està subjecta a una llicència de <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Reconeixement-NoComercial 4.0 Internacional de Creative Commons</a>
+  </div>
+  
+</body>
+</html>

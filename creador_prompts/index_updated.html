@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Creador de Prompts</title>
+<style>
+        
+/* Reset some default browser styles */
+body, h1, h2, textarea, button, label, input {
+    margin: 0;
+    padding: 0;
+}
+
+/* Make a background color */
+body {
+    background: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+/* Create a container for our app */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Style headings */
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+/* Style the textareas */
+textarea {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style the buttons */
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Style the dynamic section */
+.dynamic-section label, .dynamic-section input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.dynamic-section input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+    </style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Contador para los títulos de los prompts, iniciará cuando se presione el botón "Generar" por primera vez
+    var promptCounter = 1;
+
+    // Comprobar si la función generateOutput existe antes de intentar modificarla
+    if (typeof generateOutput !== "undefined") {
+        // Modificar la función generateOutput para actualizar el título
+        var originalGenerateOutput = generateOutput;
+        generateOutput = function() {
+            // Obtener el elemento h3 del título
+            var title = document.getElementById('promptTitle');
+
+            // Actualizar el título
+            if (title) {
+                title.innerHTML = "Prompt " + promptCounter;
+            }
+
+            // Llamar a la función original generateOutput
+            originalGenerateOutput();
+
+            // Incrementar el contador para el siguiente título
+            promptCounter++;
+        };
+    } else {
+        console.error("La función generateOutput no está definida.");
+    }
+});
+</script></head>
+<body>
+<div class="container">
+<h1>Creador de Prompts</h1>
+<div class="input-section">
+<h2>Introduce el Prompt o cárgalo desde un archivo de texto</h2>
+<br>
+<div>
+    <label for="fileInput">Cargar desde archivo:</label>
+    <input type="file" id="fileInput" accept=".txt">
+    <script>
+    // Obtener el elemento de entrada del archivo
+var fileInput = document.getElementById('fileInput');
+
+// Añadir un evento de 'change'
+fileInput.addEventListener('change', function() {
+    var files = fileInput.files;
+    var file = files[0];
+    var fileName = file.name;
+
+    // Llamar a readPromptsFromFile() con el nombre del archivo seleccionado
+    readPromptsFromFile(fileName);
+});
+</script>
+</div>
+<br>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('fileInput');
+        
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    const promptInput = document.getElementById('promptInput');
+                    promptInput.value = content;
+                };
+                
+                reader.readAsText(file);
+            }
+        });
+    });
+</script>
+
+<textarea id="promptInput" placeholder="Introduce el prompt aquí..."></textarea>
+<button onclick="analyzePrompt()">Analizar prompt</button>
+</div>
+<h3> Cuando pulses el botón "Generar Prompt", este aparecerá en la parte inferior de la página, mientras que el prompt inicial habrá sido sustituido por el siguiente (en el caso de que haya más de uno)</h3>
+<div class="dynamic-section" id="dynamicFields">
+<!-- Campos dinámicos aparecerán aquí -->
+</div>
+<div class="output-section">
+<button onclick="generateOutput()">Generar Prompt</button><h3 id="promptTitle"></h3>
+<textarea id="output"></textarea>
+<button onclick="copyToClipboard()">Copiar</button>
+</div>
+<button onclick="clearAll()">Volver a empezar</button>
+</div>
+<script>
+        
+// Variables globales para manejar múltiples prompts
+let prompts = [];
+let currentPromptIndex = 0;
+
+// Leer los prompts desde un archivo de texto "prompt.txt"
+function readPromptsFromFile(archivo="prompt.txt") {
+    console.log("Intentando leer el archivo prompt.txt...");
+    fetch(archivo)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("No se pudo leer el archivo prompt.txt");
+            }
+            return response.text();
+        })
+        .then(text => {
+            console.log("Contenido del archivo:", text);
+            const promptSections = text.split("Prompt ");
+            if (promptSections.length > 1) {
+                prompts = promptSections.slice(1).map(section => {
+                    const lines = section.split("\n");
+                    const promptNumber = lines.shift();
+                    return lines.join("\n").trim();
+                });
+            } else {
+                prompts = [text.trim()];
+            }
+            console.log("Prompts procesados:", prompts);
+            if (prompts.length > 0) {
+                loadNextPrompt();
+            }
+        })
+        .catch(error => {
+            console.error("Error al leer el archivo prompt.txt:", error);
+        });
+}
+
+// Cargar el siguiente prompt en el área de entrada
+function loadNextPrompt() {
+    if (currentPromptIndex < prompts.length) {
+        console.log("Cargando el siguiente prompt...");
+        document.getElementById("promptInput").value = prompts[currentPromptIndex];
+        analyzePrompt();
+    }
+}
+
+// Analizar el prompt actual y crear campos de entrada dinámicos
+function analyzePrompt() {
+    const promptText = document.getElementById("promptInput").value;
+    const matches = promptText.match(/\[[^\]]+\]/g) || [];
+    const dynamicFields = document.getElementById("dynamicFields");
+    dynamicFields.innerHTML = "";
+    matches.forEach((match, index) => {
+        const label = document.createElement("label");
+        label.innerText = match;
+        const textarea = document.createElement("textarea");
+        textarea.id = `input${index}`;
+        dynamicFields.appendChild(label);
+        dynamicFields.appendChild(textarea);
+    });
+}
+
+// Generar el prompt final
+function generateOutput() {
+    let promptText = document.getElementById("promptInput").value;
+    const matches = promptText.match(/\[[^\]]+\]/g) || [];
+    matches.forEach((match, index) => {
+        const inputValue = document.getElementById(`input${index}`).value;
+        promptText = promptText.replace(match, inputValue);
+    });
+    document.getElementById("output").value = promptText;
+    currentPromptIndex++;
+    if (currentPromptIndex < prompts.length) {
+        loadNextPrompt();
+    }
+}
+
+// Copiar el texto al portapapeles
+function copyToClipboard() {
+    const output = document.getElementById("output");
+    output.select();
+    document.execCommand("copy");
+}
+
+// Borrar todo y restablecer al estado inicial
+function clearAll() {
+    document.getElementById("promptInput").value = "";
+    document.getElementById("dynamicFields").innerHTML = "";
+    document.getElementById("output").value = "";
+    prompts = [];
+    currentPromptIndex = 0;
+    readPromptsFromFile();
+}
+
+// Llamar a readPromptsFromFile al cargar la página
+readPromptsFromFile();
+
+    </script>
+</body>
+</html>

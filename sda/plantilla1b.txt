@@ -1,0 +1,100 @@
+Prompt 1
+Llegeix el que hi ha a continuació, però no diguis res ni facis cap comentari fins que et doni més instruccions. Volem fer una situació d'aprenentatge amb aquesta activitat per alumnes de [matèria i nivell educatiu]. Recorda que les situacions són escenaris que l’alumnat es troba a la vida real.
+
+[Descripció de la situació d’aprenentatge que volem fer o de l’activitat que volem convertir en SA. Si teniu el treball original, li podeu demanar a  ChatPDF que us faci un extracte, fent servir el següent prompt:
+
+Escriu una llista amb els objectius del treball i altra llista amb les activitats proposades amb la seva temporització, matèria i nivell educatiu]
+
+
+Prompt 2
+Selecciona un màxim de [Escriu el nombre màxim de sabers que ChatGPT ha de seleccionar dels sabers anteriors. Per exemple: 4]  sabers que es treballen en l’activitat d’abans. No expliquis per què els has seleccionat:
+[Llista de sabers: tots o els que vulguis utilitzar]
+
+
+Prompt 3
+1. Elabora no més de [Escriu el nombre d'objectius d'aprenentatge que ChatGPT ha de fer. Recomanem: 3] Objectius d’aprenentatge, per respondre la pregunta: Què volem que aprengui l’alumnat i per a què? Ha de tenir aquestes característiques:
+2. El format de cada objectiu és CAPACITAT + SABER + FINALITAT. Aquestes 3 parts han de formar una única frase per objectiu.
+3. No posis encapçalament a les frases.
+4. En cada objectiu has de posar a quina competència o competències específiques pertany (CE).
+5. Utilitza [Escriu quantes competències específiques s'han d'utilitzar per fer cada objectiu. Per exemple: una o dues] CE per a cada objectiu.
+
+[Llista completa de competències específiques numerades]
+
+
+Prompt 4
+Fes un màxim de  [Indica quants criteris d'avaluació voleu. Recomanem: 2] criteris d’avaluació per a cada objectiu, responent la pregunta: Com sabem que ho han après? El format de cada criteri és: ACCIÓ + SABER + CONTEXT. Aquestes 3 parts han de formar una única frase per cada criteri. No posis encapçalament a les frases. Escriu cada objectiu amb els seus criteris. T'has de basar en els criteris de les competències específiques (CE) que tens a continuació, però no els has de copiar, els has de concretar i pots fer servir més d'un criteri de les CE per a cada criteri d'avaluació. MOLT IMPORTANT: has de posar el número del criteri de les CE en què es basa el que tu escrius amb el text: (basat en el criteri x.x)
+
+[Llista de competències específiques que han sortit en el prompt anterior amb els seus criteris numerats]
+
+
+Prompt 5
+(només per Primària i ESO)
+Quines competències transversals es treballen en aquesta situació d'aprenentatge que estem fent. Aquí tens la llista per escollir:
+
+Competència digital.
+Competència personal, social i d’aprendre a aprendre.
+Competència ciutadana.
+Competència emprenedora.
+
+
+Prompt 5
+(només per Batxillerat)
+Quins components transversals es treballen en aquesta situació d'aprenentatge que estem fent. Aquí tens la llista per escollir:
+
+- Resolució de problemes a partir de l’aplicació integrada de coneixements: Integrar els sabers adquirits per interpretar i donar resposta a una varietat de situacions, independentment de la disciplina de la qual provinguin.
+
+- Gestió i comunicació de la informació: Identificar, analitzar, seleccionar, contrastar, combinar i comunicar informacions procedents de fonts diverses i en formats diferents, per tal de generar coneixement i donar resposta a problemàtiques derivades de l'àmbit acadèmic, dels mitjans de comunicació o de la vida quotidiana, i centrades en els continguts propis de cada matèria.
+
+- Pensament crític: Argumentar, a partir de criteris lògics i ètics, i a partir dels aprenentatges propis de la matèria, el posicionament i la presa de decisions adoptats enfront d'una problemàtica social, política, econòmica, ambiental, sanitària, científica o altres, fent propostes d'acció justificades i coherents.
+
+
+Prompt 6
+Tenint en compte tota la conversa que hem tingut fins ara, REVISA-LA si us plau i ADAPTA les activitats d’aprenentatge que et torno a copiar.
+La SA ha d’estar formada per aquelles experiències que:
+a) Parteixen d’un CONTEXT
+b) Plantegen un REPTE a la persona que aprèn, on l'aplicació dels coneixements previs és una part integral del procés, però no constitueix el repte principal. El repte ha de ser una situació de la vida real pròxima a l'alumne.
+c) Tota la SA ha d'estar relacionada amb un fil conductor format pel context i el repte.
+d) Has d’escriure la forma d'avaluació i la temporització de cada activitat.
+e) Concreta les activitats que s’han de fer i assegura't que és una SA completa, concreta i ben definida, tal com l'acabem de definir.
+[Si voleu una durada concreta, escriviu: "f) La durada ha de ser de x hores" (sense les cometes). Si no voleu especificar-la, deixeu-ho en blanc]
+
+Ha de tenir les següents parts:
+1. Activitats inicials (Què en sabem?)
+2. Activitats de desenvolupament (Aprenem nous sabers)
+3. Activitats d’estructuració (Què hem après?)
+4. Activitats d’aplicació (Apliquem el que hem après)
+
+En aquesta SA es treballarà:
+[Torneu a copiar aquí el resum de l’activitat que heu posat en el prompt 1, sense incloure els objectius, per no confondre a ChatGPT amb els que ha escrit ell. Afegiu també la llista de sabers del prompt 2 que ha seleccionat ChatGPT]
+
+
+Prompt 7
+Fes una descripció en menys de [Nombre de paraules de la descripció. Recomanem: 100] paraules d'aquesta situació d'aprenentatge (context + repte) responent aquestes preguntes: Per què aquesta situació d’aprenentatge? Quin és el context? Quin repte planteja. Si aquesta SA pot encaixar en alguns dels ODS, digues quins.
+
+
+Prompt 8
+Proposa [Nombre de títols que vols veure per poder escollir. Per exemple: 5] títols per aquesta SA
+
+
+Prompt 9
+Les mesures i els suports universals són els que s’adrecen a tots els alumnes. Han de permetre flexibilitzar el context d’aprenentatge, proporcionar als i les alumnes, estratègies per minimitzar les barreres de l’entorn i garantir la convivència i el compromís de tota la comunitat educativa. Quines fem servir en aquesta situació d'aprenentatge? Parlem en l'àmbit de classe
+
+
+Prompt 10
+Desenvolupament de la situació d’aprenentatge: Quines són les principals estratègies metodològiques que es preveuen utilitzar?, quins tipus d’agrupament realitzarem?, quins són els principals materials que necessitarem?, etc.
+
+
+Prompt 11
+(només Primària i ESO)
+Breu descripció de com s’aborden els vectors en aquesta situació d’aprenentatge: 
+
+Aprenentatges competencials: un currículum que s'orienta cap a un tipus d'aprenentatge profund i funcional.
+Perspectiva de gènere: un currículum dissenyat amb perspectiva de gènere per fer efectiva l'educació integral de les persones.
+Universalitat del currículum: un currículum per a tothom que garanteix la inclusió efectiva i l'èxit educatiu.
+Qualitat de l'educació de les llengües: un currículum que garanteix el domini de la llengua per entendre el món i compartir el coneixement.
+Ciutadania democràtica i consciència global: un currículum que promou la ciutadania democràtica i la consciència global amb voluntat de formar persones compromeses i capaces de promoure canvis i afrontar reptes.
+Benestar emocional: un currículum que afavoreix el benestar emocional d'infants i joves.
+
+
+
+

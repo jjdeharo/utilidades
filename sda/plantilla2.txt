@@ -1,0 +1,82 @@
+Prompt 1
+Llegeix la descripció d’aquesta situació d’aprenentatge de [Escriu aquí la MATÈRIA i CURS. Per exemple: Biologia de 1r de Batxillerat]. Titulada: [Escriu aquí el TÍTOL de la SdA]. No diguis res fins que et doni més instruccions.
+
+[Enganxeu aquí la DESCRIPCIÓ de la situació d’aprenentatge]
+
+
+Prompt 2
+Llegeix els objectius i els seus criteris d’avaluació de la situació d’aprenentatge i no diguis res fins que et doni més instruccions.
+[Enganxar aquí la llista d'OBJECTIUS D’APRENENTATGE I CRITERIS D’AVALUACIÓ de la situació d’aprenentatge (la part interior de la taula, sense la capçalera). Poseu una numeració que ChatGPT pugui entendre. Si hi ha referències a les CE o els seus criteris d’avaluació, esborreu-los per evitar confondre a ChatGPT (per exemple, si posa alguna cosa com: Basat en el criteri 2.1 de la CE5, etc.).]
+
+
+Prompt 3
+Llegeix les activitats programades per aquesta situació d’aprenentatge i no diguis res fins que et doni més instruccions.
+[Enganxar aquí la llista completa d’ACTIVITATS, TEMPORITZACIÓ i AVALUACIÓ. En la plantilla del Departament correspon a la taula: ACTIVITATS D’APRENENTATGE I D’AVALUACIÓ]
+
+
+Prompt 4
+Desenvolupa, concreta i dona instruccions als alumnes per fer les activitats inicials i segueix aquestes instruccions:
+a) Escriu en segona persona del singular o plural segons parlis a un alumne o a un grup.
+b) Escriu una introducció d’aquesta activitat per a l’alumne en menys de 150 paraules.
+c) Has de ser exhaustiu en les instruccions, ja que això serà part del dossier de l’alumne.
+d) Escriu en forma de llista amb molta claredat les tasques a fer, INDICANT CLARAMENT ELS PRODUCTES.
+e) Indica el tipus d’agrupament en les diferents fases de l’activitat.
+f) Indica la temporització de l’activitat.
+g) TORNA A LLEGIR tota la nostra conversa, perquè l’has de tenir en compte per fer aquesta tasca.
+
+
+Prompt 5
+Fes una rúbrica per avaluar l’activitat anterior en forma de taula. Amb els aspectes a avaluar a les files, el nivell d'acompliment a les columnes amb la seva puntuació i els criteris a les interseccions. Has de tenir en compte els criteris d'avaluació dels objectius que et vaig donar al principi.
+
+
+
+Prompt 6
+Desenvolupa, concreta i dona instruccions als alumnes per fer les activitats de desenvolupament i segueix aquestes instruccions:
+a) Escriu en segona persona del singular o plural segons parlis a un alumne o a un grup.
+b) Escriu una introducció d’aquesta activitat per a l’alumne en menys de 150 paraules.
+c) Has de ser exhaustiu en les instruccions, ja que això serà part del dossier de l’alumne.
+d) Escriu en forma de llista amb molta claredat les tasques a fer, INDICANT CLARAMENT ELS PRODUCTES.
+e) Indica el tipus d’agrupament en les diferents fases de l’activitat.
+f) Indica la temporització de l’activitat.
+g) TORNA A LLEGIR tota la nostra conversa, perquè l’has de tenir en compte per fer aquesta tasca.
+
+
+Prompt 7
+Fes una rúbrica per avaluar l’activitat anterior en forma de taula. Amb els aspectes a avaluar a les files, el nivell d'acompliment a les columnes amb la seva puntuació i els criteris a les interseccions. Has de tenir en compte els criteris d'avaluació dels objectius que et vaig donar al principi.
+
+
+Prompt 8
+Desenvolupa, concreta i dona instruccions als alumnes per fer les activitats d’estructuració i segueix aquestes instruccions:
+a) Escriu en segona persona del singular o plural segons parlis a un alumne o a un grup.
+b) Escriu una introducció d’aquesta activitat per a l’alumne en menys de 150 paraules.
+c) Has de ser exhaustiu en les instruccions, ja que això serà part del dossier de l’alumne.
+d) Escriu en forma de llista amb molta claredat les tasques a fer, INDICANT CLARAMENT ELS PRODUCTES.
+e) Indica el tipus d’agrupament en les diferents fases de l’activitat.
+f) Indica la temporització de l’activitat.
+g) TORNA A LLEGIR tota la nostra conversa, perquè l’has de tenir en compte per fer aquesta tasca.
+
+
+Prompt 9
+Fes una rúbrica per avaluar l’activitat anterior en forma de taula. Amb els aspectes a avaluar a les files, el nivell d'acompliment a les columnes amb la seva puntuació i els criteris a les interseccions. Has de tenir en compte els criteris d'avaluació dels objectius que et vaig donar al principi.
+
+
+
+Prompt 10
+Desenvolupa, concreta i dona instruccions als alumnes per fer les activitats d’aplicació i segueix aquestes instruccions:
+a) Escriu en segona persona del singular o plural segons parlis a un alumne o a un grup.
+b) Escriu una introducció d’aquesta activitat per a l’alumne en menys de 150 paraules.
+c) Has de ser exhaustiu en les instruccions, ja que això serà part del dossier de l’alumne.
+d) Escriu en forma de llista amb molta claredat les tasques a fer, INDICANT CLARAMENT ELS PRODUCTES.
+e) Indica el tipus d’agrupament en les diferents fases de l’activitat.
+f) Indica la temporització de l’activitat.
+g) TORNA A LLEGIR tota la nostra conversa, perquè l’has de tenir en compte per fer aquesta tasca.
+
+
+Prompt 11
+Fes una rúbrica per avaluar l’activitat anterior en forma de taula. Amb els aspectes a avaluar a les files, el nivell d'acompliment a les columnes amb la seva puntuació i els criteris a les interseccions. Has de tenir en compte els criteris d'avaluació dels objectius que et vaig donar al principi.
+
+
+
+12
+Fes un resum de menys de 300 paraules de la SA de [Escriviu aquí l'assignatura. Per exemple: Matemàtiques] de [Escriviu aquí el nivell a qui va adreçat. Per exemple: 3r d'ESO]. Titulada: [Escriviu aquí el títol de la SdA]. Aquest resum servirà d'introducció per als alumnes abans de començar-la
+
