@@ -78,8 +78,18 @@ button:hover {
     width: 100%;
 }
 
+/* Estilos para pantallas con un ancho menor a 600px */
+@media only screen and (max-width: 600px) {
+        h1 {
+            font-size: 2em;  /* Tamaño de fuente más grande para <h1> */
+        }
+        
+        input[type="radio"] {
+            transform: scale(1.5);  /* Hace que los botones de radio sean 1.5 veces más grandes */
+        }
+    }
 
-    </style>
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
