@@ -11,7 +11,7 @@ Llegeix els objectius i els seus criteris d’avaluació de la situació d’apr
 
 Prompt 3
 Llegeix les activitats programades per aquesta situació d’aprenentatge i no diguis res fins que et doni més instruccions.
-[Enganxar aquí la llista completa d’ACTIVITATS, TEMPORITZACIÓ i AVALUACIÓ. En la plantilla del Departament correspon a la taula: ACTIVITATS D’APRENENTATGE I D’AVALUACIÓ]
+[Enganxar aquí la llista completa d’ACTIVITATS, TEMPORITZACIÓ i AVALUACIÓ. En la plantilla del Departament correspon a la taula: ACTIVITATS D’APRENENTATGE I D’AVALUACIÓ (no cal copiar la capçalera de la taula)]
 
 
 Prompt 4

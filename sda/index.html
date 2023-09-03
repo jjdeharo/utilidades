@@ -263,7 +263,8 @@ function generateOutput() {
     });
     document.getElementById("output").value = promptText;
     if (currentPromptIndex >= prompts.length) {
-    alert("Has arribat al final, no hi ha més prompts");
+        promptCounter = promptCounter - 1;
+        alert("Enhorabona! Has arribat al final, no hi ha més prompts");
     } 
     currentPromptIndex++;
     if (currentPromptIndex < prompts.length) {

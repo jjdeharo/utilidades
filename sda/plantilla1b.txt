@@ -8,8 +8,8 @@ Escriu una llista amb els objectius del treball i altra llista amb les activitat
 
 
 Prompt 2
-Selecciona un màxim de [Escriu el nombre màxim de sabers que ChatGPT ha de seleccionar dels sabers anteriors. Per exemple: 4]  sabers que es treballen en l’activitat d’abans. No expliquis per què els has seleccionat:
-[Llista de sabers: tots o els que vulguis utilitzar]
+Selecciona un màxim de [Escriu el nombre màxim de sabers que ChatGPT ha de seleccionar dels sabers que posaràs a continuació. Per exemple: 4]  sabers que es treballen en l’activitat d’abans. No expliquis per què els has seleccionat:
+[Llista de sabers: tots els de l'assignatura o només els que vulguis utilitzar]
 
 
 Prompt 3
@@ -29,7 +29,7 @@ Fes un màxim de  [Indica quants criteris d'avaluació voleu. Recomanem: 2] crit
 
 
 Prompt 5
-(només per Primària i ESO)
+(Només per Primària i ESO)
 Quines competències transversals es treballen en aquesta situació d'aprenentatge que estem fent. Aquí tens la llista per escollir:
 
 Competència digital.
@@ -39,7 +39,7 @@ Competència emprenedora.
 
 
 Prompt 5
-(només per Batxillerat)
+(Només per Batxillerat)
 Quins components transversals es treballen en aquesta situació d'aprenentatge que estem fent. Aquí tens la llista per escollir:
 
 - Resolució de problemes a partir de l’aplicació integrada de coneixements: Integrar els sabers adquirits per interpretar i donar resposta a una varietat de situacions, independentment de la disciplina de la qual provinguin.
@@ -57,7 +57,7 @@ b) Plantegen un REPTE a la persona que aprèn, on l'aplicació dels coneixements
 c) Tota la SA ha d'estar relacionada amb un fil conductor format pel context i el repte.
 d) Has d’escriure la forma d'avaluació i la temporització de cada activitat.
 e) Concreta les activitats que s’han de fer i assegura't que és una SA completa, concreta i ben definida, tal com l'acabem de definir.
-[Si voleu una durada concreta, escriviu: "f) La durada ha de ser de x hores" (sense les cometes). Si no voleu especificar-la, deixeu-ho en blanc]
+[Si voleu una durada concreta, escriviu: " f) La durada ha de ser de x hores " (sense les cometes). Si no voleu especificar-la, deixeu-ho en blanc]
 
 Ha de tenir les següents parts:
 1. Activitats inicials (Què en sabem?)
@@ -86,7 +86,7 @@ Desenvolupament de la situació d’aprenentatge: Quines són les principals est
 
 
 Prompt 11
-(només Primària i ESO)
+(Només Primària i ESO)
 Breu descripció de com s’aborden els vectors en aquesta situació d’aprenentatge: 
 
 Aprenentatges competencials: un currículum que s'orienta cap a un tipus d'aprenentatge profund i funcional.
