@@ -121,6 +121,8 @@ label {
 .description-element {
     color: blue;
 }
+label[for="themeDropdown"] {
+    font-size: 24px;
 
 
     </style>
@@ -128,13 +130,13 @@ label {
 <body>
     <h1>Lista de Prompts Educativos</h1>
     <!-- Dropdown for selecting theme -->
-    <label for="themeDropdown">Seleccionar Tema:</label>
+    <label for="themeDropdown">Selecciona un Tema:</label>
     <select id="themeDropdown">
       <!-- Opción para mostrar todos los temas, esta se puede dejar aquí -->
       <option value="all">Todos</option>
       <!-- Las demás opciones se añadirán dinámicamente desde JavaScript -->
     </select>
-    <p style="font-size: 1em; margin-left: 40px; width: 70%; margin: 0 auto;"> En algunos prompts se recomienda usar la opción "Custom instruccions" que le dicen a ChatGPT qué rol tomar y cómo responder. Pulsa los 3 puntos junto a tu nombre de usuario y selecciona "Custom instruccions" (actívalo si no está activado) en la parte superior irá el rol y en la parte inferior el resto de las instrucciones. Acepta, crea una nueva conversación y bastará con que digas "Hola" para que ChatGPT empieze a hablarte sobre el tema.</p>
+    <p style="font-size: 1em; margin-left: 40px; width: 70%; margin: 0 auto;"> En algunos prompts se recomienda usar la opción "Custom instruccions" que le dicen a ChatGPT qué rol tomar y cómo responder. Para activarlo pulsa los 3 puntos junto a tu nombre de usuario y selecciona "Custom instruccions" (actívalo si no está activado) en la parte superior irá el rol y en la parte inferior el resto de las instrucciones. Acepta, crea una nueva conversación y bastará con que digas "Hola" para que ChatGPT empieze a hablarte sobre el tema.</p>
 <div id="content">
 <!-- Aquí se insertarán los datos del CSV -->
 </div>
