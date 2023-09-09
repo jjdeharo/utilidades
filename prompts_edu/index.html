@@ -109,15 +109,15 @@ label {
 /* Estilizar el menú desplegable */
 #themeDropdown {
     display: block;
-    width: 200px;
     height: 40px;
     margin: 10px auto;
-    background: #f2f2f2;
+    background: #007BFF;  /* Fondo azul */
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
-    color: #333;
+    color: #ffffff;       /* Letra blanca */
+    font-size: 26px;
 }
+
 /* Estilizar el título de cada prompt */
 .title-element {
     font-size: 18px;
@@ -134,6 +134,7 @@ label[for="themeDropdown"] {
     .prompt-item {
     display: none;
 }
+
 }
 
 /* Contenedor central */
@@ -179,7 +180,7 @@ label[for="themeDropdown"] {
 <body>
     <h1>Lista de Prompts Educativos</h1>
     <!-- Dropdown for selecting theme -->
-    <label for="themeDropdown">Selecciona un Tema:</label>
+    
     <select id="themeDropdown">
       <!-- Opción para mostrar todos los temas, esta se puede dejar aquí -->
       <option value="none" selected>Selecciona un tema</option>
