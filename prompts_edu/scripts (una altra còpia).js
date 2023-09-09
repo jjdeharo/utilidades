@@ -1,23 +1,48 @@
 
+async function copyTextToClipboard(textareaId) {
+    const textarea = document.getElementById(textareaId);
+    if (textarea) {
+        try {
+            await navigator.clipboard.writeText(textarea.value);
+            alert('Texto copiado al portapapeles!');
+        } catch (err) {
+            alert('Error al copiar el texto. ' + err);
+        }
+    } else {
+        alert('Error al copiar el texto.');
+    }
+}
+async function copyTextToClipboard(textareaId) {
+    const textarea = document.getElementById(textareaId);
+    if (textarea) {
+        try {
+            await navigator.clipboard.writeText(textarea.value);
+            alert('Texto copiado al portapapeles!');
+        } catch (err) {
+            alert('Error al copiar el texto. ' + err);
+        }
+    } else {
+        alert('Error al copiar el texto.');
+    }
+}
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    async function copyTextToClipboard(textareaId) {
-        const textarea = document.getElementById(textareaId);
-        if (textarea) {
-            try {
-                await navigator.clipboard.writeText(textarea.value);
-                textarea.select();  // Selecciona el texto después de copiarlo
-            } catch (err) {
-                alert('Error al copiar el texto. ' + err);
-            }
-        } else {
-            alert('Error al copiar el texto.');
+async function copyTextToClipboard(textareaId) {
+    const textarea = document.getElementById(textareaId);
+    if (textarea) {
+        try {
+            await navigator.clipboard.writeText(textarea.value);
+            alert('Texto copiado al portapapeles!');
+        } catch (err) {
+            alert('Error al copiar el texto. ' + err);
         }
+    } else {
+        alert('Error al copiar el texto.');
     }
-    
-    
-const dropdown = document.getElementById('themeDropdown');
+}
+
+    const dropdown = document.getElementById('themeDropdown');
     dropdown.addEventListener('change', function() {
         const selectedTheme = this.value;
         const prompts = document.querySelectorAll('.prompt-item');
@@ -38,7 +63,7 @@ const dropdown = document.getElementById('themeDropdown');
         }
     });
 
-// Leer el archivo CSV y llenar la página con los datos usando Papa Parse
+    // Leer el archivo CSV y llenar la página con los datos usando Papa Parse
     Papa.parse('prompts.csv', {
         download: true,
         header: true,
@@ -89,32 +114,13 @@ const dropdown = document.getElementById('themeDropdown');
                 contentDiv.appendChild(promptDiv);  // Finalmente, añadir el contenedor div al contentDiv
             });
 
-            
-// Count the occurrences of each theme
-let themeCounts = {};
-results.data.forEach((row) => {
-    let theme = row['Tema'];
-    if (!themeCounts[theme]) {
-        themeCounts[theme] = 0;
-    }
-    themeCounts[theme]++;
-});
-
-
-// Calculate the total count of all themes
-let totalCount = 0;
-for (let count of Object.values(themeCounts)) {
-    totalCount += count;
-}
-document.querySelector('#themeDropdown option[value="all"]').textContent = "Todos (" + totalCount + ")";
-// Add themes with their counts to the dropdown
-themes.forEach(theme => {
-    const option = document.createElement('option');
-    option.value = theme;
-    option.textContent = theme + " (" + themeCounts[theme] + ")";
-    dropdown.appendChild(option);
-});
-
+            // Crear opciones de desplegable para cada tema único
+            themes.forEach(theme => {
+                const option = document.createElement('option');
+                option.value = theme;
+                option.textContent = theme;
+                dropdown.appendChild(option);
+            });
         }
     });
 
