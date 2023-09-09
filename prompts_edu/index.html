@@ -6,11 +6,17 @@
 <title>Prompts Educativos</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const dropdown = document.getElementById('themeDropdown');
-        dropdown.addEventListener('change', function() {
-            const selectedTheme = this.value;
-            const prompts = document.querySelectorAll('.prompt-item');
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.getElementById('themeDropdown');
+    dropdown.addEventListener('change', function() {
+        const selectedTheme = this.value;
+        const prompts = document.querySelectorAll('.prompt-item');
+        
+        if (selectedTheme === 'none') {
+            prompts.forEach(prompt => {
+                prompt.style.display = 'none';
+            });
+        } else {
             prompts.forEach(prompt => {
                 const promptTheme = prompt.getAttribute('data-theme');
                 if (selectedTheme === 'all' || promptTheme === selectedTheme) {
@@ -19,8 +25,10 @@
                     prompt.style.display = 'none';
                 }
             });
-        });
+        }
     });
+});
+
     </script>
 <style>
         /* Estilos Generales */
@@ -123,8 +131,49 @@ label {
 }
 label[for="themeDropdown"] {
     font-size: 24px;
+    .prompt-item {
+    display: none;
+}
+}
 
+/* Contenedor central */
+.centered-content {
+    width: 70%;
+    max-width: 800px;  /* Para que no sea demasiado ancho en pantallas grandes */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Sombra opcional para darle un poco de profundidad */
+    padding: 20px;
+    background-color: #ffffff;
+}
 
+        /* Estilos para la lista */
+        ol {
+            margin: 0;
+            padding-left: 1.5em;
+        }
+
+        /* Estilos específicos para pantallas pequeñas (menos de 768px) */
+@media (max-width: 768px) {
+    .centered-content {
+        width: 90%;  /* Hacer el contenedor un poco más ancho en móviles */
+        padding: 10px;
+    }
+    
+    p {
+        font-size: 1.1em;  /* Aumentar un poco el tamaño de la fuente */
+        margin-left: 20px; /* Reducir márgenes */
+    }
+
+    textarea {
+        width: 100%;  /* Hacer las áreas de texto más anchas */
+        margin: 10px 0;  /* Reducir márgenes */
+    }
+
+    button {
+        height: 50px;  /* Hacer botones un poco más altos */
+    }
+}
     </style>
 </head>
 <body>
@@ -133,10 +182,23 @@ label[for="themeDropdown"] {
     <label for="themeDropdown">Selecciona un Tema:</label>
     <select id="themeDropdown">
       <!-- Opción para mostrar todos los temas, esta se puede dejar aquí -->
+      <option value="none" selected>Selecciona un tema</option>
       <option value="all">Todos</option>
       <!-- Las demás opciones se añadirán dinámicamente desde JavaScript -->
     </select>
-    <p style="font-size: 1em; margin-left: 40px; width: 70%; margin: 0 auto;"> En algunos prompts se recomienda usar la opción "Custom instruccions" que le dicen a ChatGPT qué rol tomar y cómo responder. Para activarlo pulsa los 3 puntos junto a tu nombre de usuario y selecciona "Custom instruccions" (actívalo si no está activado) en la parte superior irá el rol y en la parte inferior el resto de las instrucciones. Acepta, crea una nueva conversación y bastará con que digas "Hola" para que ChatGPT empieze a hablarte sobre el tema.</p>
+    <br>
+    <div class="centered-content">
+        <p>Para obtener respuestas más específicas en algunos temas, en la descripción se recomienda usar la opción "Custom Instructions" con ChatGPT. Si deseas usar esta opción aquí tienes los pasos para activarlo:</p>
+        <ol>
+            <li>Busca y haz clic en los tres puntos que están junto a tu nombre de usuario.</li>
+            <li>Selecciona "Custom Instructions". Si ves que no está activado, procede a activarlo.</li>
+            <li>En la parte superior, introduce el rol que deseas que ChatGPT adopte. Este rol corresponde al primer párrafo del prompt.</li>
+            <li>En el espacio inferior, escribe el resto del prompt.</li>
+            <li>Una vez hecho esto, acepta los cambios y crea una nueva conversación.</li>
+            <li>Simplemente saluda con un "Hola", y ChatGPT comenzará a interactuar contigo basándose en las instrucciones que proporcionaste.</li>
+        </ol>
+    </div>
+    <br>
 <div id="content">
 <!-- Aquí se insertarán los datos del CSV -->
 </div>
@@ -168,6 +230,7 @@ label[for="themeDropdown"] {
                 const promptDiv = document.createElement('div');  // Nuevo contenedor div para cada prompt
                 promptDiv.className = 'prompt-item';  // Añadir la clase
                 promptDiv.setAttribute('data-theme', row['Tema']);  // Añadir el atributo data-theme
+                promptDiv.style.display = 'none';
 
                 if (row['Tema'] !== currentTopic) {
                     currentTopic = row['Tema'];
@@ -212,6 +275,7 @@ label[for="themeDropdown"] {
 
 
     </script>
+    <br>
     <hr>
     <div style="text-align: center;">
         Aplicación hecha por <a href="https://bilateria.org" target="_blank">Juan José de Haro</a> con ChatGPT-4 (versión 3 de agosto)<br> 
@@ -220,5 +284,6 @@ label[for="themeDropdown"] {
         </a><br />
         Esta obra está sujeta a una licencia de <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Reconocimiento-NoComercial 4.0 Internacional de Creative Commons</a>
       </div>
+      <br>
 </body>
 </html>
