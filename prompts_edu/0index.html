@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<title>Prompts Educativos</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.getElementById('themeDropdown');
+    dropdown.addEventListener('change', function() {
+        const selectedTheme = this.value;
+        const prompts = document.querySelectorAll('.prompt-item');
+        
+        if (selectedTheme === 'none') {
+            prompts.forEach(prompt => {
+                prompt.style.display = 'none';
+            });
+        } else {
+            prompts.forEach(prompt => {
+                const promptTheme = prompt.getAttribute('data-theme');
+                if (selectedTheme === 'all' || promptTheme === selectedTheme) {
+                    prompt.style.display = 'block';
+                } else {
+                    prompt.style.display = 'none';
+                }
+            });
+        }
+    });
+});
+
+    </script>
+<style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-top: 20px;
+            text-align: center;
+            color: #4CAF50;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-left: 20px;
+        }
+    p {
+        font-size: 1em;
+        margin-left: 40px;
+        width: 90%;  /* Ocupa el 90% del ancho del contenedor */
+        margin: 0 auto;  /* Centra el elemento en la página */
+    }
+
+        /* Contenedor Principal */
+        #content {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        /* Áreas de Texto */
+        textarea {
+            width: 90%;
+            height: 100px;
+            margin: 10px 40px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        /* Botones */
+        button {
+            display: inline-block;
+            height: 40px;
+            margin: 10px 40px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+        }
+        button:hover {background-color: #45a049}
+        button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    /* Estilizar el contenedor del menú desplegable */
+label {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Estilizar el menú desplegable */
+#themeDropdown {
+    display: block;
+    height: 40px;
+    margin: 10px auto;
+    background: #007BFF;  /* Fondo azul */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #ffffff;       /* Letra blanca */
+    font-size: 26px;
+}
+
+/* Estilizar el título de cada prompt */
+.title-element {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.description-element {
+    color: blue;
+}
+label[for="themeDropdown"] {
+    font-size: 24px;
+    .prompt-item {
+    display: none;
+}
+
+}
+
+/* Contenedor central */
+.centered-content {
+    width: 70%;
+    max-width: 800px;  /* Para que no sea demasiado ancho en pantallas grandes */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Sombra opcional para darle un poco de profundidad */
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+        /* Estilos para la lista */
+        ol {
+            margin-left: 50px;
+            padding-left: 1.5em;
+        }
+
+        /* Estilos específicos para pantallas pequeñas (menos de 768px) */
+@media (max-width: 768px) {
+    .centered-content {
+        width: 90%;  /* Hacer el contenedor un poco más ancho en móviles */
+        padding: 10px;
+    }
+    
+    p {
+        font-size: 1.1em;  /* Aumentar un poco el tamaño de la fuente */
+        margin-left: 20px; /* Reducir márgenes */
+    }
+
+    textarea {
+        width: 100%;  /* Hacer las áreas de texto más anchas */
+        margin: 10px 0;  /* Reducir márgenes */
+    }
+
+    button {
+        height: 50px;  /* Hacer botones un poco más altos */
+    }
+}
+    </style>
+</head>
+<body>
+    <h1>Lista de Prompts Educativos</h1>
+    <!-- Dropdown for selecting theme -->
+    
+    <select id="themeDropdown">
+      <!-- Opción para mostrar todos los temas, esta se puede dejar aquí -->
+      <option value="none" selected>Selecciona un tema</option>
+      <option value="all">Todos</option>
+      <!-- Las demás opciones se añadirán dinámicamente desde JavaScript -->
+    </select>
+    <br>
+    <div class="centered-content">
+        <p>Para obtener respuestas más específicas en algunos temas, en la descripción se recomienda usar la opción "Custom Instructions" con ChatGPT. Si deseas usar esta opción aquí tienes los pasos para activarlo:</p>
+        <ol>
+            <li>Busca y haz clic en los tres puntos que están junto a tu nombre de usuario.</li>
+            <li>Selecciona "Custom Instructions". Si ves que no está activado, procede a activarlo.</li>
+            <li>En la parte superior, introduce el rol que deseas que ChatGPT adopte. Este rol corresponde al primer párrafo del prompt.</li>
+            <li>En el espacio inferior, escribe el resto del prompt.</li>
+            <li>Una vez hecho esto, acepta los cambios y crea una nueva conversación.</li>
+            <li>Simplemente saluda con un "Hola", y ChatGPT comenzará a interactuar contigo basándose en las instrucciones que proporcionaste.</li>
+        </ol>
+    </div>
+    <br>
+<div id="content">
+<!-- Aquí se insertarán los datos del CSV -->
+</div>
+<script>
+        // Función para copiar texto al portapapeles
+        function copyTextToClipboard(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            textarea.select();
+            document.execCommand('copy');
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+    // Leer el archivo CSV y llenar la página con los datos usando Papa Parse
+    Papa.parse('prompts.csv', {
+        download: true,
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const contentDiv = document.getElementById('content');
+            const dropdown = document.getElementById('themeDropdown'); // Acceder al desplegable
+            let currentTopic = '';
+            let themes = new Set();  // Para almacenar temas únicos
+
+            results.data.forEach((row, index) => {
+                // Añadir temas al conjunto de temas únicos
+                themes.add(row['Tema']);
+
+                const promptDiv = document.createElement('div');  // Nuevo contenedor div para cada prompt
+                promptDiv.className = 'prompt-item';  // Añadir la clase
+                promptDiv.setAttribute('data-theme', row['Tema']);  // Añadir el atributo data-theme
+                promptDiv.style.display = 'none';
+
+                if (row['Tema'] !== currentTopic) {
+                    currentTopic = row['Tema'];
+                    const topicHeader = document.createElement('h2');
+                    topicHeader.textContent = "Tema: " + currentTopic;
+                    promptDiv.appendChild(topicHeader);  // Añadir al contenedor div en lugar de contentDiv
+                }
+
+                const titleElement = document.createElement('p');
+                titleElement.className = 'title-element';  // Añadir la clase CSS
+                titleElement.textContent = "Título: " + row['Título'];
+                promptDiv.appendChild(titleElement);  // Añadir al contenedor div en lugar de contentDiv
+
+                const descriptionElement = document.createElement('p');
+                descriptionElement.className = 'description-element'; 
+                descriptionElement.textContent = "Descripción: " + row['Descripcion'];
+                promptDiv.appendChild(descriptionElement);  // Añadir al contenedor div en lugar de contentDiv
+
+                const textarea = document.createElement('textarea');
+                textarea.id = 'textarea-' + index;
+                textarea.textContent = row['Prompt_cast'];
+                promptDiv.appendChild(textarea);  // Añadir al contenedor div en lugar de contentDiv
+
+                const copyButton = document.createElement('button');
+                copyButton.textContent = "Copiar";
+                copyButton.onclick = () => copyTextToClipboard('textarea-' + index);
+                promptDiv.appendChild(copyButton);  // Añadir al contenedor div en lugar de contentDiv
+
+                contentDiv.appendChild(promptDiv);  // Finalmente, añadir el contenedor div al contentDiv
+            });
+
+            // Crear opciones de desplegable para cada tema único
+            themes.forEach(theme => {
+                const option = document.createElement('option');
+                option.value = theme;
+                option.textContent = theme;
+                dropdown.appendChild(option);
+            });
+        }
+    });
+});
+
+
+    </script>
+    <br>
+    <hr>
+    <div style="text-align: center;">
+        <!-- Imagen con enlace -->
+        <a href="https://t.me/ChatGPTedu" target="_blank">
+            <img src="https://educacion.bilateria.org/wp-content/uploads/2023/06/chat-fotor-2023061613824-300x300.png" alt="Aplicaciones de la inteligencia artificial a la educación" width="150" height="150">
+        </a>
+        <br> <!-- Salto de línea -->
+        
+        <!-- Texto con enlace -->
+        <a href="https://t.me/ChatGPTedu" target="_blank" style="text-decoration: none; color: inherit;">
+            Aplicaciones de la inteligencia artificial a la educación
+        </a>
+        <br><br> <!-- Dos saltos de línea para separación -->
+    
+        Aplicación hecha por <a href="https://bilateria.org" target="_blank">Juan José de Haro</a> con ChatGPT-4 (versión 3 de agosto)<br> 
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+            <img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+        </a><br />
+        Esta obra está sujeta a una licencia de <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Reconocimiento-NoComercial 4.0 Internacional de Creative Commons</a>
+    </div>
+    
+      <br>
+</body>
+</html>

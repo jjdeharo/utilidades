@@ -1,0 +1,144 @@
+/* Estilos Generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-top: 20px;
+            text-align: center;
+            color: #4CAF50;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-left: 20px;
+        }
+    p {
+        font-size: 1em;
+        margin-left: 40px;
+        width: 90%;  /* Ocupa el 90% del ancho del contenedor */
+        margin: 0 auto;  /* Centra el elemento en la página */
+    }
+
+        /* Contenedor Principal */
+        #content {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        /* Áreas de Texto */
+        textarea {
+            width: 90%;
+            height: 100px;
+            margin: 10px 40px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        /* Botones */
+        button {
+            display: inline-block;
+            height: 40px;
+            margin: 10px 40px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+        }
+        button:hover {background-color: #45a049}
+        button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    /* Estilizar el contenedor del menú desplegable */
+label {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Estilizar el menú desplegable */
+#themeDropdown {
+    display: block;
+    height: 40px;
+    margin: 10px auto;
+    background: #007BFF;  /* Fondo azul */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #ffffff;       /* Letra blanca */
+    font-size: 26px;
+}
+
+/* Estilizar el título de cada prompt */
+.title-element {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.description-element {
+    color: blue;
+}
+label[for="themeDropdown"] {
+    font-size: 24px;
+    .prompt-item {
+    display: none;
+}
+
+}
+
+/* Contenedor central */
+.centered-content {
+    width: 70%;
+    max-width: 800px;  /* Para que no sea demasiado ancho en pantallas grandes */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Sombra opcional para darle un poco de profundidad */
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+        /* Estilos para la lista */
+        ol {
+            margin-left: 50px;
+            padding-left: 1.5em;
+        }
+
+        /* Estilos específicos para pantallas pequeñas (menos de 768px) */
+@media (max-width: 768px) {
+    .centered-content {
+        width: 90%;  /* Hacer el contenedor un poco más ancho en móviles */
+        padding: 10px;
+    }
+    
+    p {
+        font-size: 1.1em;  /* Aumentar un poco el tamaño de la fuente */
+        margin-left: 20px; /* Reducir márgenes */
+    }
+
+    textarea {
+        width: 100%;  /* Hacer las áreas de texto más anchas */
+        margin: 10px 0;  /* Reducir márgenes */
+    }
+
+    button {
+        height: 50px;  /* Hacer botones un poco más altos */
+    }
+}
