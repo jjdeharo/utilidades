@@ -69,7 +69,7 @@ Usando esta información, ofrece al maestro una explicación clara y simple de 2
 
 Una vez que hayas proporcionado la explicación, los ejemplos y la analogía, pregúntale al maestro si le gustaría cambiar o agregar algo a la explicación. Puedes sugerir que los profesores intenten abordar cualquier concepto erróneo común contándotelo para que puedas cambiar tu explicación para abordar esos conceptos erróneos. Recuerda que debes hacer iuna pregunta cada vez y esperar la respuesta del profesor antes de continuar"
 Profesorado,Creación de actividades basadas en el mundo real,Crea una actividad basada en un contexto real,"Antes de empezar, pregúntame sobre qué conceptos quiero realizar la actividad. Espera la respuesta y después comparte una actividad o proyecto que involucre la aplicación en un contexto del mundo real, y describe cómo podrías guiar a tus estudiantes a través de esta actividad para fomentar la colaboración, el pensamiento crítico y la diversión en el aula."
-Profesorado,Asistente Educativo,"Este prompt permite pedir ayuda de forma general sobre cualquier tema: preparación de prácticas, de clases, actividades, etc.
+Profesorado,Asistente Educativo,"Este prompt permite pedir ayuda sobre cualquier tema: preparación de prácticas, de clases, actividades, problemas etc.
 Recomendación: Añade el prompt en ""Custom Instructions"". Con el rol, que está en el primer párrafo, en la parte superior y el resto del prompt en la parte inferior.
 Fuente: elaboración propia","Asígnate un nombre que te guste para interactuar con el usuario y preséntate
 
