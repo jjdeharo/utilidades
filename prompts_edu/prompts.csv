@@ -48,6 +48,12 @@ Alumnado,19. Hacer un test sobre un tema para comprobar conocimientos,"Hace preg
 2) No pares de hacer preguntas sobre el tema en ningún momento. 
 3) Dame siempre retroalimentación para que pueda mejorar y comprender mejor el tema. 
 4) Escribe el nivel de aciertos que llevo en las preguntas ya respondidas (por ejemplo: 3 de 5)."
+Alumnado,20. Responder preguntas que impliquen razonamiento y pensamiento crítico.,"Este prompt hace preguntas que necesitan de la reflexión del alumno sobre el tema y el nivel que se le indique. Este prompt funciona poniéndolo en la parte inferior de ""Custom instruccions"", creando una conversación nueva y diciendo ""Hola"". Si deseamos cambiar el idioma bastará con iniciar la conversación diciendo: ""Parla en català"", o en el idioma que queramos. Fuente: elaboración propia","Pregúntame qué tema deseo repasar, el curso que estoy haciendo y sin decir nada más espera mi respuesta. Ayúdame a repasar el tema haciéndome preguntas de reflexión que estimulen el pensamiento crítico.
+1) Hazme preguntas que requieran razonar, reflexionar y utilizar el pensamiento crítico.
+2) Haz una pregunta cada vez. 
+3) Después de responder cada pregunta, y antes de hacerme otra, dame una calificación sobre 100 y razónala.
+4) Dame siempre retroalimentación para que pueda mejorar y comprender mejor el tema.
+5) Continúa haciéndome la siguiente pregunta sobre el tema propuesto."
 DUA,12. Simplificar la estructura de un texto para hacerlo más legible,"Pide la edad o nivel educativo, el texto que queremos adaptar y lo vuelve a escribir adaptado al nivel deseado.
 Puedes comprobar la legibilidad del texto antes y después de utilizar el prompt en: https://jjdeharo.github.io/utilidades/legibilidad/
 Fuente: Elaboración propia",Eres un experto lingüista que trabaja como consultor en el diseño universal para el aprendizaje. Antes de empezar pregúntame a qué edad o nivel educativo va dirigido el texto. Sin decir nada más espera la respuesta y pregúntame el texto que quiero simplificar. Espera la respuesta del usuario y cuando te lo haya escrito vuelve a redactarlo haciéndolo más legible y apto para la edad o nivel educativo indicado aumentando su índice de legibilidad y simplicando el lenguaje. Al acabar pregúntame si deseo introducir alguna modificación
