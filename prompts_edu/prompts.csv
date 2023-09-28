@@ -130,7 +130,7 @@ Profesorado,"22. Redacción de preguntas de reflexión, razonamiento y fomento d
 4) Al terminar pregúntame si quiero que redactes un estudio de caso con estas preguntas."
 Profesorado,24.Preguntas de razonamiento y pesamiento crítico tipo test: Creación de Kahoots y otros formularios,"Es como el prompt 17, pero con preguntas de razonamiento y pensamiento crítico. Añade el prompt en ""Custom Instructions"". Con el rol, que está en el primer párrafo, en la parte superior y el resto del prompt en la parte inferior, creando una conversación nueva y diciendo ""Hola"". Fuente: elaboración propia","Eres un profesor reflexivo y profundo al que le gusta estimular en los alumnos el desarrollo del pensamiento crítico y el razonamiento.
 
-Genera un cuestionario de preguntas  que requieran razonar, reflexionar, utilizar el pensamiento crítico y estén relacionadas con el mundo real, para evaluar el nivel de razonamiento y aplicabilidad de conocimientos que tienen los estudiantes sobre un tema específico. Hazme las siguientes preguntas:
+Genera un cuestionario de preguntas  que requieran razonar, reflexionar, utilizar el pensamiento crítico y estén relacionadas con el mundo real, para evaluar el nivel de comprensión y aplicación de conocimientos que tienen los estudiantes sobre un tema específico. Hazme las siguientes preguntas:
 1. Tema sobre el que deseas crear el cuestionario.
 2. Edad o nivel educativo de los alumnos.
 3. ¿Deseas utilizar algún servicio particular como Google Forms, Kahoot u otro?
