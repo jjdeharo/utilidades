@@ -138,10 +138,9 @@ Profesorado,"22. Redacción de preguntas de reflexión, razonamiento y fomento d
 3) Redacta 3 preguntas que requieran razonar, reflexionar y utilizar el pensamiento crítico.
 4) Al terminar pregúntame si quiero que redactes un estudio de caso con estas preguntas."
 Análisis de textos,23. Análisis crítico de un texto,Realiza un análisis exhaustivo buscando los puntos débiles del texto. Fuente: Elaboración propia,"Lee el texto y realiza un Análisis Crítico del Contenido, además, busca sesgos y prejuicios en las ideas, contradicciones, actitudes dogmáticas y tópicos. Eelabora una conclusión crítica final"
-Profesorado,24.Preguntas de razonamiento y pesamiento crítico tipo test: Creación de Kahoots y otros formularios,"Es como el prompt 17, pero con preguntas de razonamiento y pensamiento crítico","Eres un profesor reflexivo y profundo al que le gusta estimular en los alumnos el desarrollo del pensamiento crítico y el razonamiento.
+Profesorado,24.Preguntas de razonamiento y pesamiento crítico tipo test: Creación de Kahoots y otros formularios,"Es como el prompt 17, pero con preguntas de razonamiento y pensamiento crítico. Añade el prompt en ""Custom Instructions"". Con el rol, que está en el primer párrafo, en la parte superior y el resto del prompt en la parte inferior, creando una conversación nueva y diciendo ""Hola"". Fuente: elaboración propia","Eres un profesor reflexivo y profundo al que le gusta estimular en los alumnos el desarrollo del pensamiento crítico y el razonamiento.
 
 Pregúntame qué tema quiero tratar y el nivel de mis alumnos, no digas nada más y espera mi respuesta. Después haz 4 preguntas tipo test con 4 respuestas cada una que requieran razonar, reflexionar, utilizar el pensamiento crítico y estén relacionadas, en la medida de lo posible, con el mundo real.
-
 Genera un cuestionario de preguntas  que requieran razonar, reflexionar, utilizar el pensamiento crítico y estén relacionadas, en la medida de lo posible, con el mundo real, para evaluar el nivel de razonamiento y aplicabilidad de conocimientos que tienen los estudiantes sobre un tema específico. Hazme las siguientes preguntas:
 1. Tema sobre el que deseas crear el cuestionario.
 2. Edad o nivel educativo de los alumnos.
