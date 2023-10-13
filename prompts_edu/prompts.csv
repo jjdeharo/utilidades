@@ -116,14 +116,17 @@ Si vamos a mantener una conversión puede ser útil añadir el prompt en ""Custo
 Fuente: elaboración propia","Eres un profesora experta en diseño universal para el aprendizaje (DUA) que tiene que explicar un concepto que sea comprensible para un nivel educativo determinado. 
 
 Antes de empezar, pregúntame a qué edad o nivel educativo va dirigida la explicación. Sin decir nada más, espera la respuesta del usuario. Cuando te responda pregúntale qué es lo que deseo explicar y espera mi respuesta. Cuanto te responda  escribe una explicación que sea perfectamente comprensible para la edad o nivel, con ejemplos. Al terminar pregúntame si deseo hacer alguna modificación, si prefiero el texto más simiple o más complejo."
-Evaluación,07. Crear una rúbrica,Crea una rúbrica a partir del tema proporcionado. Fuente: Elaboración propia,"1) Antes de empezar pregúntame qué es lo que quiero evaluar y, SIN DECIR NADA MÁS, espera la respuesta. 
+Evaluación,07. Crear una rúbrica,Crea una rúbrica a partir del tema y curso proporcionados. Fuente: Elaboración propia,"1) Antes de empezar pregúntame qué es lo que quiero evaluar y, SIN DECIR NADA MÁS, espera la respuesta. 
 2) Después pregúntame si tengo alguna condición antes de hacer la rúbrica (como el número de aspectos a evaluar o los niveles de desempeño) y, sin decir nada más, espera la respuesta. 
 3) Después haz una rúbrica en forma de tabla con la información que tienes, no hagas más preguntas al usuario. 
 4) Coloca los aspectos a evaluar en las filas, el nivel de desempeño, con la puntuación, en las columnas (en primer lugar el nivel de desempeño más alto) y los criterios en las intersecciones. 
 5) Al terminar pregúntame si me parece bien y si quiero cambiar algo
 
 Haz una pregunta cada vez"
-Evaluación,08. Convierte una rúbrica en una escala de valoración,Conviere una rúbrica creada en el paso anterior (prompt 7) en una escala de valoración. Fuente: Elaboración propia,"Convierte la rúbrica anterior en una escala de valoración, añadiendo la descripción del criterio excelente en la primera columna (en la misma celda que el aspecto a evaluar) y en la segunda columna poniendo únicamente el intervalo de calificación (1-4). Las celdas de la segunda columna han de estar vacías, excepto la primera. Al terminar pregunta si la escala de valoración está bien hecha y en el caso de que no lo esté pide explicaciones de en qué has fallado"
+Evaluación,08. Crea una escala de valoración,Crea una escala de valoración a partir del tema y curso proporcionados. Fuente: Elaboración propia,"1) Por favor, pregúntame el tema qué deseo evaluar (por ejemplo, ""redacción de ensayos"", ""participación en clase"", ""proyecto de ciencia"", etc.) y sin decir nada más, espera la respuesta.
+2) Una vez que tengas esta información, generarás una tabla de escala de valoración con SOLO UN NIVEL DE DESEMPEÑO y su descripción (que corresponderá a la descripción de la puntuación máxima, también pondrás el intervalo de puntuación que se puede asignar en la cabecera de la columna.
+3) El orden es: Columna 1: Aspectos a evaluar, Columna 2: Descripción del nivel de desempeño (con el intervalo de la puntuación entre paréntesis solo en la primera fila, por ejemplo: (1-5), debes empezar en 1 el valor máximo decídelo tú).
+4)  El significado de la puntuación lo pondrás al terminar la tabla en forma de lista, desde la puntuación 1 hasta la más alta"
 Evaluación,17. Preguntas tipo test: Creación de Kahoots y otros formularios (véase el prompt 24),Nos crea el cuestionario en base a los parámetros que le indicamos. En el nivel le podemos decir que mezcle preguntas de todos los nivles o le podemos dar instrucciones específicas. Fuente: elaboración propia,"Genera un cuestionario de preguntas para evaluar el nivel de conocimientos que tienen los estudiantes sobre un tema específico. Hazme las siguientes preguntas:
 1. Tema sobre el que deseas crear el cuestionario.
 2. Edad o nivel educativo de los alumnos.
