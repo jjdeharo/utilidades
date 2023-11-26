@@ -186,14 +186,19 @@ document.addEventListener("DOMContentLoaded", function() {
   <br>
 <h2>Selecciona la plantilla que utilitzaràs</h2>
 <div id="templateSelection">
-    <input type="radio" id="template1a" name="template" value="plantilla1a.txt">
-    <label for="template1a">Plantilla 1(a): Per crear SdA a partir dels sabers.</label><br>
-    <input type="radio" id="template1b" name="template" value="plantilla1b.txt">
-    <label for="template1b">Plantilla 1(b): Per fer SdA a partir de la seva descripció o d'una activitat ja elaborada.</label><br>
+    <p><span style="color: blue;">1. Tria com vols començar a crear la SdA:</span></p>     
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <input type="radio" id="template1a" name="template" value="plantilla1a.txt">
+        <label for="template1a"><strong>Plantilla 1(a)</strong>: Per crear SdA a partir dels sabers.</label><br>
+        <input type="radio" id="template1b" name="template" value="plantilla1b.txt">
+        <label for="template1b"><strong>Plantilla 1(b)</strong>: Per fer SdA a partir de la seva descripció o d'una activitat ja elaborada.</label><br>
+    </div>
+    <p><span style="color: blue;">2. Desenvolupa la SdA:</span></p>
     <input type="radio" id="template2" name="template" value="plantilla2.txt">
-    <label for="template2">Plantilla 2: Desenvolupament i concreció de les activitats fetes amb les plantilles anteriors.</label><br><br>
-    <button onclick="loadSelectedTemplate()">Carregar Plantilla</button>
-  </div>
+    <label for="template2"><strong>Plantilla 2</strong>: Desenvolupament i concreció de les activitats fetes amb les plantilles anteriors.</label><br><br>
+    <p><span style="color: blue;">3.</span> <button onclick="loadSelectedTemplate()">Carregar Plantilla</button></p>
+</div>
+
   <hr>
 <div class="input-section">
 <h2>Prompt que serà processat</h2>
