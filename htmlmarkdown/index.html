@@ -64,7 +64,6 @@
     <div id="controls">
         <input type="file" id="fileInput" accept=".html">
         <br>
-        <button id="convertBtn" disabled>Convertir a Markdown</button>
         <button id="saveBtn" disabled>Guardar como Archivo</button>
         <button id="copyBtn" disabled>Copiar al Portapapeles</button>
     </div>
@@ -89,13 +88,13 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     htmlContent = e.target.result;
-                    document.getElementById('convertBtn').disabled = false;
+                    convertToMarkdown(htmlContent);
                 };
                 reader.readAsText(file);
             }
         });
 
-        document.getElementById('convertBtn').addEventListener('click', function() {
+        function convertToMarkdown(htmlContent) {
             const turndownService = new TurndownService({
                 headingStyle: 'atx'
             });
@@ -171,7 +170,7 @@
 
             // Actualizar vista previa
             document.getElementById('preview').innerHTML = marked.parse(markdownOutput);
-        });
+        }
 
         document.getElementById('saveBtn').addEventListener('click', function() {
             const markdownOutput = document.getElementById('markdownOutput').value;
