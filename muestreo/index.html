@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Frecuencias de Especies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cálculo de Frecuencias de Especies</h1>
+    <form id="speciesForm">
+        <div id="speciesInputs">
+            <div class="input-group">
+                <label for="species1">Frecuencia de especie 1:</label>
+                <input type="number" id="species1" name="species1" required>
+            </div>
+        </div>
+        <button type="button" onclick="addSpeciesInput()">Añadir otra especie</button>
+        <button type="submit">Calcular</button>
+    </form>
+    <div id="results"></div>
+    
+    <script>
+        let speciesCount = 1;
+
+        function addSpeciesInput() {
+            speciesCount++;
+            const speciesInputs = document.getElementById('speciesInputs');
+            const newInput = document.createElement('div');
+            newInput.className = 'input-group';
+            newInput.innerHTML = `
+                <label for="species${speciesCount}">Frecuencia de especie ${speciesCount}:</label>
+                <input type="number" id="species${speciesCount}" name="species${speciesCount}" required>
+            `;
+            speciesInputs.appendChild(newInput);
+        }
+
+        document.getElementById('speciesForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const frequencies = [];
+            for (let i = 1; i <= speciesCount; i++) {
+                const value = document.getElementById(`species${i}`).value;
+                frequencies.push(Number(value));
+            }
+
+            const results = calculateFrequencies(frequencies);
+            displayResults(results);
+        });
+
+        function calculateFrequencies(frequencies) {
+            const N = frequencies.length;
+            frequencies.sort((a, b) => a - b);
+
+            let W = Math.pow(frequencies[N - 1] / frequencies[0], 1 / (N - 1));
+            let a = frequencies[0] * (1 - W) / (1 - Math.pow(W, N));
+            
+            let P = 0;
+            for (let i = 1; i <= N; i++) {
+                P += a * Math.pow(W, i - 1);
+            }
+
+            let requiredSamples = Math.ceil(Math.log(0.1) / Math.log(1 - P));
+            return { W, a, P, requiredSamples };
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h2>Resultados</h2>
+                <p>Disimilitud (W): ${results.W.toFixed(4)}</p>
+                <p>Parámetro a: ${results.a.toFixed(4)}</p>
+                <p>Probabilidad de aparición de nuevas especies (P): ${results.P.toFixed(4)}</p>
+                <p>Número de ejemplares necesarios para obtener todas las especies: ${results.requiredSamples}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
+
