@@ -12,14 +12,20 @@
             flex-direction: column;
             height: 100vh;
         }
+        .container {
+            display: flex;
+            flex-grow: 1;
+            gap: 10px;
+        }
         .output-container {
-            flex: 1 1 50%;
+            flex: 1;
             overflow: auto;
             border: 1px solid #ccc;
             padding: 10px;
             background-color: #f9f9f9;
             white-space: pre-wrap;
             box-sizing: border-box;
+            height: 50%;
         }
         textarea {
             width: 100%;
@@ -46,12 +52,9 @@
         #controls {
             margin-bottom: 10px;
         }
-        #preview {
-            border: 1px solid #ccc;
-            padding: 10px;
-            background-color: #f9f9f9;
-            white-space: pre-wrap;
-            box-sizing: border-box;
+        footer {
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -65,12 +68,16 @@
         <button id="saveBtn" disabled>Guardar como Archivo</button>
         <button id="copyBtn" disabled>Copiar al Portapapeles</button>
     </div>
-    <h2>Markdown Resultante:</h2>
-    <div class="output-container">
-        <textarea id="markdownOutput"></textarea>
+    <div class="container">
+        <div class="output-container">
+            <textarea id="markdownOutput"></textarea>
+        </div>
+        <div id="preview" class="output-container"></div>
     </div>
-    <h2>Vista Previa:</h2>
-    <div id="preview" class="output-container"></div>
+    <footer>
+        <p>Juan José de Haro</p>
+        <p>Licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA</a></p>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turndown/7.1.1/turndown.min.js"></script>
     <script>
@@ -96,7 +103,6 @@
             turndownService.addRule('tableCell', {
                 filter: ['th', 'td'],
                 replacement: function (content, node) {
-                    if (content.indexOf('\n') !== -1) content = content.replace(/\n/g, '<br>');
                     var parent = node.parentNode;
                     var index = Array.prototype.indexOf.call(parent.children, node);
                     var prefix = ' ';
@@ -157,7 +163,8 @@
             const filteredHtml = removeNonVisibleAndScriptElements(doc.body);
 
             // Convertir a Markdown
-            const markdownOutput = turndownService.turndown(filteredHtml);
+            let markdownOutput = turndownService.turndown(filteredHtml);
+            markdownOutput = markdownOutput.replace(/<br\s*\/?>/gi, '\n');
             document.getElementById('markdownOutput').value = markdownOutput;
             document.getElementById('saveBtn').disabled = false;
             document.getElementById('copyBtn').disabled = false;
@@ -184,17 +191,25 @@
             });
         });
 
+        // Sincronizar desplazamiento
+        function syncScroll(element1, element2) {
+            element1.onscroll = function() {
+                element2.scrollTop = element1.scrollTop;
+                element2.scrollLeft = element1.scrollLeft;
+            };
+        }
+
+        const markdownOutput = document.getElementById('markdownOutput');
+        const preview = document.getElementById('preview');
+        syncScroll(markdownOutput, preview);
+        syncScroll(preview, markdownOutput);
+
         // Actualizar vista previa al editar el textarea
-        document.getElementById('markdownOutput').addEventListener('input', function() {
-            const markdownOutput = document.getElementById('markdownOutput').value;
-            document.getElementById('preview').innerHTML = marked.parse(markdownOutput);
+        markdownOutput.addEventListener('input', function() {
+            const markdownOutputValue = markdownOutput.value;
+            preview.innerHTML = marked.parse(markdownOutputValue);
         });
     </script>
-    <footer>
-    <p>Juan José de Haro</p>
-    <p>Licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA</a></p>
-</footer>
-
 </body>
 </html>
 
