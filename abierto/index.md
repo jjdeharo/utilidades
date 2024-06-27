@@ -1,4 +1,4 @@
-#Decálogo del Conocimiento Abierto
+# Decálogo del Conocimiento Abierto
 1. **Acceso Universal**: Todo el mundo debe tener acceso a la información y al conocimiento. El conocimiento abierto debe ser accesible para todos, sin importar su origen socioeconómico, geográfico, de género o capacidad física.
 
 2. **Participación Activa**: Los usuarios de recursos de conocimiento abierto no solo deben ser consumidores, sino también productores de información. Esto implica fomentar la creación, adaptación y mejora de estos recursos por parte de los usuarios.
@@ -19,6 +19,6 @@
 
 10. **Respeto a los Derechos de Autor**: Aunque el conocimiento abierto busca la máxima libertad de uso, adaptación y distribución, también debe respetar los derechos de autor. Las contribuciones de cada autor deben ser debidamente reconocidas y citadas.
 
-->(ɔ)<-
+(ɔ)
 
 [Català](https://rentry.co/coneixementobert)
