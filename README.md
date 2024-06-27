@@ -19,6 +19,6 @@
 
 10. **Respeto a los Derechos de Autor**: Aunque el conocimiento abierto busca la máxima libertad de uso, adaptación y distribución, también debe respetar los derechos de autor. Las contribuciones de cada autor deben ser debidamente reconocidas y citadas.
 
-(ɔ)
+(ɔ) Este decálogo tuvo su origen en https://t.me/ChatGPTedu
 
 [Català](obert)
