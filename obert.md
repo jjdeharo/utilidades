@@ -19,6 +19,6 @@
 
 10. **Respecte als Drets d'Autor**: Tot i que el coneixement obert cerca la màxima llibertat d'ús, adaptació i distribució, també ha de respectar els drets d'autor. Les contribucions de cada autor han de ser degudament reconegudes i esmentades.
 
-(ɔ)
+(ɔ) Aquest document va tenir el seu origen a https://t.me/ChatGPTedu
 
 [Castellano](index)
