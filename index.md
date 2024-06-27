@@ -21,4 +21,4 @@
 
 (ɔ)
 
-[Català](https://rentry.co/coneixementobert)
+[Català](obert)
