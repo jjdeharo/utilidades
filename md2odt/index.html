@@ -19,7 +19,9 @@
             margin: 20px 0;
         }
 
-        input {
+        textarea {
+            width: 80%;
+            height: 300px;
             margin: 10px 0;
         }
 
@@ -41,43 +43,51 @@
     </style>
 </head>
 <body>
-    <h1>Convertir archivo Markdown a ODT</h1>
-    <form id="uploadForm">
-        <input type="file" id="markdownFile" name="markdownFile" accept=".md">
+    <h1>Convertir Markdown a ODT</h1>
+    <form id="convertForm">
+        <textarea id="markdownContent" placeholder="Pega tu contenido Markdown aquí..."></textarea>
+        <br>
         <button type="submit">Convertir</button>
     </form>
     <div id="result"></div>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@12.2.0/dist/markdown-it.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.1/pizzip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.23.8/docxtemplater.js"></script>
     <script>
-        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+        document.getElementById('convertForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            const fileInput = document.getElementById('markdownFile');
-            const file = fileInput.files[0];
+            const markdownContent = document.getElementById('markdownContent').value;
 
-            if (!file) {
-                alert('Por favor, selecciona un archivo Markdown.');
+            if (!markdownContent) {
+                alert('Por favor, pega tu contenido Markdown.');
                 return;
             }
 
-            const formData = new FormData();
-            formData.append('markdownFile', file);
+            const md = new markdownit();
+            const htmlContent = md.render(markdownContent);
 
-            const response = await fetch('https://api2.convertapi.com/convert/md/to/odt?Secret=YOUR_SECRET_KEY', {
-                method: 'POST',
-                body: formData
+            // Crear un archivo DOCX desde HTML
+            const zip = new PizZip();
+            const doc = new window.docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
+            doc.loadZip(zip);
+            doc.setData({ content: htmlContent });
+            try {
+                doc.render();
+            } catch (error) {
+                console.error(error);
+                alert('Error al generar el archivo DOCX.');
+                return;
+            }
+
+            const output = doc.getZip().generate({
+                type: "blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             });
 
-            const result = await response.json();
-
-            if (result.Files && result.Files.length > 0) {
-                const downloadLink = document.createElement('a');
-                downloadLink.href = result.Files[0].Url;
-                downloadLink.textContent = 'Descargar archivo ODT';
-                downloadLink.download = 'archivo.odt';
-                document.getElementById('result').appendChild(downloadLink);
-            } else {
-                alert('Error al convertir el archivo.');
-            }
+            saveAs(output, "archivo.docx");
         });
     </script>
 </body>
