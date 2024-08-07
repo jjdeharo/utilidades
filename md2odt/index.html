@@ -56,11 +56,12 @@
         <button type="submit">Convertir</button>
     </form>
     <div id="result"></div>
-    <div id="version">v0.1</div>
+    <div id="version">v0.2</div>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@12.2.0/dist/markdown-it.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.23.8/build/docxtemplater.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://unpkg.com/pizzip@3.1.1/dist/pizzip.min.js"></script>
+    <script src="https://unpkg.com/docxtemplater@3.23.8/build/docxtemplater.min.js"></script>
     <script>
         document.getElementById('convertForm').addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -76,7 +77,7 @@
             const htmlContent = md.render(markdownContent);
 
             // Crear un archivo DOCX desde HTML
-            const zip = new JSZip();
+            const zip = new PizZip();
             const doc = new window.docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
             doc.loadZip(zip);
             doc.setData({ content: htmlContent });
