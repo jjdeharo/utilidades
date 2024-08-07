@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertidor de fórmulas: Markdown IA a formato compatible</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        .container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Convertidor de fórmulas: Markdown IA a formato compatible</h1>
+        <textarea id="inputText" placeholder="Introduce texto o abre un archivo..."></textarea>
+        <input type="file" id="fileInput">
+        <textarea class="output" id="outputText" placeholder="El resultado aparecerá aquí..." readonly></textarea>
+        <div>
+            <button onclick="copyToClipboard()">Copiar</button>
+            <button onclick="saveToFile()">Guardar</button>
+        </div>
+    </div>
+    <footer>
+        Juan José de Haro - Licencia CC BY SA
+    </footer>
+
+    <script>
+        document.getElementById('inputText').addEventListener('click', function() {
+            this.value = '';
+        });
+
+        document.getElementById('inputText').addEventListener('input', processText);
+
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('inputText').value = e.target.result;
+                    processText();
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function processText() {
+            let text = document.getElementById('inputText').value;
+
+            // Eliminar los espacios al principio y al final
+            text = text.trim();
+
+            // Reemplazar delimitadores de fórmulas y eliminar espacios adyacentes
+            text = text.replace(/\\\((.*?)\\\)/g, function(match, p1) {
+                return '$' + p1.trim() + '$';
+            });
+            text = text.replace(/\\\[(.*?)\\\]/g, function(match, p1) {
+                return '$$' + p1.trim() + '$$';
+            });
+
+            document.getElementById('outputText').value = text;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy');
+        }
+
+        function saveToFile() {
+            const text = document.getElementById('outputText').value;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const anchor = document.createElement('a');
+            anchor.download = 'resultado.md';
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.target = '_blank';
+            anchor.style.display = 'none'; // Make sure it doesn't display on the screen
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+    </script>
+</body>
+</html>
+
