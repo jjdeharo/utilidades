@@ -26,6 +26,9 @@
 <script>
 function formatearTexto() {
     let texto = document.getElementById("entrada").value;
+    
+    // Eliminar referencias como "【15:0†source】"
+    texto = texto.replace(/【[0-9]+:[0-9]+†source】/g, '');
 
     // Formatear negrita
     texto = texto.replace(/\*\*/g, "''");
