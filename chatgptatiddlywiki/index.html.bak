@@ -4,14 +4,14 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ChatGPT/Markdown &gt; TiddlyWiki</title>
+<title>ChatGPT &gt; TiddlyWiki</title>
 </head>
 <body>
-<h1>ChatGPT/Markdown &gt; TiddlyWiki</h1>
-<p>Este programa formatea el texto de ChatGPT y otras IA (que tienen formato Markdown) para añadirlo a TiddlyWiki. Copia el texto con el botón copiar de ChatGPT, no uses Control+C</p>
+<h1>ChatGPT &gt; TiddlyWiki</h1>
+<p>Este programa formatea el texto de ChatGPT para añadirlo a TiddlyWiki. Copia el texto con el botón copiar de ChatGPT, no uses Control+C</p>
 <br>
 
-<p>Prueba estas opciones si ves que las listas de viñetas no quedan como esperas:</p>
+<p>Prueba estas opciones si ves que ls listas de viñetas no quedan como esperas:</p>
 <input id="formatSecondLevel" name="formatSecondLevel" onchange="formatearTexto()" type="checkbox"/>
 <label for="formatSecondLevel">Formatear también lista de viñetas de 2º nivel creadas con guiones (-) (puede interferir con otros formatos).</label><br/><input id="avoidDoubleAsteriskConversion" name="avoidDoubleAsteriskConversion" onchange="formatearTexto()" type="checkbox"/><label for_="avoidDoubleAsteriskConversion">Convertir los dobles asteriscos (**) del texto formateado en simples (*)</label>
 <br/><br/>
@@ -33,11 +33,7 @@ function formatearTexto() {
     // Reemplazar cursivas de Markdown a TiddlyWiki
     texto = texto.replace(/\*(.*?)\*/g, '//$1//');
     
-    // Convertir enlaces de Markdown a TiddlyWiki
-    texto = texto.replace(/\[(.*?)\]\((.*?)\)/g, '[[$1|$2]]');
-
-    // Añadir línea en blanco antes de cada lista
-    texto = texto.replace(/(^|\n)(- |\*\*)/g, '\n\n$2');
+    // Listas de Markdown a TiddlyWiki
 
     // Check the state of the checkbox
     if (document.getElementById("formatSecondLevel").checked) {
@@ -79,4 +75,3 @@ function borrarTexto() {
 </script>
 </br></body>
 </html>
-
