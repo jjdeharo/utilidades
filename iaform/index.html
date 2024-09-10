@@ -103,21 +103,30 @@
         });
 
         function processText() {
-            let text = document.getElementById('inputText').value;
+          let text = document.getElementById('inputText').value;
 
-            // Eliminar los espacios al principio y al final
-            text = text.trim();
+          // Eliminar los espacios al principio y al final
+          text = text.trim();
 
-            // Reemplazar delimitadores de fórmulas y eliminar espacios adyacentes
-            text = text.replace(/\\\((.*?)\\\)/g, function(match, p1) {
-                return '$' + p1.trim() + '$';
-            });
-            text = text.replace(/\\\[(.*?)\\\]/g, function(match, p1) {
-                return '$$' + p1.trim() + '$$';
-            });
+          // Reemplazar delimitadores de fórmulas y eliminar espacios adyacentes
+          // Usamos el flag 's' para que el punto coincida con saltos de línea
+          text = text.replace(/\\\[([\s\S]*?)\\\]/gs, function(match, p1) {
+              // Eliminar saltos de línea al principio y al final del contenido
+              p1 = p1.replace(/^\s+|\s+$/g, '');
+              // Si hay saltos de línea en el contenido, los preservamos
+              if (p1.includes('\n')) {
+                  return '$$\n' + p1 + '\n$$';
+              }
+              // Si no hay saltos de línea, lo dejamos en una sola línea
+              return '$$' + p1 + '$$';
+          });
+          text = text.replace(/\\\(([\s\S]*?)\\\)/gs, function(match, p1) {
+              return '$' + p1.trim() + '$';
+          });
 
-            document.getElementById('outputText').value = text;
-        }
+          document.getElementById('outputText').value = text;
+}
+
 
         function copyToClipboard() {
             const outputText = document.getElementById('outputText');
