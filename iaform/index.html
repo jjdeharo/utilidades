@@ -1,164 +1,187 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convertidor de fórmulas: Markdown IA a formato compatible</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            margin-bottom: 20px;
-        }
-        .container h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        input[type="file"] {
-            margin-bottom: 10px;
-        }
-        .output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-        button {
-            display: inline-block;
-            padding: 10px 20px;
-            color: #fff;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-align: center;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        footer {
-            text-align: center;
-            font-size: 0.9em;
-            color: #555;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convertidor de fórmulas: Markdown IA a formato compatible</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f0f0f0;
+          margin: 0;
+          padding: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          height: 100vh;
+      }
+      .container {
+          background-color: #ffffff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 600px;
+          margin-bottom: 20px;
+      }
+      .container h1 {
+          text-align: center;
+          margin-bottom: 20px;
+      }
+      textarea {
+          width: 100%;
+          height: 200px;
+          margin-bottom: 10px;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+      }
+      input[type="file"] {
+          margin-bottom: 10px;
+      }
+      .output {
+          margin-top: 20px;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          background-color: #f9f9f9;
+      }
+      button {
+          display: inline-block;
+          padding: 10px 20px;
+          color: #fff;
+          background-color: #007BFF;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          text-align: center;
+          margin-right: 10px;
+      }
+      button:hover {
+          background-color: #0056b3;
+      }
+      footer {
+          text-align: center;
+          font-size: 0.9em;
+          color: #555;
+      }
+  </style>
 </head>
 <body>
+  <div class="container">
+      <h1>Convertidor de fórmulas: Markdown IA a formato compatible</h1>
+      <ol>
+          <li>Desde el chat de la IA, utiliza el <strong>botón de copiar</strong> para guardar el contenido de las fórmulas.</li>
+          <li>Pega el contenido en el <strong>primer cuadro de texto</strong>.</li>
+          <li>Copia el contenido generado en el segundo cuadro de texto con el botón <strong>COPIAR</strong> y pégalo en <a href="https://mconverter.eu/convert/markdown/" target="_blank"><strong>Markdown Converter</strong></a> usando el botón <strong>PASTE</strong> que hay allí. Como alternativa, descarga el archivo con el botón <strong>GUARDAR</strong> y súbelo a Markdown Converter.</li>
+      </ol>
+      <p>
+          Más información en
+          <a href="https://educacion.bilateria.org/conversion-de-texto-y-formulas-generadas-por-ia-a-documentos-de-texto-docx-y-odt" target="_blank">
+              Conversión de texto y fórmulas generadas por ChatGPT a documentos de texto DOCX, ODT y Google Docs
+          </a>.
+      </p>
 
+      <textarea id="inputText" placeholder="Introduce el texto generado por la IA (copiado a través del botón) o abre un archivo..."></textarea>
+      <input type="file" id="fileInput">
+      <textarea class="output" id="outputText" placeholder="El resultado aparecerá aquí..." readonly></textarea>
+      <div>
+          <button onclick="copyToClipboard()">Copiar</button>
+          <button onclick="saveToFile()">Guardar</button>
+      </div>
+  </div>
+  <footer>
+      Juan José de Haro - Licencia CC BY SA
+  </footer>
 
-    <div class="container">
-        <h1>Convertidor de fórmulas: Markdown IA a formato compatible</h1>
-        <ol>
-            <li>Desde el chat de la IA, utiliza el <strong>botón de copiar</strong> para guardar el contenido de las fórmulas.</li>  
-<li>Pega el contenido en el <strong>primer cuadro de texto</strong>.</li>  
-<li>Copia el contenido generado en el segundo cuadro de texto con el botón <strong>COPIAR</strong> y pégalo en <a href="https://mconverter.eu/convert/markdown/" target="_blank"><strong>Markdown Converter</strong></a> usando el botón <strong>PASTE</strong> que hay allí. Como alternativa, descarga el archivo con el botón <strong>GUARDAR</strong> y súbelo a Markdown Converter.</li>
+  <script>
+      document.getElementById('inputText').addEventListener('click', function() {
+          this.value = '';
+      });
 
+      document.getElementById('inputText').addEventListener('input', processText);
 
-        </ol>
-        <p>Más información en <a href="https://educacion.bilateria.org/conversion-de-texto-y-formulas-generadas-por-ia-a-documentos-de-texto-docx-y-odt" target="_blank">Conversión de texto y fórmulas generadas por ChatGPT a documentos de texto DOCX, ODT y Google Docs</a>.</p>
-        
-        
-        <textarea id="inputText" placeholder="Introduce el texto generado por la IA (copiado a través del botón) o abre un archivo..."></textarea>
-        <input type="file" id="fileInput">
-        <textarea class="output" id="outputText" placeholder="El resultado aparecerá aquí..." readonly></textarea>
-        <div>
-            <button onclick="copyToClipboard()">Copiar</button>
-            <button onclick="saveToFile()">Guardar</button>
-        </div>
-    </div>
-    <footer>
-        Juan José de Haro - Licencia CC BY SA
-    </footer>
+      document.getElementById('fileInput').addEventListener('change', function() {
+          const file = this.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  document.getElementById('inputText').value = e.target.result;
+                  processText();
+              };
+              reader.readAsText(file);
+          }
+      });
 
-    <script>
-        document.getElementById('inputText').addEventListener('click', function() {
-            this.value = '';
-        });
-
-        document.getElementById('inputText').addEventListener('input', processText);
-
-        document.getElementById('fileInput').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('inputText').value = e.target.result;
-                    processText();
-                };
-                reader.readAsText(file);
-            }
-        });
-
-        function processText() {
+      function processText() {
           let text = document.getElementById('inputText').value;
 
-          // Eliminar los espacios al principio y al final
-          text = text.trim();
-
-          // Reemplazar delimitadores de fórmulas y eliminar espacios adyacentes
-          // Usamos el flag 's' para que el punto coincida con saltos de línea
-          text = text.replace(/\\\[([\s\S]*?)\\\]/gs, function(match, p1) {
-              // Eliminar saltos de línea al principio y al final del contenido
+          // 1) \[...\] --> $$...$$
+          text = text.replace(/\\\[([\s\S]*?)\\\]/g, function(_match, p1) {
+              // Recorta espacios solo por dentro de la fórmula
               p1 = p1.replace(/^\s+|\s+$/g, '');
-              // Si hay saltos de línea en el contenido, los preservamos
+              // Si hay saltos de línea
               if (p1.includes('\n')) {
                   return '$$\n' + p1 + '\n$$';
               }
-              // Si no hay saltos de línea, lo dejamos en una sola línea
+              // Sin saltos de línea
               return '$$' + p1 + '$$';
           });
-          text = text.replace(/\\\(([\s\S]*?)\\\)/gs, function(match, p1) {
+
+          // 2) \(...\) --> $...$
+          text = text.replace(/\\\(([\s\S]*?)\\\)/g, function(_match, p1) {
               return '$' + p1.trim() + '$';
           });
 
+          // 3) Dejar intactos los $$...$$ (no los tocamos), pero
+          //    limpiar espacios solo en las fórmulas de un único $
+          //    Hacemos dos pasos para respetar $$...$$:
+
+          // 3A) Proteger temporalmente $$...$$ con un reemplazo que no choque con single $
+          const placeholder = '%%PLACEHOLDER_DOBLE%'; // algo que no aparezca en el texto
+          let blocks = [];
+          text = text.replace(/\$\$(.*?)\$\$/gs, function(m, contenido) {
+              // guardamos el bloque $$...$$ en array
+              blocks.push(m);
+              return placeholder;
+          });
+
+          // 3B) Ahora que no hay $$...$$, eliminamos espacios dentro de $...$
+          text = text.replace(/\$([^$]+?)\$/g, function(_match, interior) {
+              // Quitar espacios al inicio y fin del contenido
+              let trimmed = interior.replace(/^\s+|\s+$/g, '');
+              return '$' + trimmed + '$';
+          });
+
+          // 3C) Volvemos a poner los $$...$$ intactos
+          let i = 0;
+          text = text.replace(new RegExp(placeholder, 'g'), function() {
+              return blocks[i++];
+          });
+
           document.getElementById('outputText').value = text;
-}
+      }
 
+      function copyToClipboard() {
+          const outputText = document.getElementById('outputText');
+          outputText.select();
+          document.execCommand('copy');
+      }
 
-        function copyToClipboard() {
-            const outputText = document.getElementById('outputText');
-            outputText.select();
-            document.execCommand('copy');
-        }
-
-        function saveToFile() {
-            const text = document.getElementById('outputText').value;
-            const blob = new Blob([text], { type: 'text/plain' });
-            const anchor = document.createElement('a');
-            anchor.download = 'resultado.md';
-            anchor.href = window.URL.createObjectURL(blob);
-            anchor.target = '_blank';
-            anchor.style.display = 'none'; // Make sure it doesn't display on the screen
-            document.body.appendChild(anchor);
-            anchor.click();
-            document.body.removeChild(anchor);
-        }
-    </script>
+      function saveToFile() {
+          const text = document.getElementById('outputText').value;
+          const blob = new Blob([text], { type: 'text/plain' });
+          const anchor = document.createElement('a');
+          anchor.download = 'resultado.md';
+          anchor.href = window.URL.createObjectURL(blob);
+          anchor.target = '_blank';
+          anchor.style.display = 'none';
+          document.body.appendChild(anchor);
+          anchor.click();
+          document.body.removeChild(anchor);
+      }
+  </script>
 </body>
 </html>
 
