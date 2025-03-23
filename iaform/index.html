@@ -3,18 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convertidor de fórmulas: Markdown IA a formato compatible</title>
+  <title>Convertidor de fórmulas: markdown ia a formato compatible</title>
   <style>
       body {
           font-family: Arial, sans-serif;
           background-color: #f0f0f0;
           margin: 0;
-          padding: 20px;
+          padding: 40px; /* Para dejar algo de espacio arriba y alrededor */
           display: flex;
-          justify-content: center;
-          align-items: center;
           flex-direction: column;
-          height: 100vh;
+          align-items: center; /* Centra horizontalmente */
+          justify-content: flex-start; /* Evita que se corte en la parte superior */
+          min-height: 100vh;
+      }
+      .notice {
+          margin-top: 20px; /* Ajusta si quieres más o menos margen */
+          border: 2px solid #FF0000;
+          background-color: #FFF5F5;
+          color: #FF0000;
+          padding: 10px;
+          margin-bottom: 20px;
+          text-align: center;
+          font-weight: bold;
+          width: 100%;
+          max-width: 600px;
       }
       .container {
           background-color: #ffffff;
@@ -69,16 +81,25 @@
   </style>
 </head>
 <body>
+  <div class="notice">
+      Este programa ha sido sustituido por 
+      <a href="https://bilateria.org/app/latex/mdlatex.html" style="color: #FF0000; text-decoration: underline;">
+        MDAITex: editor para textos generados por IA que exporta el texto en DOCX, ODT, PDF, etc.
+      </a>
+  </div>
   <div class="container">
-      <h1>Convertidor de fórmulas: Markdown IA a formato compatible</h1>
+      <h1>Convertidor de fórmulas: markdown ia a formato compatible</h1>
       <ol>
           <li>Desde el chat de la IA, utiliza el <strong>botón de copiar</strong> para guardar el contenido de las fórmulas.</li>
           <li>Pega el contenido en el <strong>primer cuadro de texto</strong>.</li>
-          <li>Copia el contenido generado en el segundo cuadro de texto con el botón <strong>COPIAR</strong> y pégalo en <a href="https://mconverter.eu/convert/markdown/" target="_blank"><strong>Markdown Converter</strong></a> usando el botón <strong>PASTE</strong> que hay allí. Como alternativa, descarga el archivo con el botón <strong>GUARDAR</strong> y súbelo a Markdown Converter.</li>
+          <li>Copia el contenido generado en el segundo cuadro de texto con el botón <strong>COPIAR</strong> y pégalo en 
+            <a href="https://mconverter.eu/convert/markdown/">Markdown Converter</a> usando el botón <strong>PASTE</strong> que hay allí. 
+            Como alternativa, descarga el archivo con el botón <strong>GUARDAR</strong> y súbelo a Markdown Converter.
+          </li>
       </ol>
       <p>
           Más información en
-          <a href="https://educacion.bilateria.org/conversion-de-texto-y-formulas-generadas-por-ia-a-documentos-de-texto-docx-y-odt" target="_blank">
+          <a href="https://educacion.bilateria.org/conversion-de-texto-y-formulas-generadas-por-ia-a-documentos-de-texto-docx-y-odt">
               Conversión de texto y fórmulas generadas por ChatGPT a documentos de texto DOCX, ODT y Google Docs
           </a>.
       </p>
@@ -119,13 +140,10 @@
 
           // 1) \[...\] --> $$...$$
           text = text.replace(/\\\[([\s\S]*?)\\\]/g, function(_match, p1) {
-              // Recorta espacios solo por dentro de la fórmula
               p1 = p1.replace(/^\s+|\s+$/g, '');
-              // Si hay saltos de línea
               if (p1.includes('\n')) {
                   return '$$\n' + p1 + '\n$$';
               }
-              // Sin saltos de línea
               return '$$' + p1 + '$$';
           });
 
@@ -134,27 +152,19 @@
               return '$' + p1.trim() + '$';
           });
 
-          // 3) Dejar intactos los $$...$$ (no los tocamos), pero
-          //    limpiar espacios solo en las fórmulas de un único $
-          //    Hacemos dos pasos para respetar $$...$$:
-
-          // 3A) Proteger temporalmente $$...$$ con un reemplazo que no choque con single $
-          const placeholder = '%%PLACEHOLDER_DOBLE%'; // algo que no aparezca en el texto
+          // 3) Protección y limpieza de espacios en fórmulas
+          const placeholder = '%%PLACEHOLDER_DOBLE%';
           let blocks = [];
-          text = text.replace(/\$\$(.*?)\$\$/gs, function(m, contenido) {
-              // guardamos el bloque $$...$$ en array
+          text = text.replace(/\$\$(.*?)\$\$/gs, function(m) {
               blocks.push(m);
               return placeholder;
           });
 
-          // 3B) Ahora que no hay $$...$$, eliminamos espacios dentro de $...$
           text = text.replace(/\$([^$]+?)\$/g, function(_match, interior) {
-              // Quitar espacios al inicio y fin del contenido
               let trimmed = interior.replace(/^\s+|\s+$/g, '');
               return '$' + trimmed + '$';
           });
 
-          // 3C) Volvemos a poner los $$...$$ intactos
           let i = 0;
           text = text.replace(new RegExp(placeholder, 'g'), function() {
               return blocks[i++];
@@ -175,7 +185,6 @@
           const anchor = document.createElement('a');
           anchor.download = 'resultado.md';
           anchor.href = window.URL.createObjectURL(blob);
-          anchor.target = '_blank';
           anchor.style.display = 'none';
           document.body.appendChild(anchor);
           anchor.click();
