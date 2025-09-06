@@ -31,12 +31,12 @@ Opciones para alojarlo:
 
 - Tipo de recurso: `Ambos (contenidos + código)`, `Solo contenidos`, `Solo código`.
 - Licencias de contenidos: `CC BY-SA 4.0` (recomendada), `CC BY 4.0`, `CC BY-NC-SA 4.0` (con reservas por ambigüedad de «NC»).
-- Licencias de código: `GPL v3` (recomendada), `MPL 2.0`, `Apache 2.0`, `MIT`.
+- Licencias de código: `AGPL v3` (recomendada), `MPL 2.0`, `Apache 2.0`, `MIT`.
   - Opción de enlace para la licencia del código:
     - `Crear LICENSE.txt y enlazar al archivo` (útil en proyectos de una sola página alojados fuera de GitHub).
     - `Enlazar al sitio oficial de la licencia` (sin crear LICENSE.txt).
 - Presets rápidos:
-  - Reciprocidad (recomendado): `CC BY-SA 4.0` + `GPL v3`.
+  - Reciprocidad (recomendado): `CC BY-SA 4.0` + `AGPL v3`.
   - Máxima adopción: `CC BY 4.0` + `Apache 2.0`.
   - Intermedia: `CC BY-SA 4.0` + `MPL 2.0`.
 - Datos de atribución (opcionales): Título/proyecto, Autoría, Año, URL, Idioma del texto generado.
@@ -51,7 +51,7 @@ Ejemplo de salida (por defecto):
 
 ```
 Añade a mi app educativa las licencias recomendadas para proyectos de código y contenidos.
-Para el código, aplica GPL v3 con un archivo LICENSE.txt y notas en cada archivo de código.
+Para el código, aplica AGPL v3 con un archivo LICENSE.txt y notas en cada archivo de código.
 Para los contenidos educativos (textos, ejercicios, vídeos, imágenes), aplica CC BY-SA 4.0 con el texto:
 “Esta obra está bajo licencia CC BY-SA 4.0” y el enlace https://creativecommons.org/licenses/by-sa/4.0/.
 ```
@@ -84,14 +84,14 @@ Para los contenidos educativos (textos, ejercicios, vídeos, imágenes):
 
 ## Notas y criterio
 
-- Las licencias incluidas y sus recomendaciones provienen del artículo (CC BY‑SA/CC BY/CC BY‑NC‑SA para contenidos; GPL v3/MPL 2.0/Apache 2.0/MIT para código).
+- Las licencias incluidas y sus recomendaciones provienen del artículo (CC BY‑SA/CC BY/CC BY‑NC‑SA para contenidos; AGPL v3/MPL 2.0/Apache 2.0/MIT para código).
 - «NC» puede generar ambigüedades; por eso aparece marcada como opción «con reservas».
 - No se cargan recursos externos; funciona embebido en `iframe`.
 - Puedes modificar los rótulos o añadir nuevas licencias editando el HTML: busca los `input` de radios en los `fieldset` correspondientes.
 - Licenciamiento aplicado en este proyecto (ejecutando el prompt):
-  - Código: GNU GPL v3 — archivo `LICENSE.txt` y cabeceras en archivos de código (`index.html`, `img/atribucion.svg`).
+  - Código: GNU AGPL v3 — archivo `LICENSE.txt` y cabeceras en archivos de código (`index.html`, `img/atribucion.svg`).
   - Contenidos: CC BY-SA 4.0 — archivo `LICENSE-CONTENT.txt` con el texto requerido y enlace oficial.
-  - Pie de página visible en `index.html`: “Licencia del código: GPL v3” enlaza a `LICENSE.txt`; “Contenido: CC BY-SA 4.0” enlaza a Creative Commons.
+  - Pie de página visible en `index.html`: “Licencia del código: AGPL v3” enlaza a `LICENSE.txt`; “Contenido: CC BY-SA 4.0” enlaza a Creative Commons.
 
 ## Personalización rápida
 

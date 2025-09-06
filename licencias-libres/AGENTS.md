@@ -2,7 +2,7 @@
 
 ## Estructura del proyecto
 - `index.html`: widget auto‑contenido (HTML, CSS y JS) para incrustar vía `iframe`.
-- `licencias/`: resúmenes en Markdown de licencias (p. ej., `GPL-3.0.md`).
+- `licencias/`: resúmenes en Markdown de licencias (p. ej., `AGPL-3.0.md`).
 - `img/`: recursos gráficos (p. ej., `atribucion.svg`).
 - `LICENSE.txt` y `LICENSE-CONTENT.txt`: textos completos aplicados al propio proyecto.
 

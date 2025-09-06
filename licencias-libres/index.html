@@ -2,8 +2,8 @@
 <!--
   Proyecto: Generador de prompt de licencias
   Copyright (C) 2025 Juan José de Haro — https://jjdeharo.github.io/utilidades/licencias-libres
-  Licencia del código: GNU GPL v3 (ver LICENSE.txt)
-  Este archivo forma parte de la app educativa y puede redistribuirse y/o modificarse bajo los términos de la GPL v3.
+  Licencia del código: GNU AGPL v3 (ver LICENSE.txt)
+  Este archivo forma parte de la app educativa y puede redistribuirse y/o modificarse bajo los términos de la AGPL v3.
 -->
 <html lang="es">
 <head>
@@ -50,7 +50,7 @@
       const STORAGE_KEY = 'lic-gen:v1';
 
       const presets = {
-        reciprocity: { content: 'CC BY-SA 4.0', code: 'GPL v3' },
+        reciprocity: { content: 'CC BY-SA 4.0', code: 'AGPL v3' },
         adoption: { content: 'CC BY 4.0', code: 'Apache 2.0' },
         intermediate: { content: 'CC BY-SA 4.0', code: 'MPL 2.0' }
       };
@@ -173,7 +173,7 @@
           'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
         };
         const linksCode = {
-          'GPL v3': 'https://www.gnu.org/licenses/gpl-3.0.html',
+          'AGPL v3': 'https://www.gnu.org/licenses/agpl-3.0.html',
           'MPL 2.0': 'https://www.mozilla.org/MPL/2.0/',
           'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
           'MIT': 'https://opensource.org/license/mit'
@@ -317,7 +317,7 @@
   </script>
   <!-- Uso principal: incrustar vía <iframe> en WordPress u otra web. -->
   <meta name="generator" content="Bilateria · Licencias libres para docentes" />
-  <meta name="x-licenses" content="CC BY-SA 4.0, CC BY 4.0, CC BY-NC-SA 4.0, GPL v3, MPL 2.0, Apache 2.0, MIT" />
+  <meta name="x-licenses" content="CC BY-SA 4.0, CC BY 4.0, CC BY-NC-SA 4.0, AGPL v3, MPL 2.0, Apache 2.0, MIT" />
   <meta name="x-author" content="Ejemplo" />
   <meta name="x-date" content="2025-09-05" />
   <meta name="referrer" content="no-referrer" />
@@ -331,7 +331,7 @@
       <p class="lead">Elige las licencias recomendadas para contenidos y/o código y genera un prompt listo para pedir el texto de licencia (README / página web).</p>
 
       <div class="inline" style="margin: 8px 0 4px; gap: 8px">
-        <button id="preset-reciprocity" class="btn" title="CC BY-SA + GPL v3">Reciprocidad (recomendado)</button>
+        <button id="preset-reciprocity" class="btn" title="CC BY-SA + AGPL v3">Reciprocidad (recomendado)</button>
         <button id="preset-adoption" class="btn btn-ghost" title="CC BY + Apache 2.0">Máxima adopción</button>
         <button id="preset-intermediate" class="btn btn-ghost" title="CC BY-SA + MPL 2.0">Intermedia</button>
       </div>
@@ -365,7 +365,7 @@
 
         <fieldset id="box-code">
           <legend>Licencias para código</legend>
-          <label><input type="radio" name="lic-code" value="GPL v3" checked /> GPL v3 — Copyleft fuerte (recomendada)</label>
+          <label><input type="radio" name="lic-code" value="AGPL v3" checked /> AGPL v3 — Copyleft fuerte orientado a red (recomendada)</label>
           <label><input type="radio" name="lic-code" value="MPL 2.0" /> MPL 2.0 — Copyleft moderado</label>
           <label><input type="radio" name="lic-code" value="Apache 2.0" /> Apache 2.0 — Adopción amplia</label>
           <label><input type="radio" name="lic-code" value="MIT" /> MIT — Simplicidad</label>
@@ -375,7 +375,7 @@
           <details>
             <summary class="hint">Ver detalles</summary>
             <div class="hint">
-              • GPL v3: garantiza que las mejoras permanezcan libres (copyleft).<br/>
+              • AGPL v3: garantiza que las mejoras permanezcan libres (copyleft) e incluye uso a través de red.<br/>
               • MPL 2.0: obliga a compartir cambios por archivo; permite combinar con código cerrado.<br/>
               • Apache 2.0: permisiva, sin obligación de devolver mejoras; protección de patentes.<br/>
               • MIT: muy permisiva y simple, sin garantías de retorno ni patentes.
@@ -421,7 +421,7 @@
           • CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/<br/>
           • CC BY 4.0: https://creativecommons.org/licenses/by/4.0/<br/>
           • CC BY-NC-SA 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/<br/>
-          • GPL v3: https://www.gnu.org/licenses/gpl-3.0.html<br/>
+          • AGPL v3: https://www.gnu.org/licenses/agpl-3.0.html<br/>
           • MPL 2.0: https://www.mozilla.org/MPL/2.0/<br/>
           • Apache 2.0: https://www.apache.org/licenses/LICENSE-2.0<br/>
           • MIT: https://opensource.org/license/mit
@@ -430,7 +430,7 @@
     </div>
     <footer class="card footer-center" role="contentinfo" style="margin-top:12px">
       <div class="foot-line">© 2025 <a href="https://bilateria.org" target="_blank" rel="noopener">Juan José de Haro</a></div>
-      <div class="foot-line">Licencia: <a href="LICENSE.txt" target="_blank" rel="noopener">GPL v3</a></div>
+      <div class="foot-line">Licencia: <a href="LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a></div>
     </footer>
   </div>
 </body>
