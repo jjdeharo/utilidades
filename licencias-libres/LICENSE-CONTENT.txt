@@ -1,0 +1,10 @@
+Esta obra está bajo licencia CC BY-SA 4.0
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Aplicable a los contenidos educativos de este proyecto (textos, ejercicios, vídeos, imágenes, documentación), salvo indicación expresa en contrario.
+
+Para atribución sugerida:
+- Título: Generador de prompt de licencias
+- Autoría: Juan José de Haro
+- Año: 2025
+- Enlace: https://jjdeharo.github.io/utilidades/licencias-libres

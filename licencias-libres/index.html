@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--
+  Proyecto: Generador de prompt de licencias
+  Copyright (C) 2025 Juan José de Haro — https://jjdeharo.github.io/utilidades/licencias-libres
+  Licencia del código: GNU GPL v3 (ver LICENSE.txt)
+  Este archivo forma parte de la app educativa y puede redistribuirse y/o modificarse bajo los términos de la GPL v3.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Generador de prompt de licencias</title>
+  <style>
+    :root {
+      --bg: #f7f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-600: #1d4ed8;
+      --border: #e5e7eb;
+      --ok: #10b981;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; background: var(--bg); color: var(--text); }
+    .wrap { max-width: 920px; margin: 24px auto; padding: 0 16px; }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 1px 1px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.04); }
+    h1 { font-size: 1.25rem; margin: 0 0 8px; }
+    p.lead { margin: 0 0 12px; color: var(--muted); font-size: .95rem; }
+    fieldset { border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin: 12px 0; }
+    legend { padding: 0 6px; color: var(--muted); font-size: .9rem; }
+    label { display: block; margin: 6px 0; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .inline { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    input[type="text"], input[type="url"], input[type="number"], select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); }
+    textarea { min-height: 180px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95rem; }
+    .btn { background: var(--primary); color: #fff; border: 0; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+    .btn:hover { background: var(--primary-600); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    
+    details { margin-top: 6px; }
+    .hint { font-size: .85rem; color: var(--muted); }
+    .footer-center { text-align: center; }
+    .foot-line { margin: 4px 0; }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const $ = (q) => document.querySelector(q);
+      const $$ = (q) => Array.from(document.querySelectorAll(q));
+      const STORAGE_KEY = 'lic-gen:v1';
+
+      const presets = {
+        reciprocity: { content: 'CC BY-SA 4.0', code: 'GPL v3' },
+        adoption: { content: 'CC BY 4.0', code: 'Apache 2.0' },
+        intermediate: { content: 'CC BY-SA 4.0', code: 'MPL 2.0' }
+      };
+
+      function setPreset(p) {
+        if (!presets[p]) return;
+        const { content, code } = presets[p];
+        const c = $$("input[name='lic-content']").find(r => r.value === content);
+        const k = $$("input[name='lic-code']").find(r => r.value === code);
+        if (c) c.checked = true;
+        if (k) k.checked = true;
+        $("#tipo").value = 'ambos';
+        update();
+      }
+
+      function getState() {
+        return {
+          tipo: $('#tipo').value,
+          licContent: getSelected('lic-content'),
+          licCode: getSelected('lic-code'),
+          codeLinkMode: getSelected('code-link-mode'),
+          titulo: $('#titulo').value,
+          autor: $('#autor').value,
+          anio: $('#anio').value,
+          url: $('#url').value,
+          autor_url: ($('#autor_url') ? $('#autor_url').value : ''),
+          idioma: $('#idioma').value,
+        };
+      }
+
+      function applyState(state) {
+        if (!state) return;
+        if (state.tipo) $('#tipo').value = state.tipo;
+        if (state.licContent) {
+          const c = $$("input[name='lic-content']").find(r => r.value === state.licContent);
+          if (c) c.checked = true;
+        }
+        if (state.licCode) {
+          const k = $$("input[name='lic-code']").find(r => r.value === state.licCode);
+          if (k) k.checked = true;
+        }
+        if (state.codeLinkMode) {
+          const m = $$("input[name='code-link-mode']").find(r => r.value === state.codeLinkMode);
+          if (m) m.checked = true;
+        }
+        if (state.titulo != null) $('#titulo').value = state.titulo;
+        if (state.autor != null) $('#autor').value = state.autor;
+        if (state.anio != null) $('#anio').value = state.anio;
+        if (state.url != null) $('#url').value = state.url;
+        if ($('#autor_url') && state.autor_url != null) $('#autor_url').value = state.autor_url;
+        if (state.idioma) $('#idioma').value = state.idioma;
+      }
+
+      function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(getState())); } catch {} }
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) applyState(JSON.parse(raw));
+        } catch {}
+      }
+
+      function getSelected(name) {
+        const r = $$("input[name='"+name+"']").find(x => x.checked);
+        return r ? r.value : '';
+      }
+
+      function buildPrompt() {
+        const tipo = $('#tipo').value;
+        const idioma = $('#idioma').value;
+        const licContent = getSelected('lic-content');
+        const licCode = getSelected('lic-code');
+        const codeLinkMode = getSelected('code-link-mode') || 'archivo';
+        const titulo = $('#titulo').value.trim();
+        const autor = $('#autor').value.trim();
+        const autorUrl = $('#autor_url') ? $('#autor_url').value.trim() : '';
+        const anio = $('#anio').value.trim();
+        const url = $('#url').value.trim();
+
+        const linksCC = {
+          'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+          'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+          'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
+        };
+        const linksCode = {
+          'GPL v3': 'https://www.gnu.org/licenses/gpl-3.0.html',
+          'MPL 2.0': 'https://www.mozilla.org/MPL/2.0/',
+          'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+          'MIT': 'https://opensource.org/license/mit'
+        };
+
+        const partes = [];
+        if (idioma !== 'es') {
+          const nombres = { 'ca': 'catalán', 'en': 'inglés', 'gl': 'gallego', 'eu': 'euskera' };
+          const etiqueta = nombres[idioma] || idioma;
+          partes.push(`Responde en: ${etiqueta}.`);
+          partes.push('');
+        }
+
+        partes.push('Añade a mi app educativa las licencias recomendadas para proyectos de código y contenidos.');
+        partes.push('');
+
+        // Línea de atribución: solo si hay algún dato
+        const atrib = [];
+        if (titulo) atrib.push(`título: ${titulo}`);
+        if (autor) atrib.push(`autoría: ${autor}`);
+        if (anio) atrib.push(`año: ${anio}`);
+        if (url) atrib.push(`enlace: ${url}`);
+        if (atrib.length) {
+          partes.push('Datos para la atribución: ' + atrib.join(', ') + '.');
+          partes.push('');
+        }
+
+        if (tipo === 'codigo' || tipo === 'ambos') {
+          const lic = licCode || '[licencia]';
+          const linkOficial = linksCode[licCode] || '[enlace oficial]';
+          partes.push('Para el código:');
+          partes.push(`- Aplica la licencia ${lic}.`);
+          if (codeLinkMode === 'archivo') {
+            partes.push('- Crea un archivo LICENSE.txt con el texto completo de la licencia.');
+            partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
+            partes.push('- Menciona la licencia también en la documentación del proyecto.');
+            partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto a LICENSE.txt.');
+          } else {
+            partes.push('- No crees LICENSE.txt; enlaza el nombre de la licencia al texto oficial: ' + linkOficial + '.');
+            partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
+            partes.push('- Menciona la licencia también en la documentación del proyecto.');
+            partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto al sitio oficial.');
+          }
+          partes.push('');
+        }
+
+        if (tipo === 'contenidos' || tipo === 'ambos') {
+          const lic = licContent || '[licencia CC]';
+          const link = linksCC[licContent] || '';
+          partes.push('Para los contenidos educativos (textos, ejercicios, vídeos, imágenes):');
+          partes.push(`- Aplica la licencia ${lic}.`);
+          partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, añade el texto:');
+          partes.push(`  “Esta obra está bajo licencia ${lic}” con el enlace oficial a la licencia correspondiente` + (link ? `: ${link}.` : '.'));
+          partes.push('- Si es posible, acompáñalo con el icono oficial de la licencia.');
+        }
+
+        // Pie de página estandarizado y centrado
+        const y = anio || '';
+        const a = autor || '';
+        const tieneLinea1 = Boolean(y || a);
+        if (tieneLinea1) {
+          partes.push('');
+          partes.push('Pie de página (centrado):');
+          if (autorUrl && a) {
+            partes.push(`- Línea 1: "© ${[y,a].filter(Boolean).join(' ')}" con el nombre enlazando a ${autorUrl}.`);
+          } else {
+            partes.push(`- Línea 1: "© ${[y,a].filter(Boolean).join(' ')}".`);
+          }
+        }
+        const ccTxt = licContent || '[licencia CC]';
+        const ccLink = linksCC[licContent] || '[enlace CC]';
+        const codeTxt = licCode || '[licencia]';
+        if (codeLinkMode === 'archivo') {
+          partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza a LICENSE.txt) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
+        } else {
+          partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza al sitio oficial) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
+        }
+
+        return partes.join('\n');
+      }
+
+      function updateFooter() {
+        const licContent = getSelected('lic-content');
+        const licCode = getSelected('lic-code');
+        const codeLinkMode = getSelected('code-link-mode') || 'archivo';
+        const autor = $('#autor').value.trim();
+        const autorUrl = $('#autor_url') ? $('#autor_url').value.trim() : '';
+        const anio = $('#anio').value.trim();
+
+        const year = anio || String(new Date().getFullYear());
+        const authorName = autor || 'Autor';
+        const ccLink = {
+          'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+          'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+          'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
+        }[licContent] || 'https://creativecommons.org/licenses/by-sa/4.0/';
+
+        const footYear = $('#foot-year');
+        const footAuthor = $('#foot-author');
+        const footLine1 = $('#foot-line1');
+        const footCodeLic = $('#foot-code-lic');
+        const footCodeLicLink = $('#foot-code-lic-link');
+        const footContentLic = $('#foot-content-lic');
+        const footCcLink = $('#foot-cc-link');
+
+        const showLine1 = (autor || anio);
+        if (footLine1) footLine1.style.display = showLine1 ? '' : 'none';
+        if (footYear) footYear.textContent = year;
+        if (footAuthor) {
+          footAuthor.textContent = authorName;
+          if (autorUrl) {
+            footAuthor.href = autorUrl;
+            footAuthor.style.pointerEvents = '';
+            footAuthor.style.textDecoration = '';
+          } else {
+            footAuthor.href = '#';
+            footAuthor.style.pointerEvents = 'none';
+            footAuthor.style.textDecoration = 'none';
+          }
+        }
+        if (footCodeLic) footCodeLic.textContent = licCode || '—';
+        if (footCodeLicLink) footCodeLicLink.href = (codeLinkMode === 'archivo') ? 'LICENSE.txt' : (
+          {
+            'GPL v3': 'https://www.gnu.org/licenses/gpl-3.0.html',
+            'MPL 2.0': 'https://www.mozilla.org/MPL/2.0/',
+            'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+            'MIT': 'https://opensource.org/license/mit'
+          }[licCode] || '#'
+        );
+        if (footContentLic) footContentLic.textContent = licContent || '—';
+        if (footCcLink) footCcLink.href = ccLink;
+      }
+
+      function update() {
+        $('#output').value = buildPrompt();
+        updateFooter();
+        saveState();
+      }
+
+      $('#tipo').addEventListener('change', () => {
+        const t = $('#tipo').value;
+        $('#box-content').style.display = (t === 'contenidos' || t === 'ambos') ? '' : 'none';
+        $('#box-code').style.display = (t === 'codigo' || t === 'ambos') ? '' : 'none';
+        update();
+      });
+
+      $$("input[name='lic-content']").forEach(r => r.addEventListener('change', update));
+      $$("input[name='lic-code']").forEach(r => r.addEventListener('change', update));
+      $$("input[name='code-link-mode']").forEach(r => r.addEventListener('change', update));
+      [ '#autor', '#autor_url', '#anio', '#titulo', '#url', '#idioma' ].forEach(id => $(id) && $(id).addEventListener('input', update));
+
+      $('#btn-copy').addEventListener('click', async () => {
+        const txt = $('#output').value;
+        try { await navigator.clipboard.writeText(txt); $('#copied').textContent = 'Copiado'; setTimeout(()=>$('#copied').textContent='Copiar', 1200); } catch(e) { alert('Copia manual: Ctrl+C'); }
+      });
+
+      function resetState() {
+        try { localStorage.removeItem(STORAGE_KEY); } catch {}
+        // Vaciar campos y volver a preset
+        ['#titulo','#autor','#anio','#url','#autor_url'].forEach(id => { if ($(id)) $(id).value=''; });
+        $('#idioma').value = 'es';
+        setPreset('reciprocity');
+        update();
+      }
+      const clearBtn = document.getElementById('btn-clear');
+      if (clearBtn) clearBtn.addEventListener('click', resetState);
+
+      $('#preset-reciprocity').addEventListener('click', () => setPreset('reciprocity'));
+      $('#preset-adoption').addEventListener('click', () => setPreset('adoption'));
+      $('#preset-intermediate').addEventListener('click', () => setPreset('intermediate'));
+
+      // Estado inicial: recuperar último estado o preset por defecto
+      const hasSaved = (() => { try { return Boolean(localStorage.getItem(STORAGE_KEY)); } catch { return false; } })();
+      if (hasSaved) { loadState(); update(); } else { setPreset('reciprocity'); }
+    });
+  </script>
+  <!-- Uso principal: incrustar vía <iframe> en WordPress u otra web. -->
+  <meta name="generator" content="Bilateria · Licencias libres para docentes" />
+  <meta name="x-licenses" content="CC BY-SA 4.0, CC BY 4.0, CC BY-NC-SA 4.0, GPL v3, MPL 2.0, Apache 2.0, MIT" />
+  <meta name="x-author" content="Ejemplo" />
+  <meta name="x-date" content="2025-09-05" />
+  <meta name="referrer" content="no-referrer" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'"> 
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%232563eb'/%3E%3Ctext x='8' y='11' font-size='10' text-anchor='middle' fill='white' font-family='Arial'%3EL%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Generador de prompt de licencias</h1>
+      <p class="lead">Elige las licencias recomendadas para contenidos y/o código y genera un prompt listo para pedir el texto de licencia (README / página web).</p>
+
+      <div class="inline" style="margin: 8px 0 4px; gap: 8px">
+        <button id="preset-reciprocity" class="btn" title="CC BY-SA + GPL v3">Reciprocidad (recomendado)</button>
+        <button id="preset-adoption" class="btn btn-ghost" title="CC BY + Apache 2.0">Máxima adopción</button>
+        <button id="preset-intermediate" class="btn btn-ghost" title="CC BY-SA + MPL 2.0">Intermedia</button>
+      </div>
+
+      <fieldset>
+        <legend>Tipo de recurso</legend>
+        <label>
+          <select id="tipo">
+            <option value="ambos">Ambos (contenidos + código)</option>
+            <option value="contenidos">Solo contenidos educativos</option>
+            <option value="codigo">Solo código (apps/herramientas)</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <div class="row">
+        <fieldset id="box-content">
+          <legend>Licencias para contenidos educativos</legend>
+          <label><input type="radio" name="lic-content" value="CC BY-SA 4.0" checked /> CC BY-SA 4.0 — Atribución + compartir igual (recomendada)</label>
+          <label><input type="radio" name="lic-content" value="CC BY 4.0" /> CC BY 4.0 — Atribución</label>
+          <label><input type="radio" name="lic-content" value="CC BY-NC-SA 4.0" /> CC BY-NC-SA 4.0 — No comercial (con reservas)</label>
+          <details>
+            <summary class="hint">Ver detalles</summary>
+            <div class="hint">
+              • CC BY-SA 4.0: uso libre, requiere atribución y compartir con la misma licencia.<br/>
+              • CC BY 4.0: máxima difusión con atribución; las mejoras pueden cerrarse.<br/>
+              • CC BY-NC-SA 4.0: prohíbe usos comerciales; «NC» puede generar ambigüedad.
+            </div>
+          </details>
+        </fieldset>
+
+        <fieldset id="box-code">
+          <legend>Licencias para código</legend>
+          <label><input type="radio" name="lic-code" value="GPL v3" checked /> GPL v3 — Copyleft fuerte (recomendada)</label>
+          <label><input type="radio" name="lic-code" value="MPL 2.0" /> MPL 2.0 — Copyleft moderado</label>
+          <label><input type="radio" name="lic-code" value="Apache 2.0" /> Apache 2.0 — Adopción amplia</label>
+          <label><input type="radio" name="lic-code" value="MIT" /> MIT — Simplicidad</label>
+          <div class="hint" style="margin:6px 0 2px">Dónde enlazar la licencia del código</div>
+          <label><input type="radio" name="code-link-mode" value="archivo" checked /> Crear LICENSE.txt y enlazar al archivo</label>
+          <label><input type="radio" name="code-link-mode" value="oficial" /> Enlazar al sitio oficial de la licencia</label>
+          <details>
+            <summary class="hint">Ver detalles</summary>
+            <div class="hint">
+              • GPL v3: garantiza que las mejoras permanezcan libres (copyleft).<br/>
+              • MPL 2.0: obliga a compartir cambios por archivo; permite combinar con código cerrado.<br/>
+              • Apache 2.0: permisiva, sin obligación de devolver mejoras; protección de patentes.<br/>
+              • MIT: muy permisiva y simple, sin garantías de retorno ni patentes.
+            </div>
+          </details>
+        </fieldset>
+      </div>
+
+      <fieldset>
+        <legend>Datos opcionales para atribución</legend>
+        <div class="row">
+          <label>Título o proyecto<input id="titulo" name="project-title" autocomplete="on" autocapitalize="sentences" type="text" placeholder="p. ej., App de ecuaciones de 1º Bach" /></label>
+          <label>Autoría<input id="autor" name="author" autocomplete="name" autocapitalize="words" type="text" placeholder="p. ej., Ana Pérez" /></label>
+          <label>Año<input id="anio" name="copyright-year" autocomplete="on" type="number" min="1990" max="2100" step="1" placeholder="2025" /></label>
+          <label>URL del recurso<input id="url" name="project-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-centro.edu/recurso" /></label>
+          <label>Enlace del autor<input id="autor_url" name="author-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-perfil-o-autor.example" /></label>
+          <label>Idioma
+            <select id="idioma" name="language" autocomplete="language">
+              <option value="es" selected>español</option>
+              <option value="ca">catalán</option>
+              <option value="en">inglés</option>
+              <option value="gl">galego (gl)</option>
+              <option value="eu">euskara (eu)</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Prompt generado</legend>
+        <div class="inline" style="justify-content: space-between; margin-bottom: 6px;">
+          <div class="inline" style="gap:8px">
+            <button id="btn-clear" class="btn btn-ghost" title="Borrar datos guardados">Borrar datos</button>
+            <button id="btn-copy" class="btn"><span id="copied">Copiar</span></button>
+          </div>
+        </div>
+        <textarea id="output" readonly></textarea>
+      </fieldset>
+
+      <details>
+        <summary class="hint">Licencias incluidas (enlaces oficiales)</summary>
+        <div class="hint">
+          • CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/<br/>
+          • CC BY 4.0: https://creativecommons.org/licenses/by/4.0/<br/>
+          • CC BY-NC-SA 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/<br/>
+          • GPL v3: https://www.gnu.org/licenses/gpl-3.0.html<br/>
+          • MPL 2.0: https://www.mozilla.org/MPL/2.0/<br/>
+          • Apache 2.0: https://www.apache.org/licenses/LICENSE-2.0<br/>
+          • MIT: https://opensource.org/license/mit
+        </div>
+      </details>
+    </div>
+    <footer class="card footer-center" role="contentinfo" style="margin-top:12px">
+      <div class="foot-line">© 2025 <a href="https://bilateria.org" target="_blank" rel="noopener">Juan José de Haro</a></div>
+      <div class="foot-line">Licencia del código: <a href="LICENSE.txt" target="_blank" rel="noopener">GPL v3</a> · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></div>
+    </footer>
+  </div>
+</body>
+</html>

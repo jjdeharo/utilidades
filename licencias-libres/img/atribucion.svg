@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Proyecto: Generador de prompt de licencias
+  Copyright (C) 2025 Juan José de Haro — https://jjdeharo.github.io/utilidades/licencias-libres
+  Licencia del código (gráficos/plantillas incluidos): GNU GPL v3 (ver LICENSE.txt)
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="210" viewBox="0 0 880 210">
+  <defs>
+    <style>
+      .panel{fill:#fff;stroke:#e5e7eb;stroke-width:1}
+      .label{fill:#6b7280;font:14px system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial}
+      .input{fill:#f9fafb;stroke:#e5e7eb}
+      .hint{fill:#111827;font:16px system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial}
+    </style>
+  </defs>
+  <rect x="0.5" y="0.5" width="879" height="209" rx="10" class="panel"/>
+  <text x="20" y="26" class="hint">Datos opcionales para atribución</text>
+
+  <text x="20" y="62" class="label">Título o proyecto</text>
+  <rect x="20" y="70" width="300" height="36" rx="8" class="input"/>
+  <text x="30" y="93" class="label" style="fill:#9ca3af">p. ej., App de ecuaciones de 1º Bach</text>
+
+  <text x="340" y="62" class="label">Autoría</text>
+  <rect x="340" y="70" width="300" height="36" rx="8" class="input"/>
+  <text x="350" y="93" class="label" style="fill:#9ca3af">p. ej., Ana Pérez</text>
+
+  <text x="660" y="62" class="label">Año</text>
+  <rect x="660" y="70" width="200" height="36" rx="8" class="input"/>
+  <text x="670" y="93" class="label" style="fill:#9ca3af">2025</text>
+
+  <text x="20" y="132" class="label">URL del recurso</text>
+  <rect x="20" y="140" width="300" height="36" rx="8" class="input"/>
+  <text x="30" y="163" class="label" style="fill:#9ca3af">https://tu-centro.edu/recurso</text>
+
+  <text x="340" y="132" class="label">Idioma</text>
+  <rect x="340" y="140" width="300" height="36" rx="8" class="input"/>
+  <text x="350" y="163" class="label" style="fill:#111827">español</text>
+</svg>
