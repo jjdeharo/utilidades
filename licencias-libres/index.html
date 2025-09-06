@@ -55,14 +55,52 @@
         intermediate: { content: 'CC BY-SA 4.0', code: 'MPL 2.0' }
       };
 
+      // Marcar visualmente el preset activo (el activo sin 'btn-ghost')
+      function markPreset(p) {
+        const ids = ['#preset-reciprocity', '#preset-adoption', '#preset-intermediate'];
+        const selected = {
+          reciprocity: '#preset-reciprocity',
+          adoption: '#preset-adoption',
+          intermediate: '#preset-intermediate'
+        }[p] || '';
+        ids.forEach(sel => {
+          const el = $(sel);
+          if (!el) return;
+          if (sel === selected) {
+            el.classList.remove('btn-ghost');
+          } else {
+            el.classList.add('btn-ghost');
+          }
+        });
+      }
+
+      // Detectar si la selección actual coincide con algún preset y marcarlo
+      function detectAndMarkPreset() {
+        const content = getSelected('lic-content');
+        const code = getSelected('lic-code');
+        const match = Object.entries(presets).find(([, v]) => v.content === content && v.code === code);
+        if (match) {
+          markPreset(match[0]);
+        } else {
+          ['#preset-reciprocity', '#preset-adoption', '#preset-intermediate']
+            .forEach(sel => { const el = $(sel); if (el) el.classList.add('btn-ghost'); });
+        }
+      }
+
       function setPreset(p) {
         if (!presets[p]) return;
         const { content, code } = presets[p];
-        const c = $$("input[name='lic-content']").find(r => r.value === content);
-        const k = $$("input[name='lic-code']").find(r => r.value === code);
-        if (c) c.checked = true;
-        if (k) k.checked = true;
-        $("#tipo").value = 'ambos';
+        const tipoSel = $('#tipo').value; // 'ambos' | 'codigo' | 'contenidos'
+        // Ajusta solo lo relevante según el tipo actual
+        if (tipoSel !== 'codigo') {
+          const c = $$("input[name='lic-content']").find(r => r.value === content);
+          if (c) c.checked = true;
+        }
+        if (tipoSel !== 'contenidos') {
+          const k = $$("input[name='lic-code']").find(r => r.value === code);
+          if (k) k.checked = true;
+        }
+        markPreset(p);
         update();
       }
 
@@ -172,12 +210,20 @@
             partes.push('- Crea un archivo LICENSE.txt con el texto completo de la licencia.');
             partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
             partes.push('- Menciona la licencia también en la documentación del proyecto.');
-            partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto a LICENSE.txt.');
+            if (tipo !== 'ambos') {
+              partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto a LICENSE.txt.');
+            } else {
+              partes.push('- En el pie, incluye “Licencia del código: ' + lic + '” enlazando a LICENSE.txt (ver Línea 2).');
+            }
           } else {
             partes.push('- No crees LICENSE.txt; enlaza el nombre de la licencia al texto oficial: ' + linkOficial + '.');
             partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
             partes.push('- Menciona la licencia también en la documentación del proyecto.');
-            partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto al sitio oficial.');
+            if (tipo !== 'ambos') {
+              partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto al sitio oficial.');
+            } else {
+              partes.push('- En el pie, incluye “Licencia del código: ' + lic + '” enlazando al sitio oficial (ver Línea 2).');
+            }
           }
           partes.push('');
         }
@@ -187,8 +233,12 @@
           const link = linksCC[licContent] || '';
           partes.push('Para los contenidos educativos (textos, ejercicios, vídeos, imágenes):');
           partes.push(`- Aplica la licencia ${lic}.`);
-          partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, añade el texto:');
-          partes.push(`  “Esta obra está bajo licencia ${lic}” con el enlace oficial a la licencia correspondiente` + (link ? `: ${link}.` : '.'));
+          if (tipo === 'ambos') {
+            partes.push(`- En el pie, añade “Esta obra está bajo licencia ${lic}” enlazando al sitio oficial` + (link ? `: ${link}.` : '.'));
+          } else {
+            partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, añade el texto:');
+            partes.push(`  “Esta obra está bajo licencia ${lic}” con el enlace oficial a la licencia correspondiente` + (link ? `: ${link}.` : '.'));
+          }
           partes.push('- Si es posible, acompáñalo con el icono oficial de la licencia.');
         }
 
@@ -204,14 +254,16 @@
           } else {
             partes.push(`- Línea 1: "© ${[y,a].filter(Boolean).join(' ')}".`);
           }
-        }
-        const ccTxt = licContent || '[licencia CC]';
-        const ccLink = linksCC[licContent] || '[enlace CC]';
-        const codeTxt = licCode || '[licencia]';
-        if (codeLinkMode === 'archivo') {
-          partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza a LICENSE.txt) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
-        } else {
-          partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza al sitio oficial) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
+          if (tipo === 'ambos') {
+            const ccTxt = licContent || '[licencia CC]';
+            const ccLink = linksCC[licContent] || '[enlace CC]';
+            const codeTxt = licCode || '[licencia]';
+            if (codeLinkMode === 'archivo') {
+              partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza a LICENSE.txt) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
+            } else {
+              partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza al sitio oficial) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
+            }
+          }
         }
 
         return partes.join('\n');
@@ -222,6 +274,8 @@
       function update() {
         $('#output').value = buildPrompt();
         saveState();
+        // Sincroniza el resaltado de preset con la selección actual
+        detectAndMarkPreset();
       }
 
       $('#tipo').addEventListener('change', () => {
