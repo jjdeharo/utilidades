@@ -380,4 +380,13 @@
     </footer>
   </div>
 </body>
+  <script>
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight;
+    parent.postMessage(height, "*");
+  }
+  window.onload = sendHeight;
+  window.onresize = sendHeight;
+</script>
+
 </html>
