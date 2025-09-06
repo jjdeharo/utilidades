@@ -217,61 +217,10 @@
         return partes.join('\n');
       }
 
-      function updateFooter() {
-        const licContent = getSelected('lic-content');
-        const licCode = getSelected('lic-code');
-        const codeLinkMode = getSelected('code-link-mode') || 'archivo';
-        const autor = $('#autor').value.trim();
-        const autorUrl = $('#autor_url') ? $('#autor_url').value.trim() : '';
-        const anio = $('#anio').value.trim();
-
-        const year = anio || String(new Date().getFullYear());
-        const authorName = autor || 'Autor';
-        const ccLink = {
-          'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
-          'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
-          'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
-        }[licContent] || 'https://creativecommons.org/licenses/by-sa/4.0/';
-
-        const footYear = $('#foot-year');
-        const footAuthor = $('#foot-author');
-        const footLine1 = $('#foot-line1');
-        const footCodeLic = $('#foot-code-lic');
-        const footCodeLicLink = $('#foot-code-lic-link');
-        const footContentLic = $('#foot-content-lic');
-        const footCcLink = $('#foot-cc-link');
-
-        const showLine1 = (autor || anio);
-        if (footLine1) footLine1.style.display = showLine1 ? '' : 'none';
-        if (footYear) footYear.textContent = year;
-        if (footAuthor) {
-          footAuthor.textContent = authorName;
-          if (autorUrl) {
-            footAuthor.href = autorUrl;
-            footAuthor.style.pointerEvents = '';
-            footAuthor.style.textDecoration = '';
-          } else {
-            footAuthor.href = '#';
-            footAuthor.style.pointerEvents = 'none';
-            footAuthor.style.textDecoration = 'none';
-          }
-        }
-        if (footCodeLic) footCodeLic.textContent = licCode || '—';
-        if (footCodeLicLink) footCodeLicLink.href = (codeLinkMode === 'archivo') ? 'LICENSE.txt' : (
-          {
-            'GPL v3': 'https://www.gnu.org/licenses/gpl-3.0.html',
-            'MPL 2.0': 'https://www.mozilla.org/MPL/2.0/',
-            'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
-            'MIT': 'https://opensource.org/license/mit'
-          }[licCode] || '#'
-        );
-        if (footContentLic) footContentLic.textContent = licContent || '—';
-        if (footCcLink) footCcLink.href = ccLink;
-      }
+      // Footer estático: sin lógica dinámica
 
       function update() {
         $('#output').value = buildPrompt();
-        updateFooter();
         saveState();
       }
 
@@ -427,7 +376,7 @@
     </div>
     <footer class="card footer-center" role="contentinfo" style="margin-top:12px">
       <div class="foot-line">© 2025 <a href="https://bilateria.org" target="_blank" rel="noopener">Juan José de Haro</a></div>
-      <div class="foot-line">Licencia del código: <a href="LICENSE.txt" target="_blank" rel="noopener">GPL v3</a> · Contenido: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></div>
+      <div class="foot-line">Licencia: <a href="LICENSE.txt" target="_blank" rel="noopener">GPL v3</a></div>
     </footer>
   </div>
 </body>
