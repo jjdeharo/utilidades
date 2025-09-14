@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de lectura</title>
+    <!-- Incluye Tailwind CSS para un diseño rápido y moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Usamos la fuente Inter para un aspecto más limpio */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilo para que el scroll de la tabla aparezca si es necesario */
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        /* Estilos para el modal de confirmación */
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 py-12">
+
+    <div class="w-full max-w-4xl mx-auto">
+        <!-- Tarjeta del formulario -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden m-4">
+            <div class="p-8">
+                <header class="mb-8 text-center">
+                    <h1 class="text-3xl font-bold text-gray-800">Ficha de lectura</h1>
+                    <p class="text-gray-500 mt-2">Registra los detalles del libro que has leído.</p>
+                </header>
+
+                <!-- Formulario para la ficha de lectura -->
+                <form id="fichaForm">
+                    <input type="hidden" id="editId">
+                    <div class="space-y-6">
+                        <!-- Campo para el Título del libro -->
+                        <div>
+                            <label for="titulo" class="block text-sm font-medium text-gray-700 mb-1">Título del libro</label>
+                            <input type="text" id="titulo" name="titulo" placeholder="Ej: El Quijote de la Mancha"
+                                   class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" required>
+                        </div>
+
+                        <!-- Campo para el Autor -->
+                        <div>
+                            <label for="autor" class="block text-sm font-medium text-gray-700 mb-1">Autor</label>
+                            <input type="text" id="autor" name="autor" placeholder="Ej: Miguel de Cervantes"
+                                   class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" required>
+                        </div>
+
+                        <!-- Campo para el Resumen -->
+                        <div>
+                            <label for="resumen" class="block text-sm font-medium text-gray-700 mb-1">Resumen</label>
+                            <textarea id="resumen" name="resumen" rows="6" placeholder="Escribe aquí un breve resumen del libro, tus impresiones o notas importantes..."
+                                      class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Botón de envío -->
+                    <div class="mt-8">
+                        <button type="submit" id="submitBtn"
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                            Guardar ficha
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tarjeta para mostrar las fichas guardadas -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden m-4">
+            <div class="p-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Fichas guardadas</h2>
+                    <div class="flex-shrink-0">
+                        <button id="exportarCSV" class="mr-2 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Exportar a CSV
+                        </button>
+                         <button id="limpiarTodo" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Limpiar todo
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container border rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Autor</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Resumen</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fichasBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Las filas se insertarán aquí con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                 <p id="noFichas" class="text-center text-gray-500 mt-4 hidden">Aún no hay fichas guardadas.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación -->
+    <div id="confirmationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop hidden opacity-0">
+        <div class="bg-white rounded-lg shadow-xl p-6 m-4 max-w-sm w-full">
+            <h3 class="text-lg font-medium text-gray-900" id="modalTitle">Confirmar acción</h3>
+            <p class="mt-2 text-sm text-gray-500" id="modalMessage">¿Estás seguro?</p>
+            <div class="mt-4 flex justify-end space-x-2">
+                <button id="modalCancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
+                <button id="modalConfirm" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fichaForm = document.getElementById('fichaForm');
+            const fichasBody = document.getElementById('fichasBody');
+            const exportarCSVBtn = document.getElementById('exportarCSV');
+            const limpiarTodoBtn = document.getElementById('limpiarTodo');
+            const noFichasMsg = document.getElementById('noFichas');
+            const editIdInput = document.getElementById('editId');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Modal elements
+            const modal = document.getElementById('confirmationModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalCancelBtn = document.getElementById('modalCancel');
+            const modalConfirmBtn = document.getElementById('modalConfirm');
+            let confirmCallback = null;
+
+            const STORAGE_KEY = 'fichasDeLectura';
+
+            // Cargar y mostrar las fichas al iniciar
+            mostrarFichas();
+
+            // --- MANEJO DEL MODAL ---
+            function showModal(title, message, onConfirm) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                confirmCallback = onConfirm;
+                modal.classList.remove('hidden');
+                setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            }
+
+            function hideModal() {
+                modal.classList.add('opacity-0');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+            
+            modalCancelBtn.addEventListener('click', hideModal);
+            modalConfirmBtn.addEventListener('click', () => {
+                if (confirmCallback) {
+                    confirmCallback();
+                }
+                hideModal();
+            });
+
+            // --- LÓGICA DE LA APLICACIÓN ---
+
+            // Evento para guardar o actualizar una ficha
+            fichaForm.addEventListener('submit', (e) => {
+                e.preventDefault(); 
+                
+                const id = editIdInput.value;
+                const titulo = document.getElementById('titulo').value.trim();
+                const autor = document.getElementById('autor').value.trim();
+                const resumen = document.getElementById('resumen').value.trim();
+                let fichas = obtenerFichas();
+
+                if (id) { // Estamos editando
+                    fichas = fichas.map(ficha => 
+                        ficha.id === parseInt(id) ? { ...ficha, titulo, autor, resumen } : ficha
+                    );
+                } else { // Estamos creando
+                    const nuevaFicha = { id: Date.now(), titulo, autor, resumen };
+                    fichas.push(nuevaFicha);
+                }
+                
+                guardarFichas(fichas);
+                resetForm();
+                mostrarFichas();
+            });
+            
+            // Delegación de eventos para botones de editar y borrar
+            fichasBody.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+
+                const id = parseInt(target.dataset.id);
+
+                if (target.classList.contains('delete-btn')) {
+                    showModal('Borrar ficha', '¿Estás seguro de que quieres borrar esta ficha? Esta acción no se puede deshacer.', () => {
+                        borrarFicha(id);
+                    });
+                }
+                
+                if (target.classList.contains('edit-btn')) {
+                    cargarFichaEnForm(id);
+                }
+            });
+
+            // Evento para exportar a CSV
+            exportarCSVBtn.addEventListener('click', () => {
+                const fichas = obtenerFichas();
+                if (fichas.length === 0) {
+                     showModal('Exportar a CSV', 'No hay fichas para exportar.', () => {});
+                     modalConfirmBtn.classList.add('hidden'); // Ocultar botón de confirmar si es solo un aviso
+                     modalCancelBtn.textContent = 'Cerrar';
+                     modalCancelBtn.addEventListener('click', ()=> {
+                        modalConfirmBtn.classList.remove('hidden');
+                        modalCancelBtn.textContent = 'Cancelar';
+                     }, { once: true });
+                    return;
+                }
+                
+                const cabecera = ['Título', 'Autor', 'Resumen'];
+                const filas = fichas.map(ficha => [
+                    `"${ficha.titulo.replace(/"/g, '""')}"`,
+                    `"${ficha.autor.replace(/"/g, '""')}"`,
+                    `"${ficha.resumen.replace(/"/g, '""')}"`
+                ]);
+
+                let csvContent = "data:text/csv;charset=utf-8," 
+                    + cabecera.join(',') + '\n' 
+                    + filas.map(e => e.join(',')).join('\n');
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "fichas_de_lectura.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+
+            // Evento para limpiar todas las fichas
+            limpiarTodoBtn.addEventListener('click', () => {
+                showModal('Limpiar todo', '¿Estás seguro de que quieres borrar TODAS las fichas? Esta acción no se puede deshacer.', () => {
+                    localStorage.removeItem(STORAGE_KEY);
+                    mostrarFichas();
+                });
+            });
+
+            function borrarFicha(id) {
+                let fichas = obtenerFichas();
+                fichas = fichas.filter(ficha => ficha.id !== id);
+                guardarFichas(fichas);
+                mostrarFichas();
+            }
+            
+            function cargarFichaEnForm(id) {
+                const fichas = obtenerFichas();
+                const ficha = fichas.find(f => f.id === id);
+                if (!ficha) return;
+
+                document.getElementById('titulo').value = ficha.titulo;
+                document.getElementById('autor').value = ficha.autor;
+                document.getElementById('resumen').value = ficha.resumen;
+                editIdInput.value = ficha.id;
+                submitBtn.textContent = 'Actualizar ficha';
+                submitBtn.classList.replace('bg-indigo-600', 'bg-green-600');
+                submitBtn.classList.replace('hover:bg-indigo-700', 'hover:bg-green-700');
+                window.scrollTo(0, 0);
+            }
+            
+            function resetForm() {
+                fichaForm.reset();
+                editIdInput.value = '';
+                submitBtn.textContent = 'Guardar ficha';
+                submitBtn.classList.replace('bg-green-600', 'bg-indigo-600');
+                submitBtn.classList.replace('hover:bg-green-700', 'hover:bg-indigo-700');
+            }
+
+            function obtenerFichas() {
+                const fichasJSON = localStorage.getItem(STORAGE_KEY);
+                return fichasJSON ? JSON.parse(fichasJSON) : [];
+            }
+
+            function guardarFichas(fichas) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(fichas));
+            }
+
+            function mostrarFichas() {
+                const fichas = obtenerFichas();
+                fichasBody.innerHTML = ''; 
+
+                if (fichas.length === 0) {
+                    noFichasMsg.classList.remove('hidden');
+                } else {
+                    noFichasMsg.classList.add('hidden');
+                    fichas.forEach(ficha => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${ficha.titulo}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${ficha.autor}</td>
+                            <td class="px-6 py-4 whitespace-pre-wrap text-sm text-gray-500">${ficha.resumen}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button data-id="${ficha.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3">Editar</button>
+                                <button data-id="${ficha.id}" class="delete-btn text-red-600 hover:text-red-900">Borrar</button>
+                            </td>
+                        `;
+                        fichasBody.appendChild(tr);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
