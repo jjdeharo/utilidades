@@ -77,6 +77,10 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
                     <h2 class="text-2xl font-bold text-gray-800">Fichas guardadas</h2>
                     <div class="flex-shrink-0">
+                        <input type="file" id="csvFileInput" class="hidden" accept=".csv">
+                        <button id="importarCSV" class="mr-2 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Importar desde CSV
+                        </button>
                         <button id="exportarCSV" class="mr-2 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Exportar a CSV
                         </button>
@@ -127,6 +131,8 @@
             const noFichasMsg = document.getElementById('noFichas');
             const editIdInput = document.getElementById('editId');
             const submitBtn = document.getElementById('submitBtn');
+            const importarCSVBtn = document.getElementById('importarCSV');
+            const csvFileInput = document.getElementById('csvFileInput');
             
             // Modal elements
             const modal = document.getElementById('confirmationModal');
@@ -206,13 +212,92 @@
                     cargarFichaEnForm(id);
                 }
             });
+            
+            // Evento para abrir el selector de archivos de importación
+            importarCSVBtn.addEventListener('click', () => {
+                csvFileInput.click();
+            });
+            
+            // Evento cuando se selecciona un archivo para importar
+            csvFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const text = e.target.result;
+                    try {
+                        const nuevasFichas = parseCSV(text);
+                        if (nuevasFichas.length === 0) {
+                            showModal('Importación vacía', 'No se encontraron fichas válidas en el archivo.', () => {});
+                            return;
+                        }
+                        
+                        showModal(
+                            'Confirmar importación', 
+                            `Se encontraron ${nuevasFichas.length} fichas. Se añadirán a las existentes. ¿Continuar?`, 
+                            () => {
+                                const fichasActuales = obtenerFichas();
+                                const fichasCombinadas = fichasActuales.concat(nuevasFichas);
+                                guardarFichas(fichasCombinadas);
+                                mostrarFichas();
+                            }
+                        );
+
+                    } catch (error) {
+                        console.error('Error al parsear CSV:', error);
+                        showModal('Error', 'El archivo no tiene un formato CSV válido.', () => {});
+                    } finally {
+                        csvFileInput.value = '';
+                    }
+                };
+                reader.onerror = () => {
+                    showModal('Error', 'No se pudo leer el archivo.', () => {});
+                    csvFileInput.value = '';
+                };
+                reader.readAsText(file, 'UTF-8');
+            });
+
+            // Función para parsear el contenido de un CSV
+            function parseCSV(text) {
+                const lines = text.trim().split(/\r?\n/);
+                if (lines.length > 0 && lines[0].toLowerCase().includes('título')) {
+                    lines.shift();
+                }
+
+                const fichas = [];
+                const regex = /(?:\"((?:[^\"]|\"\")*)\"|([^,]*?))(?:,|$)/g;
+                
+                for (const line of lines) {
+                    if (line.trim() === '') continue;
+
+                    let values = [];
+                    let match;
+                    regex.lastIndex = 0;
+                    
+                    while ((match = regex.exec(line)) && match[0] !== '') {
+                        let value = match[1] !== undefined ? match[1] : match[2];
+                        values.push(value.replace(/\"\"/g, '\"'));
+                    }
+                    
+                    if (values.length >= 3) {
+                        fichas.push({
+                            id: Date.now() + fichas.length,
+                            titulo: values[0] || '',
+                            autor: values[1] || '',
+                            resumen: values[2] || '',
+                        });
+                    }
+                }
+                return fichas;
+            }
 
             // Evento para exportar a CSV
             exportarCSVBtn.addEventListener('click', () => {
                 const fichas = obtenerFichas();
                 if (fichas.length === 0) {
                      showModal('Exportar a CSV', 'No hay fichas para exportar.', () => {});
-                     modalConfirmBtn.classList.add('hidden'); // Ocultar botón de confirmar si es solo un aviso
+                     modalConfirmBtn.classList.add('hidden');
                      modalCancelBtn.textContent = 'Cerrar';
                      modalCancelBtn.addEventListener('click', ()=> {
                         modalConfirmBtn.classList.remove('hidden');
