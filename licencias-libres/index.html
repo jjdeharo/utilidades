@@ -37,7 +37,7 @@
     .btn { background: var(--primary); color: #fff; border: 0; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; }
     .btn:hover { background: var(--primary-600); }
     .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
-    
+
     details { margin-top: 6px; }
     .hint { font-size: .85rem; color: var(--muted); }
     .footer-center { text-align: center; }
@@ -46,6 +46,7 @@
     .output-block { background: #f9fafb; border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
     .output-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
     .output-head h3 { margin: 0; font-size: 1rem; }
+    .format-desc { display: block; font-size: .85rem; font-weight: 400; color: var(--muted); }
     .output-block textarea { width: 100%; min-height: 180px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95rem; }
   </style>
   <script>
@@ -59,6 +60,116 @@
         adoption: { content: 'CC BY 4.0', code: 'Apache 2.0' },
         intermediate: { content: 'CC BY-SA 4.0', code: 'MPL 2.0' }
       };
+
+      const I18N = {
+        es: {
+          format: {
+            prompt: 'Prompt para IA',
+            promptDesc: '(para pedir a una IA que redacte el aviso)',
+            text: 'Texto plano',
+            textDesc: '(para pegar directamente en documentos o webs)',
+            html: 'Bloque HTML',
+            htmlDesc: '(para incrustar en tu página con enlaces oficiales)',
+            copy: 'Copiar',
+            copied: 'Copiado',
+            copyFallback: 'Copia manual: Ctrl+C'
+          },
+          outputsIntro: 'Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.',
+          plain: {
+            headingFallback: 'Licencias del proyecto',
+            authorLabel: 'Autoría',
+            resourceLabel: 'Recurso',
+            codeWithLink: 'El código de esta aplicación está disponible bajo licencia {{license}}. Consulta el texto completo en {{link}}.',
+            codeNoLink: 'El código de esta aplicación está disponible bajo licencia {{license}}.',
+            contentWithLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia {{license}}. Consulta el texto completo en {{link}}.',
+            contentNoLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia {{license}}.'
+          },
+          html: {
+            headingFallback: 'Licencias del proyecto',
+            codeWithLink: 'El código de esta aplicación está disponible bajo licencia <a rel="license" href="{{link}}">{{license}}</a>.',
+            codeNoLink: 'El código de esta aplicación está disponible bajo licencia {{license}}.',
+            contentWithLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia <a rel="license" href="{{link}}">{{license}}</a>.',
+            contentNoLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia {{license}}.'
+          },
+          common: {
+            selectLicense: '[selecciona licencia]'
+          }
+        },
+        en: {
+          format: {
+            prompt: 'AI prompt',
+            promptDesc: '(to ask the assistant to draft the notice)',
+            text: 'Plain text',
+            textDesc: '(to paste directly into documents or web pages)',
+            html: 'HTML snippet',
+            htmlDesc: '(to embed on your site with official links)',
+            copy: 'Copy',
+            copied: 'Copied',
+            copyFallback: 'Copy manually: Ctrl+C'
+          },
+          outputsIntro: 'Copy whichever format you need: AI prompt, ready-to-paste text, or HTML with links.',
+          plain: {
+            headingFallback: 'Project licenses',
+            authorLabel: 'Author',
+            resourceLabel: 'Resource',
+            codeWithLink: 'This application\'s code is available under the {{license}} license. Read the full text at {{link}}.',
+            codeNoLink: 'This application\'s code is available under the {{license}} license.',
+            contentWithLink: 'The educational content (texts, exercises, videos, and images) is licensed under {{license}}. Read the full text at {{link}}.',
+            contentNoLink: 'The educational content (texts, exercises, videos, and images) is licensed under {{license}}.'
+          },
+          html: {
+            headingFallback: 'Project licenses',
+            codeWithLink: 'This application\'s code is available under the <a rel="license" href="{{link}}">{{license}}</a> license.',
+            codeNoLink: 'This application\'s code is available under the {{license}} license.',
+            contentWithLink: 'The educational content (texts, exercises, videos, and images) is licensed under <a rel="license" href="{{link}}">{{license}}</a>.',
+            contentNoLink: 'The educational content (texts, exercises, videos, and images) is licensed under {{license}}.'
+          },
+          common: {
+            selectLicense: '[select a license]'
+          }
+        },
+        ca: {
+          format: {
+            prompt: 'Prompt per a IA',
+            promptDesc: '(per demanar a la IA que redacti l\'avís)',
+            text: 'Text pla',
+            textDesc: '(per enganxar directament a documents o webs)',
+            html: 'Bloc HTML',
+            htmlDesc: '(per incrustar a la teva pàgina amb enllaços oficials)',
+            copy: 'Copia',
+            copied: 'Copiat',
+            copyFallback: 'Còpia manual: Ctrl+C'
+          },
+          outputsIntro: 'Copia el format que necessitis: prompt per a IA, text llest per enganxar o HTML amb enllaços.',
+          plain: {
+            headingFallback: 'Llicències del projecte',
+            authorLabel: 'Autoria',
+            resourceLabel: 'Recurs',
+            codeWithLink: 'El codi d\'aquesta aplicació està disponible sota la llicència {{license}}. Consulteu el text complet a {{link}}.',
+            codeNoLink: 'El codi d\'aquesta aplicació està disponible sota la llicència {{license}}.',
+            contentWithLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència {{license}}. Consulteu el text complet a {{link}}.',
+            contentNoLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència {{license}}.'
+          },
+          html: {
+            headingFallback: 'Llicències del projecte',
+            codeWithLink: 'El codi d\'aquesta aplicació està disponible sota la llicència <a rel="license" href="{{link}}">{{license}}</a>.',
+            codeNoLink: 'El codi d\'aquesta aplicació està disponible sota la llicència {{license}}.',
+            contentWithLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència <a rel="license" href="{{link}}">{{license}}</a>.',
+            contentNoLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència {{license}}.'
+          },
+          common: {
+            selectLicense: '[tria una llicència]'
+          }
+        }
+      };
+
+      function getLocale(lang) {
+        return I18N[lang] || I18N.es;
+      }
+
+      function interpolate(template, values) {
+        return template.replace(/\{\{(\w+)\}\}/g, (_, key) => values[key] != null ? values[key] : '');
+      }
 
       // Marcar visualmente el preset activo (el activo sin 'btn-ghost')
       function markPreset(p) {
@@ -272,6 +383,8 @@
       }
 
       function buildPlainText(state) {
+        const lang = state.idioma;
+        const locale = getLocale(lang);
         const tipo = state.tipo;
         const licContent = state.licContent;
         const licCode = state.licCode;
@@ -281,35 +394,40 @@
         const anio = (state.anio || '').trim();
         const url = (state.url || '').trim();
 
+        const placeholder = locale.common.selectLicense;
         const lines = [];
-        if (titulo) lines.push(titulo);
+        lines.push(titulo || locale.plain.headingFallback);
 
         const meta = [];
         if (anio || autor) {
-          const firma = `${anio ? '© ' + anio : ''}${anio && autor ? ' ' : ''}${autor ? autor : ''}`.trim();
-          if (firma) meta.push(firma);
+          const segs = [];
+          if (anio) segs.push('© ' + anio);
+          if (autor) segs.push(autor);
+          if (segs.length) meta.push(segs.join(' '));
         }
-        if (autor && autorUrl) meta.push(`Autoría: ${autorUrl}`);
-        if (url) meta.push(`Recurso: ${url}`);
+        if (autor && autorUrl) meta.push(`${locale.plain.authorLabel}: ${autorUrl}`);
+        if (url) meta.push(`${locale.plain.resourceLabel}: ${url}`);
         if (meta.length) {
           lines.push(meta.join(' · '));
           lines.push('');
         }
 
         if (tipo === 'codigo' || tipo === 'ambos') {
-          const name = licCode || '[selecciona licencia]';
+          const name = licCode || placeholder;
           const link = LINKS_CODE[licCode] || '';
-          lines.push(link
-            ? `El código de esta aplicación está disponible bajo licencia ${name}. Consulta el texto completo en ${link}.`
-            : `El código de esta aplicación está disponible bajo licencia ${name}.`);
+          const sentence = link
+            ? interpolate(locale.plain.codeWithLink, { license: name, link })
+            : interpolate(locale.plain.codeNoLink, { license: name });
+          lines.push(sentence);
         }
         if (tipo === 'ambos') lines.push('');
         if (tipo === 'contenidos' || tipo === 'ambos') {
-          const name = licContent || '[selecciona licencia]';
+          const name = licContent || placeholder;
           const link = LINKS_CC[licContent] || '';
-          lines.push(link
-            ? `Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia ${name}. Consulta el texto completo en ${link}.`
-            : `Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia ${name}.`);
+          const sentence = link
+            ? interpolate(locale.plain.contentWithLink, { license: name, link })
+            : interpolate(locale.plain.contentNoLink, { license: name });
+          lines.push(sentence);
         }
 
         return lines.join('\n');
@@ -320,6 +438,8 @@
       }
 
       function buildHtmlOutput(state) {
+        const lang = state.idioma;
+        const locale = getLocale(lang);
         const tipo = state.tipo;
         const licContent = state.licContent;
         const licCode = state.licCode;
@@ -329,45 +449,42 @@
         const anio = (state.anio || '').trim();
         const url = (state.url || '').trim();
 
-        const heading = titulo ? escapeHtml(titulo) : 'Licencias del proyecto';
+        const heading = titulo ? escapeHtml(titulo) : escapeHtml(locale.html.headingFallback);
         const parts = [];
         parts.push('<section class="licenses-summary" aria-labelledby="licencias-resumen">');
         parts.push(`  <h2 id="licencias-resumen">${heading}</h2>`);
 
         const meta = [];
         if (anio || autor) {
-          const pieces = [];
-          if (anio) pieces.push(`© ${escapeHtml(anio)}`);
+          const segs = [];
+          if (anio) segs.push(`© ${escapeHtml(anio)}`);
           if (autor) {
             const autorLabel = autorUrl ? `<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>` : escapeHtml(autor);
-            pieces.push(autorLabel);
+            segs.push(autorLabel);
           }
-          if (pieces.length) meta.push(pieces.join(' · '));
+          if (segs.length) meta.push(segs.join(' · '));
         }
         if (autor && autorUrl && !meta.length) {
           meta.push(`<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>`);
         }
         if (url) {
-          const enlace = `<a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`;
-          meta.push(enlace);
+          meta.push(`<a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`);
         }
         if (meta.length) {
           parts.push(`  <p>${meta.join(' · ')}</p>`);
         }
 
         if (tipo === 'codigo' || tipo === 'ambos') {
-          const name = escapeHtml(licCode || '[selecciona licencia]');
-          const link = LINKS_CODE[licCode] || '';
-          parts.push(link
-            ? `  <p>El código de esta aplicación está disponible bajo licencia <a rel="license" href="${escapeHtml(link)}">${name}</a>.</p>`
-            : `  <p>El código de esta aplicación está disponible bajo licencia ${name}.</p>`);
+          const name = escapeHtml(licCode || locale.common.selectLicense);
+          const link = LINKS_CODE[licCode] ? escapeHtml(LINKS_CODE[licCode]) : '';
+          const tpl = link ? locale.html.codeWithLink : locale.html.codeNoLink;
+          parts.push('  <p>' + interpolate(tpl, { license: name, link: link || '#' }) + '</p>');
         }
         if (tipo === 'contenidos' || tipo === 'ambos') {
-          const name = escapeHtml(licContent || '[selecciona licencia]');
-          const link = LINKS_CC[licContent] || '';
-          parts.push(link
-            ? `  <p>Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia <a rel="license" href="${escapeHtml(link)}">${name}</a>.</p>`
-            : `  <p>Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia ${name}.</p>`);
+          const name = escapeHtml(licContent || locale.common.selectLicense);
+          const link = LINKS_CC[licContent] ? escapeHtml(LINKS_CC[licContent]) : '';
+          const tpl = link ? locale.html.contentWithLink : locale.html.contentNoLink;
+          parts.push('  <p>' + interpolate(tpl, { license: name, link: link || '#' }) + '</p>');
         }
 
         parts.push('</section>');
@@ -384,8 +501,27 @@
         };
       }
 
+      function applyOutputLabels(lang) {
+        const locale = getLocale(lang);
+        const setText = (selector, text) => { const el = document.querySelector(selector); if (el) el.textContent = text; };
+        setText('[data-i18n="title-prompt"]', locale.format.prompt);
+        setText('[data-i18n="desc-prompt"]', locale.format.promptDesc);
+        setText('[data-i18n="title-text"]', locale.format.text);
+        setText('[data-i18n="desc-text"]', locale.format.textDesc);
+        setText('[data-i18n="title-html"]', locale.format.html);
+        setText('[data-i18n="desc-html"]', locale.format.htmlDesc);
+        setText('[data-i18n="outputs-intro"]', locale.outputsIntro);
+        $$('.btn-copy').forEach(btn => {
+          btn.textContent = locale.format.copy;
+          btn.dataset.copyLabel = locale.format.copy;
+          btn.dataset.copiedLabel = locale.format.copied;
+          btn.dataset.copyFallback = locale.format.copyFallback;
+        });
+      }
+
       function update() {
         const outputs = buildOutputs();
+        applyOutputLabels(outputs.state.idioma);
         $('#out-prompt').value = outputs.prompt;
         $('#out-text').value = outputs.text;
         $('#out-html').value = outputs.html;
@@ -410,13 +546,14 @@
           const targetId = btn.dataset.copyTarget;
           const area = document.getElementById(targetId);
           if (!area) return;
-          const original = btn.textContent;
+          const copyLabel = btn.dataset.copyLabel || btn.textContent;
+          const copiedLabel = btn.dataset.copiedLabel || 'Copiado';
           try {
             await navigator.clipboard.writeText(area.value);
-            btn.textContent = 'Copiado';
-            setTimeout(() => { btn.textContent = original; }, 1200);
+            btn.textContent = copiedLabel;
+            setTimeout(() => { btn.textContent = copyLabel; }, 1200);
           } catch (e) {
-            alert('Copia manual: Ctrl+C');
+            alert(btn.dataset.copyFallback || 'Copia manual: Ctrl+C');
           }
         });
       });
@@ -535,26 +672,35 @@
         <div class="inline" style="gap:8px; margin-bottom:6px">
           <button id="btn-clear" class="btn btn-ghost" title="Borrar datos guardados">Borrar datos</button>
         </div>
-        <p class="hint">Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.</p>
+        <p class="hint" data-i18n="outputs-intro">Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.</p>
         <div class="outputs">
           <div class="output-block">
             <div class="output-head">
-              <h3>Prompt para IA</h3>
-              <button class="btn btn-copy" data-copy-target="out-prompt">Copiar</button>
+              <h3>
+                <span data-i18n="title-prompt">Prompt para IA</span>
+                <span class="format-desc" data-i18n="desc-prompt">(para pedir a una IA que redacte el aviso)</span>
+              </h3>
+              <button class="btn btn-copy" data-copy-target="out-prompt" data-i18n="copy-label">Copiar</button>
             </div>
             <textarea id="out-prompt" readonly></textarea>
           </div>
           <div class="output-block">
             <div class="output-head">
-              <h3>Texto plano</h3>
-              <button class="btn btn-copy" data-copy-target="out-text">Copiar</button>
+              <h3>
+                <span data-i18n="title-text">Texto plano</span>
+                <span class="format-desc" data-i18n="desc-text">(para pegar directamente en documentos o webs)</span>
+              </h3>
+              <button class="btn btn-copy" data-copy-target="out-text" data-i18n="copy-label">Copiar</button>
             </div>
             <textarea id="out-text" readonly></textarea>
           </div>
           <div class="output-block">
             <div class="output-head">
-              <h3>HTML</h3>
-              <button class="btn btn-copy" data-copy-target="out-html">Copiar</button>
+              <h3>
+                <span data-i18n="title-html">Bloque HTML</span>
+                <span class="format-desc" data-i18n="desc-html">(para incrustar en tu página con enlaces oficiales)</span>
+              </h3>
+              <button class="btn btn-copy" data-copy-target="out-html" data-i18n="copy-label">Copiar</button>
             </div>
             <textarea id="out-html" readonly></textarea>
           </div>
