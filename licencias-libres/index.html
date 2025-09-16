@@ -42,6 +42,11 @@
     .hint { font-size: .85rem; color: var(--muted); }
     .footer-center { text-align: center; }
     .foot-line { margin: 4px 0; }
+    .outputs { display: grid; gap: 12px; }
+    .output-block { background: #f9fafb; border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+    .output-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .output-head h3 { margin: 0; font-size: 1rem; }
+    .output-block textarea { width: 100%; min-height: 180px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95rem; }
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -154,33 +159,32 @@
         const r = $$("input[name='"+name+"']").find(x => x.checked);
         return r ? r.value : '';
       }
+      const LINKS_CC = {
+        'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+        'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+        'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
+      };
+      const LINKS_CODE = {
+        'AGPL v3': 'https://www.gnu.org/licenses/agpl-3.0.html',
+        'MPL 2.0': 'https://www.mozilla.org/MPL/2.0/',
+        'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+        'MIT': 'https://opensource.org/license/mit'
+      };
 
-      function buildPrompt() {
-        const tipo = $('#tipo').value;
-        const idioma = $('#idioma').value;
-        const licContent = getSelected('lic-content');
-        const licCode = getSelected('lic-code');
-        const codeLinkMode = getSelected('code-link-mode') || 'archivo';
-        const titulo = $('#titulo').value.trim();
-        const autor = $('#autor').value.trim();
-        const autorUrl = $('#autor_url') ? $('#autor_url').value.trim() : '';
-        const anio = $('#anio').value.trim();
-        const url = $('#url').value.trim();
-
-        const linksCC = {
-          'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
-          'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
-          'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
-        };
-        const linksCode = {
-          'AGPL v3': 'https://www.gnu.org/licenses/agpl-3.0.html',
-          'MPL 2.0': 'https://www.mozilla.org/MPL/2.0/',
-          'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
-          'MIT': 'https://opensource.org/license/mit'
-        };
+      function buildPromptText(state) {
+        const tipo = state.tipo;
+        const idioma = state.idioma;
+        const licContent = state.licContent;
+        const licCode = state.licCode;
+        const codeLinkMode = state.codeLinkMode || 'archivo';
+        const titulo = (state.titulo || '').trim();
+        const autor = (state.autor || '').trim();
+        const autorUrl = (state.autor_url || '').trim();
+        const anio = (state.anio || '').trim();
+        const url = (state.url || '').trim();
 
         const partes = [];
-        if (idioma !== 'es') {
+        if (idioma && idioma !== 'es') {
           const nombres = { 'ca': 'catalán', 'en': 'inglés', 'gl': 'gallego', 'eu': 'euskera' };
           const etiqueta = nombres[idioma] || idioma;
           partes.push(`Responde en: ${etiqueta}.`);
@@ -190,7 +194,6 @@
         partes.push('Añade a mi app educativa las licencias recomendadas para proyectos de código y contenidos.');
         partes.push('');
 
-        // Línea de atribución: solo si hay algún dato
         const atrib = [];
         if (titulo) atrib.push(`título: ${titulo}`);
         if (autor) atrib.push(`autoría: ${autor}`);
@@ -203,7 +206,7 @@
 
         if (tipo === 'codigo' || tipo === 'ambos') {
           const lic = licCode || '[licencia]';
-          const linkOficial = linksCode[licCode] || '[enlace oficial]';
+          const linkOficial = LINKS_CODE[licCode] || '[enlace oficial]';
           partes.push('Para el código:');
           partes.push(`- Aplica la licencia ${lic}.`);
           if (codeLinkMode === 'archivo') {
@@ -211,18 +214,18 @@
             partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
             partes.push('- Menciona la licencia también en la documentación del proyecto.');
             if (tipo !== 'ambos') {
-              partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto a LICENSE.txt.');
+              partes.push(`- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ${lic}” y enlaza ese texto a LICENSE.txt.`);
             } else {
-              partes.push('- En el pie, incluye “Licencia del código: ' + lic + '” enlazando a LICENSE.txt (ver Línea 2).');
+              partes.push(`- En el pie, incluye “Licencia del código: ${lic}” enlazando a LICENSE.txt (ver Línea 2).`);
             }
           } else {
-            partes.push('- No crees LICENSE.txt; enlaza el nombre de la licencia al texto oficial: ' + linkOficial + '.');
+            partes.push(`- No crees LICENSE.txt; enlaza el nombre de la licencia al texto oficial: ${linkOficial}.`);
             partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
             partes.push('- Menciona la licencia también en la documentación del proyecto.');
             if (tipo !== 'ambos') {
-              partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ' + lic + '” y enlaza ese texto al sitio oficial.');
+              partes.push(`- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ${lic}” y enlaza ese texto al sitio oficial.`);
             } else {
-              partes.push('- En el pie, incluye “Licencia del código: ' + lic + '” enlazando al sitio oficial (ver Línea 2).');
+              partes.push(`- En el pie, incluye “Licencia del código: ${lic}” enlazando al sitio oficial (ver Línea 2).`);
             }
           }
           partes.push('');
@@ -230,7 +233,7 @@
 
         if (tipo === 'contenidos' || tipo === 'ambos') {
           const lic = licContent || '[licencia CC]';
-          const link = linksCC[licContent] || '';
+          const link = LINKS_CC[licContent] || '';
           partes.push('Para los contenidos educativos (textos, ejercicios, vídeos, imágenes):');
           partes.push(`- Aplica la licencia ${lic}.`);
           if (tipo === 'ambos') {
@@ -242,7 +245,6 @@
           partes.push('- Si es posible, acompáñalo con el icono oficial de la licencia.');
         }
 
-        // Pie de página estandarizado y centrado
         const y = anio || '';
         const a = autor || '';
         const tieneLinea1 = Boolean(y || a);
@@ -256,7 +258,7 @@
           }
           if (tipo === 'ambos') {
             const ccTxt = licContent || '[licencia CC]';
-            const ccLink = linksCC[licContent] || '[enlace CC]';
+            const ccLink = LINKS_CC[licContent] || '[enlace CC]';
             const codeTxt = licCode || '[licencia]';
             if (codeLinkMode === 'archivo') {
               partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza a LICENSE.txt) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
@@ -269,12 +271,211 @@
         return partes.join('\n');
       }
 
-      // Footer estático: sin lógica dinámica
+      function buildPlainText(state) {
+        const tipo = state.tipo;
+        const licContent = state.licContent;
+        const licCode = state.licCode;
+        const codeLinkMode = state.codeLinkMode || 'archivo';
+        const titulo = (state.titulo || '').trim();
+        const autor = (state.autor || '').trim();
+        const autorUrl = (state.autor_url || '').trim();
+        const anio = (state.anio || '').trim();
+        const url = (state.url || '').trim();
+
+        const lines = [];
+        if (titulo || autor || url) {
+          const res = [];
+          if (titulo) res.push(`Título: ${titulo}`);
+          if (autor && autorUrl) {
+            res.push(`Autoría: ${autor} (${autorUrl})`);
+          } else if (autor) {
+            res.push(`Autoría: ${autor}`);
+          }
+          if (anio) res.push(`Año: ${anio}`);
+          if (url) res.push(`Enlace: ${url}`);
+          lines.push('Datos principales:');
+          lines.push('- ' + res.join(' · '));
+          lines.push('');
+        }
+
+        lines.push('Licencias seleccionadas:');
+        if (tipo === 'codigo' || tipo === 'ambos') {
+          const base = licCode ? `Código: ${licCode}.` : 'Código: (elige una licencia).';
+          const link = LINKS_CODE[licCode] || '';
+          if (codeLinkMode === 'archivo') {
+            lines.push(`- ${base} Texto completo en LICENSE.txt.`);
+          } else {
+            lines.push(`- ${base}` + (link ? ` Enlace oficial: ${link}.` : '')); 
+          }
+        }
+        if (tipo === 'contenidos' || tipo === 'ambos') {
+          const base = licContent ? `Contenidos: ${licContent}.` : 'Contenidos: (elige una licencia).';
+          const link = LINKS_CC[licContent] || '';
+          lines.push(`- ${base}` + (link ? ` Enlace oficial: ${link}.` : ''));
+          lines.push('- Incluye el icono oficial cuando sea posible.');
+        }
+        lines.push('');
+
+        if (titulo || autor || anio || url) {
+          const atrib = [];
+          if (titulo) atrib.push(`Título: ${titulo}`);
+          if (autor) atrib.push(`Autoría: ${autor}` + (autorUrl ? ` (${autorUrl})` : ''));
+          if (anio) atrib.push(`Año: ${anio}`);
+          if (url) atrib.push(`Enlace: ${url}`);
+          lines.push('Atribución sugerida:');
+          lines.push('- ' + atrib.join(' · '));
+          lines.push('');
+        }
+
+        const footer = [];
+        if (anio || autor) {
+          const linea1 = `© ${[anio, autor].filter(Boolean).join(' ')}` + (autorUrl && autor ? ` (${autorUrl})` : '');
+          footer.push(`Línea 1: ${linea1}`);
+        }
+        if (tipo === 'ambos') {
+          const codeLine = licCode ? `Licencia del código: ${licCode}` : 'Licencia del código: [elige licencia]';
+          const ccLine = licContent ? `Contenido: ${licContent}` : 'Contenido: [elige licencia]';
+          const ccLink = LINKS_CC[licContent] || '';
+          if (codeLinkMode === 'archivo') {
+            footer.push(`Línea 2: ${codeLine} (enlazar a LICENSE.txt) · ${ccLine}` + (ccLink ? ` (enlazar a ${ccLink})` : ''));
+          } else {
+            const codeLink = LINKS_CODE[licCode] || '';
+            footer.push(`Línea 2: ${codeLine}` + (codeLink ? ` (enlazar a ${codeLink})` : '') + ` · ${ccLine}` + (ccLink ? ` (enlazar a ${ccLink})` : ''));
+          }
+        } else if (tipo === 'codigo') {
+          const codeLine = licCode ? `Licencia del código: ${licCode}` : 'Licencia del código: [elige licencia]';
+          if (codeLinkMode === 'archivo') {
+            footer.push(`Pie: ${codeLine} (enlazar a LICENSE.txt).`);
+          } else {
+            const codeLink = LINKS_CODE[licCode] || '';
+            footer.push(`Pie: ${codeLine}` + (codeLink ? ` (enlazar a ${codeLink})` : '.'));
+          }
+        } else if (tipo === 'contenidos') {
+          const ccLine = licContent ? `Esta obra está bajo licencia ${licContent}` : 'Esta obra está bajo licencia [elige licencia]';
+          const ccLink = LINKS_CC[licContent] || '';
+          footer.push(`Pie: ${ccLine}` + (ccLink ? ` (enlazar a ${ccLink})` : '.'));
+        }
+
+        if (footer.length) {
+          lines.push('Pie de página sugerido:');
+          footer.forEach(f => lines.push('- ' + f));
+        }
+
+        return lines.join('\n');
+      }
+
+      function escapeHtml(str) {
+        return String(str || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch] || ch));
+      }
+
+      function buildHtmlOutput(state) {
+        const tipo = state.tipo;
+        const licContent = state.licContent;
+        const licCode = state.licCode;
+        const codeLinkMode = state.codeLinkMode || 'archivo';
+        const titulo = (state.titulo || '').trim();
+        const autor = (state.autor || '').trim();
+        const autorUrl = (state.autor_url || '').trim();
+        const anio = (state.anio || '').trim();
+        const url = (state.url || '').trim();
+
+        const parts = [];
+        parts.push('<section aria-labelledby="licencias-resumen">');
+        parts.push('  <h2 id="licencias-resumen">Licencias del proyecto</h2>');
+        if (titulo || autor || url) {
+          const info = [];
+          if (titulo) info.push(`Título: ${escapeHtml(titulo)}`);
+          if (autor) {
+            const autorText = autorUrl ? `<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>` : escapeHtml(autor);
+            info.push(`Autoría: ${autorText}`);
+          }
+          if (anio) info.push(`Año: ${escapeHtml(anio)}`);
+          if (url) info.push(`Enlace: <a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`);
+          parts.push('  <p>' + info.join(' · ') + '</p>');
+        }
+
+        if (tipo === 'codigo' || tipo === 'ambos' || tipo === 'contenidos') {
+          parts.push('  <ul>');
+          if (tipo === 'codigo' || tipo === 'ambos') {
+            if (codeLinkMode === 'archivo') {
+              parts.push(`    <li>Licencia del código: <a rel="license" href="LICENSE.txt">${escapeHtml(licCode || '[selecciona licencia]')}</a> (texto completo en LICENSE.txt).</li>`);
+            } else {
+              const codeLink = LINKS_CODE[licCode] || '';
+              const href = codeLink ? escapeHtml(codeLink) : '#';
+              const rel = codeLink ? ' rel="license"' : '';
+              parts.push(`    <li>Licencia del código: <a${rel} href="${codeLink ? href : '#'}">${escapeHtml(licCode || '[selecciona licencia]')}</a>${codeLink ? '' : ' (añade el enlace oficial).'}</li>`);
+            }
+          }
+          if (tipo === 'contenidos' || tipo === 'ambos') {
+            const ccLink = LINKS_CC[licContent] || '';
+            const href = ccLink ? escapeHtml(ccLink) : '#';
+            const rel = ccLink ? ' rel="license"' : '';
+            parts.push(`    <li>Licencia de contenidos: <a${rel} href="${ccLink ? href : '#'}">${escapeHtml(licContent || '[selecciona licencia]')}</a>${ccLink ? '' : ' (añade el enlace oficial).'}</li>`);
+          }
+          parts.push('  </ul>');
+        }
+
+        if (tipo === 'contenidos' || tipo === 'ambos') {
+          parts.push('  <p>Cuando sea posible, acompaña el aviso con el icono oficial de la licencia.</p>');
+        }
+
+        const footer = [];
+        if (anio || autor) {
+          if (autorUrl && autor) {
+            footer.push(`Línea 1: © ${escapeHtml([anio, autor].filter(Boolean).join(' '))} (<a href="${escapeHtml(autorUrl)}">${escapeHtml(autor)}</a>)`);
+          } else {
+            footer.push(`Línea 1: © ${escapeHtml([anio, autor].filter(Boolean).join(' '))}`);
+          }
+        }
+        if (tipo === 'ambos') {
+          const ccLink = LINKS_CC[licContent] || '';
+          if (codeLinkMode === 'archivo') {
+            footer.push(`Línea 2: Licencia del código: <a rel="license" href="LICENSE.txt">${escapeHtml(licCode || '[selecciona licencia]')}</a> · Contenido: <a rel="license" href="${escapeHtml(ccLink || '#')}">${escapeHtml(licContent || '[selecciona licencia]')}</a>`);
+          } else {
+            const codeLink = LINKS_CODE[licCode] || '';
+            footer.push(`Línea 2: Licencia del código: <a rel="license" href="${escapeHtml(codeLink || '#')}">${escapeHtml(licCode || '[selecciona licencia]')}</a> · Contenido: <a rel="license" href="${escapeHtml(ccLink || '#')}">${escapeHtml(licContent || '[selecciona licencia]')}</a>`);
+          }
+        } else if (tipo === 'codigo') {
+          if (codeLinkMode === 'archivo') {
+            footer.push(`Pie: Licencia del código: <a rel="license" href="LICENSE.txt">${escapeHtml(licCode || '[selecciona licencia]')}</a>`);
+          } else {
+            const codeLink = LINKS_CODE[licCode] || '';
+            footer.push(`Pie: Licencia del código: <a rel="license" href="${escapeHtml(codeLink || '#')}">${escapeHtml(licCode || '[selecciona licencia]')}</a>`);
+          }
+        } else if (tipo === 'contenidos') {
+          const ccLink = LINKS_CC[licContent] || '';
+          footer.push(`Pie: Esta obra está bajo licencia <a rel="license" href="${escapeHtml(ccLink || '#')}">${escapeHtml(licContent || '[selecciona licencia]')}</a>`);
+        }
+
+        if (footer.length) {
+          parts.push('  <footer>');
+          parts.push('    <p>Pie de página sugerido:</p>');
+          parts.push('    <ul>');
+          footer.forEach(line => parts.push('      <li>' + line + '</li>'));
+          parts.push('    </ul>');
+          parts.push('  </footer>');
+        }
+
+        parts.push('</section>');
+        return parts.join('\n');
+      }
+
+      function buildOutputs() {
+        const state = getState();
+        return {
+          state,
+          prompt: buildPromptText(state),
+          text: buildPlainText(state),
+          html: buildHtmlOutput(state)
+        };
+      }
 
       function update() {
-        $('#output').value = buildPrompt();
+        const outputs = buildOutputs();
+        $('#out-prompt').value = outputs.prompt;
+        $('#out-text').value = outputs.text;
+        $('#out-html').value = outputs.html;
         saveState();
-        // Sincroniza el resaltado de preset con la selección actual
         detectAndMarkPreset();
       }
 
@@ -290,9 +491,20 @@
       $$("input[name='code-link-mode']").forEach(r => r.addEventListener('change', update));
       [ '#autor', '#autor_url', '#anio', '#titulo', '#url', '#idioma' ].forEach(id => $(id) && $(id).addEventListener('input', update));
 
-      $('#btn-copy').addEventListener('click', async () => {
-        const txt = $('#output').value;
-        try { await navigator.clipboard.writeText(txt); $('#copied').textContent = 'Copiado'; setTimeout(()=>$('#copied').textContent='Copiar', 1200); } catch(e) { alert('Copia manual: Ctrl+C'); }
+      $$('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const targetId = btn.dataset.copyTarget;
+          const area = document.getElementById(targetId);
+          if (!area) return;
+          const original = btn.textContent;
+          try {
+            await navigator.clipboard.writeText(area.value);
+            btn.textContent = 'Copiado';
+            setTimeout(() => { btn.textContent = original; }, 1200);
+          } catch (e) {
+            alert('Copia manual: Ctrl+C');
+          }
+        });
       });
 
       function resetState() {
@@ -405,14 +617,34 @@
       </fieldset>
 
       <fieldset>
-        <legend>Prompt generado</legend>
-        <div class="inline" style="justify-content: space-between; margin-bottom: 6px;">
-          <div class="inline" style="gap:8px">
-            <button id="btn-clear" class="btn btn-ghost" title="Borrar datos guardados">Borrar datos</button>
-            <button id="btn-copy" class="btn"><span id="copied">Copiar</span></button>
+        <legend>Resultados generados</legend>
+        <div class="inline" style="gap:8px; margin-bottom:6px">
+          <button id="btn-clear" class="btn btn-ghost" title="Borrar datos guardados">Borrar datos</button>
+        </div>
+        <p class="hint">Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.</p>
+        <div class="outputs">
+          <div class="output-block">
+            <div class="output-head">
+              <h3>Prompt para IA</h3>
+              <button class="btn btn-copy" data-copy-target="out-prompt">Copiar</button>
+            </div>
+            <textarea id="out-prompt" readonly></textarea>
+          </div>
+          <div class="output-block">
+            <div class="output-head">
+              <h3>Texto plano</h3>
+              <button class="btn btn-copy" data-copy-target="out-text">Copiar</button>
+            </div>
+            <textarea id="out-text" readonly></textarea>
+          </div>
+          <div class="output-block">
+            <div class="output-head">
+              <h3>HTML</h3>
+              <button class="btn btn-copy" data-copy-target="out-html">Copiar</button>
+            </div>
+            <textarea id="out-html" readonly></textarea>
           </div>
         </div>
-        <textarea id="output" readonly></textarea>
       </fieldset>
 
       <details>
