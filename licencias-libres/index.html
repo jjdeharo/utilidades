@@ -275,7 +275,6 @@
         const tipo = state.tipo;
         const licContent = state.licContent;
         const licCode = state.licCode;
-        const codeLinkMode = state.codeLinkMode || 'archivo';
         const titulo = (state.titulo || '').trim();
         const autor = (state.autor || '').trim();
         const autorUrl = (state.autor_url || '').trim();
@@ -283,82 +282,34 @@
         const url = (state.url || '').trim();
 
         const lines = [];
-        if (titulo || autor || url) {
-          const res = [];
-          if (titulo) res.push(`Título: ${titulo}`);
-          if (autor && autorUrl) {
-            res.push(`Autoría: ${autor} (${autorUrl})`);
-          } else if (autor) {
-            res.push(`Autoría: ${autor}`);
-          }
-          if (anio) res.push(`Año: ${anio}`);
-          if (url) res.push(`Enlace: ${url}`);
-          lines.push('Datos principales:');
-          lines.push('- ' + res.join(' · '));
-          lines.push('');
-        }
+        if (titulo) lines.push(titulo);
 
-        lines.push('Licencias seleccionadas:');
-        if (tipo === 'codigo' || tipo === 'ambos') {
-          const base = licCode ? `Código: ${licCode}.` : 'Código: (elige una licencia).';
-          const link = LINKS_CODE[licCode] || '';
-          if (codeLinkMode === 'archivo') {
-            lines.push(`- ${base} Texto completo en LICENSE.txt.`);
-          } else {
-            lines.push(`- ${base}` + (link ? ` Enlace oficial: ${link}.` : '')); 
-          }
-        }
-        if (tipo === 'contenidos' || tipo === 'ambos') {
-          const base = licContent ? `Contenidos: ${licContent}.` : 'Contenidos: (elige una licencia).';
-          const link = LINKS_CC[licContent] || '';
-          lines.push(`- ${base}` + (link ? ` Enlace oficial: ${link}.` : ''));
-          lines.push('- Incluye el icono oficial cuando sea posible.');
-        }
-        lines.push('');
-
-        if (titulo || autor || anio || url) {
-          const atrib = [];
-          if (titulo) atrib.push(`Título: ${titulo}`);
-          if (autor) atrib.push(`Autoría: ${autor}` + (autorUrl ? ` (${autorUrl})` : ''));
-          if (anio) atrib.push(`Año: ${anio}`);
-          if (url) atrib.push(`Enlace: ${url}`);
-          lines.push('Atribución sugerida:');
-          lines.push('- ' + atrib.join(' · '));
-          lines.push('');
-        }
-
-        const footer = [];
+        const meta = [];
         if (anio || autor) {
-          const linea1 = `© ${[anio, autor].filter(Boolean).join(' ')}` + (autorUrl && autor ? ` (${autorUrl})` : '');
-          footer.push(`Línea 1: ${linea1}`);
+          const firma = `${anio ? '© ' + anio : ''}${anio && autor ? ' ' : ''}${autor ? autor : ''}`.trim();
+          if (firma) meta.push(firma);
         }
-        if (tipo === 'ambos') {
-          const codeLine = licCode ? `Licencia del código: ${licCode}` : 'Licencia del código: [elige licencia]';
-          const ccLine = licContent ? `Contenido: ${licContent}` : 'Contenido: [elige licencia]';
-          const ccLink = LINKS_CC[licContent] || '';
-          if (codeLinkMode === 'archivo') {
-            footer.push(`Línea 2: ${codeLine} (enlazar a LICENSE.txt) · ${ccLine}` + (ccLink ? ` (enlazar a ${ccLink})` : ''));
-          } else {
-            const codeLink = LINKS_CODE[licCode] || '';
-            footer.push(`Línea 2: ${codeLine}` + (codeLink ? ` (enlazar a ${codeLink})` : '') + ` · ${ccLine}` + (ccLink ? ` (enlazar a ${ccLink})` : ''));
-          }
-        } else if (tipo === 'codigo') {
-          const codeLine = licCode ? `Licencia del código: ${licCode}` : 'Licencia del código: [elige licencia]';
-          if (codeLinkMode === 'archivo') {
-            footer.push(`Pie: ${codeLine} (enlazar a LICENSE.txt).`);
-          } else {
-            const codeLink = LINKS_CODE[licCode] || '';
-            footer.push(`Pie: ${codeLine}` + (codeLink ? ` (enlazar a ${codeLink})` : '.'));
-          }
-        } else if (tipo === 'contenidos') {
-          const ccLine = licContent ? `Esta obra está bajo licencia ${licContent}` : 'Esta obra está bajo licencia [elige licencia]';
-          const ccLink = LINKS_CC[licContent] || '';
-          footer.push(`Pie: ${ccLine}` + (ccLink ? ` (enlazar a ${ccLink})` : '.'));
+        if (autor && autorUrl) meta.push(`Autoría: ${autorUrl}`);
+        if (url) meta.push(`Recurso: ${url}`);
+        if (meta.length) {
+          lines.push(meta.join(' · '));
+          lines.push('');
         }
 
-        if (footer.length) {
-          lines.push('Pie de página sugerido:');
-          footer.forEach(f => lines.push('- ' + f));
+        if (tipo === 'codigo' || tipo === 'ambos') {
+          const name = licCode || '[selecciona licencia]';
+          const link = LINKS_CODE[licCode] || '';
+          lines.push(link
+            ? `El código de esta aplicación está disponible bajo licencia ${name}. Consulta el texto completo en ${link}.`
+            : `El código de esta aplicación está disponible bajo licencia ${name}.`);
+        }
+        if (tipo === 'ambos') lines.push('');
+        if (tipo === 'contenidos' || tipo === 'ambos') {
+          const name = licContent || '[selecciona licencia]';
+          const link = LINKS_CC[licContent] || '';
+          lines.push(link
+            ? `Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia ${name}. Consulta el texto completo en ${link}.`
+            : `Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia ${name}.`);
         }
 
         return lines.join('\n');
@@ -372,88 +323,51 @@
         const tipo = state.tipo;
         const licContent = state.licContent;
         const licCode = state.licCode;
-        const codeLinkMode = state.codeLinkMode || 'archivo';
         const titulo = (state.titulo || '').trim();
         const autor = (state.autor || '').trim();
         const autorUrl = (state.autor_url || '').trim();
         const anio = (state.anio || '').trim();
         const url = (state.url || '').trim();
 
+        const heading = titulo ? escapeHtml(titulo) : 'Licencias del proyecto';
         const parts = [];
-        parts.push('<section aria-labelledby="licencias-resumen">');
-        parts.push('  <h2 id="licencias-resumen">Licencias del proyecto</h2>');
-        if (titulo || autor || url) {
-          const info = [];
-          if (titulo) info.push(`Título: ${escapeHtml(titulo)}`);
-          if (autor) {
-            const autorText = autorUrl ? `<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>` : escapeHtml(autor);
-            info.push(`Autoría: ${autorText}`);
-          }
-          if (anio) info.push(`Año: ${escapeHtml(anio)}`);
-          if (url) info.push(`Enlace: <a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`);
-          parts.push('  <p>' + info.join(' · ') + '</p>');
-        }
+        parts.push('<section class="licenses-summary" aria-labelledby="licencias-resumen">');
+        parts.push(`  <h2 id="licencias-resumen">${heading}</h2>`);
 
-        if (tipo === 'codigo' || tipo === 'ambos' || tipo === 'contenidos') {
-          parts.push('  <ul>');
-          if (tipo === 'codigo' || tipo === 'ambos') {
-            if (codeLinkMode === 'archivo') {
-              parts.push(`    <li>Licencia del código: <a rel="license" href="LICENSE.txt">${escapeHtml(licCode || '[selecciona licencia]')}</a> (texto completo en LICENSE.txt).</li>`);
-            } else {
-              const codeLink = LINKS_CODE[licCode] || '';
-              const href = codeLink ? escapeHtml(codeLink) : '#';
-              const rel = codeLink ? ' rel="license"' : '';
-              parts.push(`    <li>Licencia del código: <a${rel} href="${codeLink ? href : '#'}">${escapeHtml(licCode || '[selecciona licencia]')}</a>${codeLink ? '' : ' (añade el enlace oficial).'}</li>`);
-            }
-          }
-          if (tipo === 'contenidos' || tipo === 'ambos') {
-            const ccLink = LINKS_CC[licContent] || '';
-            const href = ccLink ? escapeHtml(ccLink) : '#';
-            const rel = ccLink ? ' rel="license"' : '';
-            parts.push(`    <li>Licencia de contenidos: <a${rel} href="${ccLink ? href : '#'}">${escapeHtml(licContent || '[selecciona licencia]')}</a>${ccLink ? '' : ' (añade el enlace oficial).'}</li>`);
-          }
-          parts.push('  </ul>');
-        }
-
-        if (tipo === 'contenidos' || tipo === 'ambos') {
-          parts.push('  <p>Cuando sea posible, acompaña el aviso con el icono oficial de la licencia.</p>');
-        }
-
-        const footer = [];
+        const meta = [];
         if (anio || autor) {
-          if (autorUrl && autor) {
-            footer.push(`Línea 1: © ${escapeHtml([anio, autor].filter(Boolean).join(' '))} (<a href="${escapeHtml(autorUrl)}">${escapeHtml(autor)}</a>)`);
-          } else {
-            footer.push(`Línea 1: © ${escapeHtml([anio, autor].filter(Boolean).join(' '))}`);
+          const pieces = [];
+          if (anio) pieces.push(`© ${escapeHtml(anio)}`);
+          if (autor) {
+            const autorLabel = autorUrl ? `<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>` : escapeHtml(autor);
+            pieces.push(autorLabel);
           }
+          if (pieces.length) meta.push(pieces.join(' · '));
         }
-        if (tipo === 'ambos') {
-          const ccLink = LINKS_CC[licContent] || '';
-          if (codeLinkMode === 'archivo') {
-            footer.push(`Línea 2: Licencia del código: <a rel="license" href="LICENSE.txt">${escapeHtml(licCode || '[selecciona licencia]')}</a> · Contenido: <a rel="license" href="${escapeHtml(ccLink || '#')}">${escapeHtml(licContent || '[selecciona licencia]')}</a>`);
-          } else {
-            const codeLink = LINKS_CODE[licCode] || '';
-            footer.push(`Línea 2: Licencia del código: <a rel="license" href="${escapeHtml(codeLink || '#')}">${escapeHtml(licCode || '[selecciona licencia]')}</a> · Contenido: <a rel="license" href="${escapeHtml(ccLink || '#')}">${escapeHtml(licContent || '[selecciona licencia]')}</a>`);
-          }
-        } else if (tipo === 'codigo') {
-          if (codeLinkMode === 'archivo') {
-            footer.push(`Pie: Licencia del código: <a rel="license" href="LICENSE.txt">${escapeHtml(licCode || '[selecciona licencia]')}</a>`);
-          } else {
-            const codeLink = LINKS_CODE[licCode] || '';
-            footer.push(`Pie: Licencia del código: <a rel="license" href="${escapeHtml(codeLink || '#')}">${escapeHtml(licCode || '[selecciona licencia]')}</a>`);
-          }
-        } else if (tipo === 'contenidos') {
-          const ccLink = LINKS_CC[licContent] || '';
-          footer.push(`Pie: Esta obra está bajo licencia <a rel="license" href="${escapeHtml(ccLink || '#')}">${escapeHtml(licContent || '[selecciona licencia]')}</a>`);
+        if (autor && autorUrl && !meta.length) {
+          meta.push(`<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>`);
+        }
+        if (url) {
+          const enlace = `<a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`;
+          meta.push(enlace);
+        }
+        if (meta.length) {
+          parts.push(`  <p>${meta.join(' · ')}</p>`);
         }
 
-        if (footer.length) {
-          parts.push('  <footer>');
-          parts.push('    <p>Pie de página sugerido:</p>');
-          parts.push('    <ul>');
-          footer.forEach(line => parts.push('      <li>' + line + '</li>'));
-          parts.push('    </ul>');
-          parts.push('  </footer>');
+        if (tipo === 'codigo' || tipo === 'ambos') {
+          const name = escapeHtml(licCode || '[selecciona licencia]');
+          const link = LINKS_CODE[licCode] || '';
+          parts.push(link
+            ? `  <p>El código de esta aplicación está disponible bajo licencia <a rel="license" href="${escapeHtml(link)}">${name}</a>.</p>`
+            : `  <p>El código de esta aplicación está disponible bajo licencia ${name}.</p>`);
+        }
+        if (tipo === 'contenidos' || tipo === 'ambos') {
+          const name = escapeHtml(licContent || '[selecciona licencia]');
+          const link = LINKS_CC[licContent] || '';
+          parts.push(link
+            ? `  <p>Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia <a rel="license" href="${escapeHtml(link)}">${name}</a>.</p>`
+            : `  <p>Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia ${name}.</p>`);
         }
 
         parts.push('</section>');
