@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catálogo de utilidades</title>
+    <meta name="description" content="Índice de utilidades web estáticas del repositorio utilidades." />
+    <style>
+      :root { --bg:#0f172a; --fg:#e2e8f0; --muted:#94a3b8; --card:#111827; --accent:#38bdf8; }
+      html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Noto Sans",sans-serif}
+      header{padding:24px 16px 8px;max-width:980px;margin:0 auto}
+      h1{margin:0 0 8px;font-size:1.6rem}
+      p{margin:0 0 16px;color:var(--muted)}
+      .toolbar{display:flex;gap:12px;flex-wrap:wrap}
+      .search{flex:1 1 280px;display:flex;align-items:center;background:var(--card);border:1px solid #1f2937;border-radius:10px;padding:8px 12px}
+      .search input{all:unset;flex:1;color:var(--fg)}
+      main{max-width:980px;margin:0 auto;padding:8px 16px 32px}
+      section{margin:18px 0}
+      .section-title{margin:14px 0 8px;font-size:1.1rem;color:var(--muted)}
+      ul.apps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+      .app{background:var(--card);border:1px solid #1f2937;border-radius:10px}
+      .app a{display:block;padding:12px 14px;color:var(--fg);text-decoration:none}
+      .app a:hover{background:#0b1220;color:var(--accent)}
+      .count{color:var(--muted);font-size:.9rem}
+      footer{max-width:980px;margin:0 auto;padding:12px 16px 32px;color:var(--muted);font-size:.9rem}
+      .hidden{display:none !important}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Catálogo de utilidades</h1>
+      <p>Índice navegable de las herramientas estáticas publicadas en este repositorio. Usa el buscador para filtrar por nombre o tema.</p>
+      <div class="toolbar">
+        <label class="search" aria-label="Buscar aplicaciones">
+          🔎&nbsp;<input id="q" type="search" placeholder="Buscar (p. ej., estadística, licencias, markdown)…" autofocus />
+        </label>
+        <div class="count" id="count"></div>
+      </div>
+    </header>
+    <main id="catalog">
+
+      <section data-group="Estadística">
+        <h2 class="section-title">Estadística</h2>
+        <ul class="apps">
+          <li class="app"><a href="estadistica/Boot_Media_IC/index.html">Bootstrap IC media</a></li>
+          <li class="app"><a href="estadistica/IC_media/index.html">IC media</a></li>
+          <li class="app"><a href="estadistica/IC_porcentajes/index.html">IC porcentajes</a></li>
+          <li class="app"><a href="estadistica/IC_boot_porc/index.html">Bootstrap IC porcentajes</a></li>
+          <li class="app"><a href="estadistica/contraste_porc/index.html">Contraste de proporciones</a></li>
+          <li class="app"><a href="estadistica/EvalMetodo/index.html">Evaluación de método</a></li>
+          <li class="app"><a href="estadistica/Hip_boot/index.html">Hipótesis por bootstrap</a></li>
+          <li class="app"><a href="estadistica/K_S/index.html">Kolmogorov–Smirnov</a></li>
+          <li class="app"><a href="muestreo/index.html">Muestreo</a></li>
+        </ul>
+      </section>
+
+      <section data-group="Cooperativo">
+        <h2 class="section-title">Trabajo cooperativo</h2>
+        <ul class="apps">
+          <li class="app"><a href="generador_grupos/index.html">Generador de grupos</a></li>
+          <li class="app"><a href="grup_coop/index.html">Grupos cooperativos (ES)</a></li>
+          <li class="app"><a href="grup_coop_ca/index.html">Grups cooperatius (CA)</a></li>
+          <li class="app"><a href="parejas_aleatorias/index.html">Parejas aleatorias</a></li>
+          <li class="app"><a href="seleccion_nombres/index.html">Selección de nombres</a></li>
+        </ul>
+      </section>
+
+      <section data-group="Texto y Markdown">
+        <h2 class="section-title">Texto y Markdown</h2>
+        <ul class="apps">
+          <li class="app"><a href="contador_palabras/index.html">Contador de palabras</a></li>
+          <li class="app"><a href="markdown/index.html">Markdown sandbox</a></li>
+          <li class="app"><a href="extraeurlmermaid/index.html">Extraer URLs Mermaid</a></li>
+          <li class="app"><a href="prompts/index.html">Prompts (misc)</a></li>
+          <li class="app"><a href="prompts_edu/index.html">Prompts educativos</a></li>
+          
+        </ul>
+      </section>
+
+      <section data-group="Multimedia y accesibilidad">
+        <h2 class="section-title">Multimedia y accesibilidad</h2>
+        <ul class="apps">
+          <li class="app"><a href="cuenta_atras/index.html">Cuenta atrás</a></li>
+          
+        </ul>
+      </section>
+
+      <section data-group="Licencias y ética">
+        <h2 class="section-title">Licencias y ética</h2>
+        <ul class="apps">
+          <li class="app"><a href="licencias-libres/index.html">Guía de licencias</a></li>
+          <li class="app"><a href="legibilidad/index.html">Legibilidad</a></li>
+          <li class="app"><a href="entropia/index.html">Entropía</a></li>
+        </ul>
+      </section>
+
+      <section data-group="Otros">
+        <h2 class="section-title">Otros</h2>
+        <ul class="apps">
+          <li class="app"><a href="anaweb/index.html">Anaweb</a></li>
+          <li class="app"><a href="iaform/index.html">IA form</a></li>
+          <li class="app"><a href="latex/longtable/index.html">LaTeX Longtable</a></li>
+          <li class="app"><a href="sda/index.html">SDA</a></li>
+        </ul>
+      </section>
+
+    </main>
+    <footer>
+      <span id="status"></span>
+    </footer>
+    <script>
+      const q = document.getElementById('q');
+      const sections = [...document.querySelectorAll('section')];
+      const countEl = document.getElementById('count');
+      function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+      function filter(){
+        const term = normalize(q.value.trim());
+        let visibleApps = 0;
+        sections.forEach(sec => {
+          const apps = [...sec.querySelectorAll('.app')];
+          let secVisible = 0;
+          apps.forEach(li => {
+            const text = normalize(li.textContent);
+            const show = !term || text.includes(term);
+            li.classList.toggle('hidden', !show);
+            if(show) secVisible++;
+          });
+          sec.classList.toggle('hidden', secVisible === 0);
+          visibleApps += secVisible;
+        });
+        countEl.textContent = visibleApps + ' utilidades visibles';
+      }
+      q.addEventListener('input', filter);
+      filter();
+      const status = document.getElementById('status');
+      status.textContent = 'Última actualización: ' + new Date().toLocaleDateString('es-ES');
+    </script>
+  </body>
+  </html>
