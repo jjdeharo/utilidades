@@ -9,616 +9,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Generador de prompt de licencias</title>
-  <style>
-    :root {
-      --bg: #f7f7fb;
-      --panel: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --primary: #2563eb;
-      --primary-600: #1d4ed8;
-      --border: #e5e7eb;
-      --ok: #10b981;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; background: var(--bg); color: var(--text); }
-    .wrap { max-width: 920px; margin: 24px auto; padding: 0 16px; }
-    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 1px 1px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.04); }
-    h1 { font-size: 1.25rem; margin: 0 0 8px; }
-    p.lead { margin: 0 0 12px; color: var(--muted); font-size: .95rem; }
-    fieldset { border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin: 12px 0; }
-    legend { padding: 0 6px; color: var(--muted); font-size: .9rem; }
-    label { display: block; margin: 6px 0; }
-    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-    .inline { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-    input[type="text"], input[type="url"], input[type="number"], select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); }
-    textarea { min-height: 180px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95rem; }
-    .btn { background: var(--primary); color: #fff; border: 0; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; }
-    .btn:hover { background: var(--primary-600); }
-    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  <title>Generador de licencias para recursos educativos abiertos (REA)</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="i18n.js" defer></script>
+  <script src="scripts.js" defer></script>
 
-    details { margin-top: 6px; }
-    .hint { font-size: .85rem; color: var(--muted); }
-    .footer-center { text-align: center; }
-    .foot-line { margin: 4px 0; }
-    .outputs { display: grid; gap: 12px; }
-    .output-block { background: #f9fafb; border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
-    .output-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-    .output-head h3 { margin: 0; font-size: 1rem; }
-    .format-desc { display: block; font-size: .85rem; font-weight: 400; color: var(--muted); }
-    .output-block textarea { width: 100%; min-height: 180px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95rem; }
-  </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const $ = (q) => document.querySelector(q);
-      const $$ = (q) => Array.from(document.querySelectorAll(q));
-      const STORAGE_KEY = 'lic-gen:v1';
-
-      const presets = {
-        reciprocity: { content: 'CC BY-SA 4.0', code: 'AGPL v3' },
-        adoption: { content: 'CC BY 4.0', code: 'Apache 2.0' },
-        intermediate: { content: 'CC BY-SA 4.0', code: 'MPL 2.0' }
-      };
-
-      const I18N = {
-        es: {
-          format: {
-            prompt: 'Prompt para IA',
-            promptDesc: '(para pedir a una IA que redacte el aviso)',
-            text: 'Texto plano',
-            textDesc: '(para pegar directamente en documentos o webs)',
-            html: 'Bloque HTML',
-            htmlDesc: '(para incrustar en tu página con enlaces oficiales)',
-            copy: 'Copiar',
-            copied: 'Copiado',
-            copyFallback: 'Copia manual: Ctrl+C'
-          },
-          outputsIntro: 'Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.',
-          plain: {
-            headingFallback: 'Licencias del proyecto',
-            authorLabel: 'Autoría',
-            resourceLabel: 'Recurso',
-            codeWithLink: 'El código de esta aplicación está disponible bajo licencia {{license}}. Consulta el texto completo en {{link}}.',
-            codeNoLink: 'El código de esta aplicación está disponible bajo licencia {{license}}.',
-            contentWithLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia {{license}}. Consulta el texto completo en {{link}}.',
-            contentNoLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia {{license}}.'
-          },
-          html: {
-            headingFallback: 'Licencias del proyecto',
-            codeWithLink: 'El código de esta aplicación está disponible bajo licencia <a rel="license" href="{{link}}">{{license}}</a>.',
-            codeNoLink: 'El código de esta aplicación está disponible bajo licencia {{license}}.',
-            contentWithLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia <a rel="license" href="{{link}}">{{license}}</a>.',
-            contentNoLink: 'Los contenidos educativos (textos, ejercicios, vídeos e imágenes) están bajo licencia {{license}}.'
-          },
-          common: {
-            selectLicense: '[selecciona licencia]'
-          }
-        },
-        en: {
-          format: {
-            prompt: 'AI prompt',
-            promptDesc: '(to ask the assistant to draft the notice)',
-            text: 'Plain text',
-            textDesc: '(to paste directly into documents or web pages)',
-            html: 'HTML snippet',
-            htmlDesc: '(to embed on your site with official links)',
-            copy: 'Copy',
-            copied: 'Copied',
-            copyFallback: 'Copy manually: Ctrl+C'
-          },
-          outputsIntro: 'Copy whichever format you need: AI prompt, ready-to-paste text, or HTML with links.',
-          plain: {
-            headingFallback: 'Project licenses',
-            authorLabel: 'Author',
-            resourceLabel: 'Resource',
-            codeWithLink: 'This application\'s code is available under the {{license}} license. Read the full text at {{link}}.',
-            codeNoLink: 'This application\'s code is available under the {{license}} license.',
-            contentWithLink: 'The educational content (texts, exercises, videos, and images) is licensed under {{license}}. Read the full text at {{link}}.',
-            contentNoLink: 'The educational content (texts, exercises, videos, and images) is licensed under {{license}}.'
-          },
-          html: {
-            headingFallback: 'Project licenses',
-            codeWithLink: 'This application\'s code is available under the <a rel="license" href="{{link}}">{{license}}</a> license.',
-            codeNoLink: 'This application\'s code is available under the {{license}} license.',
-            contentWithLink: 'The educational content (texts, exercises, videos, and images) is licensed under <a rel="license" href="{{link}}">{{license}}</a>.',
-            contentNoLink: 'The educational content (texts, exercises, videos, and images) is licensed under {{license}}.'
-          },
-          common: {
-            selectLicense: '[select a license]'
-          }
-        },
-        ca: {
-          format: {
-            prompt: 'Prompt per a IA',
-            promptDesc: '(per demanar a la IA que redacti l\'avís)',
-            text: 'Text pla',
-            textDesc: '(per enganxar directament a documents o webs)',
-            html: 'Bloc HTML',
-            htmlDesc: '(per incrustar a la teva pàgina amb enllaços oficials)',
-            copy: 'Copia',
-            copied: 'Copiat',
-            copyFallback: 'Còpia manual: Ctrl+C'
-          },
-          outputsIntro: 'Copia el format que necessitis: prompt per a IA, text llest per enganxar o HTML amb enllaços.',
-          plain: {
-            headingFallback: 'Llicències del projecte',
-            authorLabel: 'Autoria',
-            resourceLabel: 'Recurs',
-            codeWithLink: 'El codi d\'aquesta aplicació està disponible sota la llicència {{license}}. Consulteu el text complet a {{link}}.',
-            codeNoLink: 'El codi d\'aquesta aplicació està disponible sota la llicència {{license}}.',
-            contentWithLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència {{license}}. Consulteu el text complet a {{link}}.',
-            contentNoLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència {{license}}.'
-          },
-          html: {
-            headingFallback: 'Llicències del projecte',
-            codeWithLink: 'El codi d\'aquesta aplicació està disponible sota la llicència <a rel="license" href="{{link}}">{{license}}</a>.',
-            codeNoLink: 'El codi d\'aquesta aplicació està disponible sota la llicència {{license}}.',
-            contentWithLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència <a rel="license" href="{{link}}">{{license}}</a>.',
-            contentNoLink: 'Els continguts educatius (textos, exercicis, vídeos i imatges) tenen la llicència {{license}}.'
-          },
-          common: {
-            selectLicense: '[tria una llicència]'
-          }
-        }
-      };
-
-      function getLocale(lang) {
-        return I18N[lang] || I18N.es;
-      }
-
-      function interpolate(template, values) {
-        return template.replace(/\{\{(\w+)\}\}/g, (_, key) => values[key] != null ? values[key] : '');
-      }
-
-      // Marcar visualmente el preset activo (el activo sin 'btn-ghost')
-      function markPreset(p) {
-        const ids = ['#preset-reciprocity', '#preset-adoption', '#preset-intermediate'];
-        const selected = {
-          reciprocity: '#preset-reciprocity',
-          adoption: '#preset-adoption',
-          intermediate: '#preset-intermediate'
-        }[p] || '';
-        ids.forEach(sel => {
-          const el = $(sel);
-          if (!el) return;
-          if (sel === selected) {
-            el.classList.remove('btn-ghost');
-          } else {
-            el.classList.add('btn-ghost');
-          }
-        });
-      }
-
-      // Detectar si la selección actual coincide con algún preset y marcarlo
-      function detectAndMarkPreset() {
-        const content = getSelected('lic-content');
-        const code = getSelected('lic-code');
-        const match = Object.entries(presets).find(([, v]) => v.content === content && v.code === code);
-        if (match) {
-          markPreset(match[0]);
-        } else {
-          ['#preset-reciprocity', '#preset-adoption', '#preset-intermediate']
-            .forEach(sel => { const el = $(sel); if (el) el.classList.add('btn-ghost'); });
-        }
-      }
-
-      function setPreset(p) {
-        if (!presets[p]) return;
-        const { content, code } = presets[p];
-        const tipoSel = $('#tipo').value; // 'ambos' | 'codigo' | 'contenidos'
-        // Ajusta solo lo relevante según el tipo actual
-        if (tipoSel !== 'codigo') {
-          const c = $$("input[name='lic-content']").find(r => r.value === content);
-          if (c) c.checked = true;
-        }
-        if (tipoSel !== 'contenidos') {
-          const k = $$("input[name='lic-code']").find(r => r.value === code);
-          if (k) k.checked = true;
-        }
-        markPreset(p);
-        update();
-      }
-
-      function getState() {
-        return {
-          tipo: $('#tipo').value,
-          licContent: getSelected('lic-content'),
-          licCode: getSelected('lic-code'),
-          codeLinkMode: getSelected('code-link-mode'),
-          titulo: $('#titulo').value,
-          autor: $('#autor').value,
-          anio: $('#anio').value,
-          url: $('#url').value,
-          autor_url: ($('#autor_url') ? $('#autor_url').value : ''),
-          idioma: $('#idioma').value,
-        };
-      }
-
-      function applyState(state) {
-        if (!state) return;
-        if (state.tipo) $('#tipo').value = state.tipo;
-        if (state.licContent) {
-          const c = $$("input[name='lic-content']").find(r => r.value === state.licContent);
-          if (c) c.checked = true;
-        }
-        if (state.licCode) {
-          const k = $$("input[name='lic-code']").find(r => r.value === state.licCode);
-          if (k) k.checked = true;
-        }
-        if (state.codeLinkMode) {
-          const m = $$("input[name='code-link-mode']").find(r => r.value === state.codeLinkMode);
-          if (m) m.checked = true;
-        }
-        if (state.titulo != null) $('#titulo').value = state.titulo;
-        if (state.autor != null) $('#autor').value = state.autor;
-        if (state.anio != null) $('#anio').value = state.anio;
-        if (state.url != null) $('#url').value = state.url;
-        if ($('#autor_url') && state.autor_url != null) $('#autor_url').value = state.autor_url;
-        if (state.idioma) $('#idioma').value = state.idioma;
-      }
-
-      function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(getState())); } catch {} }
-      function loadState() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) applyState(JSON.parse(raw));
-        } catch {}
-      }
-
-      function getSelected(name) {
-        const r = $$("input[name='"+name+"']").find(x => x.checked);
-        return r ? r.value : '';
-      }
-      const LINKS_CC = {
-        'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
-        'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
-        'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
-      };
-      const LINKS_CODE = {
-        'AGPL v3': 'https://www.gnu.org/licenses/agpl-3.0.html',
-        'MPL 2.0': 'https://www.mozilla.org/MPL/2.0/',
-        'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
-        'MIT': 'https://opensource.org/license/mit'
-      };
-
-      function buildPromptText(state) {
-        const tipo = state.tipo;
-        const idioma = state.idioma;
-        const licContent = state.licContent;
-        const licCode = state.licCode;
-        const codeLinkMode = state.codeLinkMode || 'archivo';
-        const titulo = (state.titulo || '').trim();
-        const autor = (state.autor || '').trim();
-        const autorUrl = (state.autor_url || '').trim();
-        const anio = (state.anio || '').trim();
-        const url = (state.url || '').trim();
-
-        const partes = [];
-        if (idioma && idioma !== 'es') {
-          const nombres = { 'ca': 'catalán', 'en': 'inglés', 'gl': 'gallego', 'eu': 'euskera' };
-          const etiqueta = nombres[idioma] || idioma;
-          partes.push(`Responde en: ${etiqueta}.`);
-          partes.push('');
-        }
-
-        partes.push('Añade a mi app educativa las licencias recomendadas para proyectos de código y contenidos.');
-        partes.push('');
-
-        const atrib = [];
-        if (titulo) atrib.push(`título: ${titulo}`);
-        if (autor) atrib.push(`autoría: ${autor}`);
-        if (anio) atrib.push(`año: ${anio}`);
-        if (url) atrib.push(`enlace: ${url}`);
-        if (atrib.length) {
-          partes.push('Datos para la atribución: ' + atrib.join(', ') + '.');
-          partes.push('');
-        }
-
-        if (tipo === 'codigo' || tipo === 'ambos') {
-          const lic = licCode || '[licencia]';
-          const linkOficial = LINKS_CODE[licCode] || '[enlace oficial]';
-          partes.push('Para el código:');
-          partes.push(`- Aplica la licencia ${lic}.`);
-          if (codeLinkMode === 'archivo') {
-            partes.push('- Crea un archivo LICENSE.txt con el texto completo de la licencia.');
-            partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
-            partes.push('- Menciona la licencia también en la documentación del proyecto.');
-            if (tipo !== 'ambos') {
-              partes.push(`- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ${lic}” y enlaza ese texto a LICENSE.txt.`);
-            } else {
-              partes.push(`- En el pie, incluye “Licencia del código: ${lic}” enlazando a LICENSE.txt (ver Línea 2).`);
-            }
-          } else {
-            partes.push(`- No crees LICENSE.txt; enlaza el nombre de la licencia al texto oficial: ${linkOficial}.`);
-            partes.push('- Añade una nota breve al inicio de cada archivo de código indicando la licencia.');
-            partes.push('- Menciona la licencia también en la documentación del proyecto.');
-            if (tipo !== 'ambos') {
-              partes.push(`- En el pie de la página principal o en un lugar destacado del proyecto, muestra “Licencia del código: ${lic}” y enlaza ese texto al sitio oficial.`);
-            } else {
-              partes.push(`- En el pie, incluye “Licencia del código: ${lic}” enlazando al sitio oficial (ver Línea 2).`);
-            }
-          }
-          partes.push('');
-        }
-
-        if (tipo === 'contenidos' || tipo === 'ambos') {
-          const lic = licContent || '[licencia CC]';
-          const link = LINKS_CC[licContent] || '';
-          partes.push('Para los contenidos educativos (textos, ejercicios, vídeos, imágenes):');
-          partes.push(`- Aplica la licencia ${lic}.`);
-          if (tipo === 'ambos') {
-            partes.push(`- En el pie, añade “Esta obra está bajo licencia ${lic}” enlazando al sitio oficial` + (link ? `: ${link}.` : '.'));
-          } else {
-            partes.push('- En el pie de la página principal o en un lugar destacado del proyecto, añade el texto:');
-            partes.push(`  “Esta obra está bajo licencia ${lic}” con el enlace oficial a la licencia correspondiente` + (link ? `: ${link}.` : '.'));
-          }
-          partes.push('- Si es posible, acompáñalo con el icono oficial de la licencia.');
-        }
-
-        const y = anio || '';
-        const a = autor || '';
-        const tieneLinea1 = Boolean(y || a);
-        if (tieneLinea1) {
-          partes.push('');
-          partes.push('Pie de página (centrado):');
-          if (autorUrl && a) {
-            partes.push(`- Línea 1: "© ${[y,a].filter(Boolean).join(' ')}" con el nombre enlazando a ${autorUrl}.`);
-          } else {
-            partes.push(`- Línea 1: "© ${[y,a].filter(Boolean).join(' ')}".`);
-          }
-          if (tipo === 'ambos') {
-            const ccTxt = licContent || '[licencia CC]';
-            const ccLink = LINKS_CC[licContent] || '[enlace CC]';
-            const codeTxt = licCode || '[licencia]';
-            if (codeLinkMode === 'archivo') {
-              partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza a LICENSE.txt) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
-            } else {
-              partes.push(`- Línea 2: "Licencia del código: ${codeTxt} (el texto de la licencia enlaza al sitio oficial) · Contenido: ${ccTxt} (el texto de la licencia enlaza a ${ccLink})".`);
-            }
-          }
-        }
-
-        return partes.join('\n');
-      }
-
-      function buildPlainText(state) {
-        const lang = state.idioma;
-        const locale = getLocale(lang);
-        const tipo = state.tipo;
-        const licContent = state.licContent;
-        const licCode = state.licCode;
-        const titulo = (state.titulo || '').trim();
-        const autor = (state.autor || '').trim();
-        const autorUrl = (state.autor_url || '').trim();
-        const anio = (state.anio || '').trim();
-        const url = (state.url || '').trim();
-
-        const placeholder = locale.common.selectLicense;
-        const lines = [];
-        lines.push(titulo || locale.plain.headingFallback);
-
-        const meta = [];
-        if (anio || autor) {
-          const segs = [];
-          if (anio) segs.push('© ' + anio);
-          if (autor) segs.push(autor);
-          if (segs.length) meta.push(segs.join(' '));
-        }
-        if (autor && autorUrl) meta.push(`${locale.plain.authorLabel}: ${autorUrl}`);
-        if (url) meta.push(`${locale.plain.resourceLabel}: ${url}`);
-        if (meta.length) {
-          lines.push(meta.join(' · '));
-          lines.push('');
-        }
-
-        if (tipo === 'codigo' || tipo === 'ambos') {
-          const name = licCode || placeholder;
-          const link = LINKS_CODE[licCode] || '';
-          const sentence = link
-            ? interpolate(locale.plain.codeWithLink, { license: name, link })
-            : interpolate(locale.plain.codeNoLink, { license: name });
-          lines.push(sentence);
-        }
-        if (tipo === 'ambos') lines.push('');
-        if (tipo === 'contenidos' || tipo === 'ambos') {
-          const name = licContent || placeholder;
-          const link = LINKS_CC[licContent] || '';
-          const sentence = link
-            ? interpolate(locale.plain.contentWithLink, { license: name, link })
-            : interpolate(locale.plain.contentNoLink, { license: name });
-          lines.push(sentence);
-        }
-
-        return lines.join('\n');
-      }
-
-      function escapeHtml(str) {
-        return String(str || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch] || ch));
-      }
-
-      function buildHtmlOutput(state) {
-        const lang = state.idioma;
-        const locale = getLocale(lang);
-        const tipo = state.tipo;
-        const licContent = state.licContent;
-        const licCode = state.licCode;
-        const titulo = (state.titulo || '').trim();
-        const autor = (state.autor || '').trim();
-        const autorUrl = (state.autor_url || '').trim();
-        const anio = (state.anio || '').trim();
-        const url = (state.url || '').trim();
-
-        const heading = titulo ? escapeHtml(titulo) : escapeHtml(locale.html.headingFallback);
-        const parts = [];
-        parts.push('<section class="licenses-summary" aria-labelledby="licencias-resumen">');
-        parts.push(`  <h2 id="licencias-resumen">${heading}</h2>`);
-
-        const meta = [];
-        if (anio || autor) {
-          const segs = [];
-          if (anio) segs.push(`© ${escapeHtml(anio)}`);
-          if (autor) {
-            const autorLabel = autorUrl ? `<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>` : escapeHtml(autor);
-            segs.push(autorLabel);
-          }
-          if (segs.length) meta.push(segs.join(' · '));
-        }
-        if (autor && autorUrl && !meta.length) {
-          meta.push(`<a href="${escapeHtml(autorUrl)}" rel="author">${escapeHtml(autor)}</a>`);
-        }
-        if (url) {
-          meta.push(`<a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`);
-        }
-        if (meta.length) {
-          parts.push(`  <p>${meta.join(' · ')}</p>`);
-        }
-
-        if (tipo === 'codigo' || tipo === 'ambos') {
-          const name = escapeHtml(licCode || locale.common.selectLicense);
-          const link = LINKS_CODE[licCode] ? escapeHtml(LINKS_CODE[licCode]) : '';
-          const tpl = link ? locale.html.codeWithLink : locale.html.codeNoLink;
-          parts.push('  <p>' + interpolate(tpl, { license: name, link: link || '#' }) + '</p>');
-        }
-        if (tipo === 'contenidos' || tipo === 'ambos') {
-          const name = escapeHtml(licContent || locale.common.selectLicense);
-          const link = LINKS_CC[licContent] ? escapeHtml(LINKS_CC[licContent]) : '';
-          const tpl = link ? locale.html.contentWithLink : locale.html.contentNoLink;
-          parts.push('  <p>' + interpolate(tpl, { license: name, link: link || '#' }) + '</p>');
-        }
-
-        parts.push('</section>');
-        return parts.join('\n');
-      }
-
-      function buildOutputs() {
-        const state = getState();
-        return {
-          state,
-          prompt: buildPromptText(state),
-          text: buildPlainText(state),
-          html: buildHtmlOutput(state)
-        };
-      }
-
-      function applyOutputLabels(lang) {
-        const locale = getLocale(lang);
-        const setText = (selector, text) => { const el = document.querySelector(selector); if (el) el.textContent = text; };
-        setText('[data-i18n="title-prompt"]', locale.format.prompt);
-        setText('[data-i18n="desc-prompt"]', locale.format.promptDesc);
-        setText('[data-i18n="title-text"]', locale.format.text);
-        setText('[data-i18n="desc-text"]', locale.format.textDesc);
-        setText('[data-i18n="title-html"]', locale.format.html);
-        setText('[data-i18n="desc-html"]', locale.format.htmlDesc);
-        setText('[data-i18n="outputs-intro"]', locale.outputsIntro);
-        $$('.btn-copy').forEach(btn => {
-          btn.textContent = locale.format.copy;
-          btn.dataset.copyLabel = locale.format.copy;
-          btn.dataset.copiedLabel = locale.format.copied;
-          btn.dataset.copyFallback = locale.format.copyFallback;
-        });
-      }
-
-      function update() {
-        const outputs = buildOutputs();
-        applyOutputLabels(outputs.state.idioma);
-        $('#out-prompt').value = outputs.prompt;
-        $('#out-text').value = outputs.text;
-        $('#out-html').value = outputs.html;
-        saveState();
-        detectAndMarkPreset();
-      }
-
-      $('#tipo').addEventListener('change', () => {
-        const t = $('#tipo').value;
-        $('#box-content').style.display = (t === 'contenidos' || t === 'ambos') ? '' : 'none';
-        $('#box-code').style.display = (t === 'codigo' || t === 'ambos') ? '' : 'none';
-        update();
-      });
-
-      $$("input[name='lic-content']").forEach(r => r.addEventListener('change', update));
-      $$("input[name='lic-code']").forEach(r => r.addEventListener('change', update));
-      $$("input[name='code-link-mode']").forEach(r => r.addEventListener('change', update));
-      [ '#autor', '#autor_url', '#anio', '#titulo', '#url', '#idioma' ].forEach(id => $(id) && $(id).addEventListener('input', update));
-
-      $$('.btn-copy').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const targetId = btn.dataset.copyTarget;
-          const area = document.getElementById(targetId);
-          if (!area) return;
-          const copyLabel = btn.dataset.copyLabel || btn.textContent;
-          const copiedLabel = btn.dataset.copiedLabel || 'Copiado';
-          try {
-            await navigator.clipboard.writeText(area.value);
-            btn.textContent = copiedLabel;
-            setTimeout(() => { btn.textContent = copyLabel; }, 1200);
-          } catch (e) {
-            alert(btn.dataset.copyFallback || 'Copia manual: Ctrl+C');
-          }
-        });
-      });
-
-      function resetState() {
-        try { localStorage.removeItem(STORAGE_KEY); } catch {}
-        // Vaciar campos y volver a preset
-        ['#titulo','#autor','#anio','#url','#autor_url'].forEach(id => { if ($(id)) $(id).value=''; });
-        $('#idioma').value = 'es';
-        setPreset('reciprocity');
-        update();
-      }
-      const clearBtn = document.getElementById('btn-clear');
-      if (clearBtn) clearBtn.addEventListener('click', resetState);
-
-      $('#preset-reciprocity').addEventListener('click', () => setPreset('reciprocity'));
-      $('#preset-adoption').addEventListener('click', () => setPreset('adoption'));
-      $('#preset-intermediate').addEventListener('click', () => setPreset('intermediate'));
-
-      // Estado inicial: recuperar último estado o preset por defecto
-      const hasSaved = (() => { try { return Boolean(localStorage.getItem(STORAGE_KEY)); } catch { return false; } })();
-      if (hasSaved) { loadState(); update(); } else { setPreset('reciprocity'); }
-    });
-  </script>
   <!-- Uso principal: incrustar vía <iframe> en WordPress u otra web. -->
   <meta name="generator" content="Bilateria · Licencias libres para docentes" />
   <meta name="x-licenses" content="CC BY-SA 4.0, CC BY 4.0, CC BY-NC-SA 4.0, AGPL v3, MPL 2.0, Apache 2.0, MIT" />
   <meta name="x-author" content="Ejemplo" />
   <meta name="x-date" content="2025-09-05" />
   <meta name="referrer" content="no-referrer" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'"> 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src data:; base-uri 'none'; form-action 'none'"> 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%232563eb'/%3E%3Ctext x='8' y='11' font-size='10' text-anchor='middle' fill='white' font-family='Arial'%3EL%3C/text%3E%3C/svg%3E">
 </head>
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Generador de prompt de licencias</h1>
-      <p class="lead">Elige las licencias recomendadas para contenidos y/o código y genera un prompt listo para pedir el texto de licencia (README / página web).</p>
+      <h1 id="app-title">Generador de licencias para recursos educativos abiertos (REA)</h1>
+      <p class="lead" id="app-lead">Elige las licencias recomendadas para contenidos y/o código y genera un prompt listo para pedir el texto de licencia (README / página web).</p>
 
-      <div class="inline" style="margin: 8px 0 4px; gap: 8px">
-        <button id="preset-reciprocity" class="btn" title="CC BY-SA + AGPL v3">Reciprocidad (recomendado)</button>
-        <button id="preset-adoption" class="btn btn-ghost" title="CC BY + Apache 2.0">Máxima adopción</button>
-        <button id="preset-intermediate" class="btn btn-ghost" title="CC BY-SA + MPL 2.0">Intermedia</button>
+      <div class="inline preset-row">
+        <button id="preset-reciprocity" class="btn" data-preset="reciprocity" title="CC BY-SA + AGPL v3">Reciprocidad (recomendado)</button>
+        <button id="preset-adoption" class="btn btn-ghost" data-preset="adoption" title="CC BY + Apache 2.0">Máxima adopción</button>
+        <button id="preset-intermediate" class="btn btn-ghost" data-preset="intermediate" title="CC BY-SA + MPL 2.0">Intermedia</button>
       </div>
 
       <fieldset>
-        <legend>Tipo de recurso</legend>
+        <legend id="legend-resource">Tipo de recurso</legend>
         <label>
           <select id="tipo">
-            <option value="ambos">Ambos (contenidos + código)</option>
-            <option value="contenidos">Solo contenidos educativos</option>
-            <option value="codigo">Solo código (apps/herramientas)</option>
+            <option value="ambos" id="opt-type-both">Ambos (contenidos + código)</option>
+            <option value="contenidos" id="opt-type-content">Solo contenidos educativos</option>
+            <option value="codigo" id="opt-type-code">Solo código (apps/herramientas)</option>
           </select>
         </label>
       </fieldset>
 
       <div class="row">
         <fieldset id="box-content">
-          <legend>Licencias para contenidos educativos</legend>
-          <label><input type="radio" name="lic-content" value="CC BY-SA 4.0" checked /> CC BY-SA 4.0 — Atribución + compartir igual (recomendada)</label>
-          <label><input type="radio" name="lic-content" value="CC BY 4.0" /> CC BY 4.0 — Atribución</label>
-          <label><input type="radio" name="lic-content" value="CC BY-NC-SA 4.0" /> CC BY-NC-SA 4.0 — No comercial (con reservas)</label>
+          <legend id="legend-content">Licencias para contenidos educativos</legend>
+          <label><input type="radio" name="lic-content" value="CC BY-SA 4.0" checked /><span id="label-content-cc-by-sa"> CC BY-SA 4.0 — Atribución + compartir igual (recomendada)</span></label>
+          <label><input type="radio" name="lic-content" value="CC BY 4.0" /><span id="label-content-cc-by"> CC BY 4.0 — Atribución</span></label>
+          <label><input type="radio" name="lic-content" value="CC BY-NC-SA 4.0" /><span id="label-content-cc-by-nc-sa"> CC BY-NC-SA 4.0 — No comercial (con reservas)</span></label>
           <details>
-            <summary class="hint">Ver detalles</summary>
-            <div class="hint">
+            <summary class="hint" id="summary-content-details">Ver detalles</summary>
+            <div class="hint" id="content-details">
               • CC BY-SA 4.0: uso libre, requiere atribución y compartir con la misma licencia.<br/>
               • CC BY 4.0: máxima difusión con atribución; las mejoras pueden cerrarse.<br/>
               • CC BY-NC-SA 4.0: prohíbe usos comerciales; «NC» puede generar ambigüedad.
@@ -627,17 +63,17 @@
         </fieldset>
 
         <fieldset id="box-code">
-          <legend>Licencias para código</legend>
-          <label><input type="radio" name="lic-code" value="AGPL v3" checked /> AGPL v3 — Copyleft fuerte orientado a red (recomendada)</label>
-          <label><input type="radio" name="lic-code" value="MPL 2.0" /> MPL 2.0 — Copyleft moderado</label>
-          <label><input type="radio" name="lic-code" value="Apache 2.0" /> Apache 2.0 — Adopción amplia</label>
-          <label><input type="radio" name="lic-code" value="MIT" /> MIT — Simplicidad</label>
-          <div class="hint" style="margin:6px 0 2px">Dónde enlazar la licencia del código</div>
-          <label><input type="radio" name="code-link-mode" value="archivo" checked /> Crear LICENSE.txt y enlazar al archivo</label>
-          <label><input type="radio" name="code-link-mode" value="oficial" /> Enlazar al sitio oficial de la licencia</label>
+          <legend id="legend-code">Licencias para código</legend>
+          <label><input type="radio" name="lic-code" value="AGPL v3" checked /><span id="label-code-agpl"> AGPL v3 — Copyleft fuerte orientado a red (recomendada)</span></label>
+          <label><input type="radio" name="lic-code" value="MPL 2.0" /><span id="label-code-mpl"> MPL 2.0 — Copyleft moderado</span></label>
+          <label><input type="radio" name="lic-code" value="Apache 2.0" /><span id="label-code-apache"> Apache 2.0 — Adopción amplia</span></label>
+          <label><input type="radio" name="lic-code" value="MIT" /><span id="label-code-mit"> MIT — Simplicidad</span></label>
+          <div class="hint hint-tight" id="code-link-hint">Dónde enlazar la licencia del código</div>
+          <label class="code-link-option"><input type="radio" name="code-link-mode" value="archivo" checked /><span id="label-code-link-file"> Crear LICENSE.txt y enlazar al archivo</span></label>
+          <label class="code-link-option"><input type="radio" name="code-link-mode" value="oficial" /><span id="label-code-link-official"> Enlazar al sitio oficial de la licencia</span></label>
           <details>
-            <summary class="hint">Ver detalles</summary>
-            <div class="hint">
+            <summary class="hint" id="summary-code-details">Ver detalles</summary>
+            <div class="hint" id="code-details">
               • AGPL v3: garantiza que las mejoras permanezcan libres (copyleft) e incluye uso a través de red.<br/>
               • MPL 2.0: obliga a compartir cambios por archivo; permite combinar con código cerrado.<br/>
               • Apache 2.0: permisiva, sin obligación de devolver mejoras; protección de patentes.<br/>
@@ -648,31 +84,25 @@
       </div>
 
       <fieldset>
-        <legend>Datos opcionales para atribución</legend>
+        <legend id="legend-attribution">Datos opcionales para atribución</legend>
         <div class="row">
-          <label>Título o proyecto<input id="titulo" name="project-title" autocomplete="on" autocapitalize="sentences" type="text" placeholder="p. ej., App de ecuaciones de 1º Bach" /></label>
-          <label>Autoría<input id="autor" name="author" autocomplete="name" autocapitalize="words" type="text" placeholder="p. ej., Ana Pérez" /></label>
-          <label>Año<input id="anio" name="copyright-year" autocomplete="on" type="number" min="1990" max="2100" step="1" placeholder="2025" /></label>
-          <label>URL del recurso<input id="url" name="project-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-centro.edu/recurso" /></label>
-          <label>Enlace del autor<input id="autor_url" name="author-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-perfil-o-autor.example" /></label>
-          <label>Idioma
-            <select id="idioma" name="language" autocomplete="language">
-              <option value="es" selected>español</option>
-              <option value="ca">catalán</option>
-              <option value="en">inglés</option>
-              <option value="gl">galego (gl)</option>
-              <option value="eu">euskara (eu)</option>
-            </select>
+          <label><span class="field-label" id="label-field-title">Título o proyecto</span><input id="titulo" name="project-title" autocomplete="on" autocapitalize="sentences" type="text" placeholder="p. ej., App de ecuaciones de 1º Bach" /></label>
+          <label><span class="field-label" id="label-field-author">Autoría</span><input id="autor" name="author" autocomplete="name" autocapitalize="words" type="text" placeholder="p. ej., Ana Pérez" /></label>
+          <label><span class="field-label" id="label-field-year">Año</span><input id="anio" name="copyright-year" autocomplete="on" type="number" min="1990" max="2100" step="1" placeholder="2025" /></label>
+          <label><span class="field-label" id="label-field-url">URL del recurso</span><input id="url" name="project-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-centro.edu/recurso" /></label>
+          <label><span class="field-label" id="label-field-author-url">Enlace del autor</span><input id="autor_url" name="author-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-perfil-o-autor.example" /></label>
+          <label><span class="field-label" id="label-field-language">Idioma</span>
+            <select id="idioma" name="language" autocomplete="language"></select>
           </label>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>Resultados generados</legend>
-        <div class="inline" style="gap:8px; margin-bottom:6px">
-          <button id="btn-clear" class="btn btn-ghost" title="Borrar datos guardados">Borrar datos</button>
+        <legend id="legend-outputs">Resultados generados</legend>
+        <div class="inline action-row">
+          <button id="btn-clear" class="btn btn-ghost" title="Borrar datos">Borrar datos</button>
         </div>
-        <p class="hint" data-i18n="outputs-intro">Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.</p>
+        <p class="hint" id="outputs-intro">Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.</p>
         <div class="outputs">
           <div class="output-block">
             <div class="output-head">
@@ -680,7 +110,7 @@
                 <span data-i18n="title-prompt">Prompt para IA</span>
                 <span class="format-desc" data-i18n="desc-prompt">(para pedir a una IA que redacte el aviso)</span>
               </h3>
-              <button class="btn btn-copy" data-copy-target="out-prompt" data-i18n="copy-label">Copiar</button>
+              <button class="btn btn-copy" data-copy-target="out-prompt">Copiar</button>
             </div>
             <textarea id="out-prompt" readonly></textarea>
           </div>
@@ -690,7 +120,7 @@
                 <span data-i18n="title-text">Texto plano</span>
                 <span class="format-desc" data-i18n="desc-text">(para pegar directamente en documentos o webs)</span>
               </h3>
-              <button class="btn btn-copy" data-copy-target="out-text" data-i18n="copy-label">Copiar</button>
+              <button class="btn btn-copy" data-copy-target="out-text">Copiar</button>
             </div>
             <textarea id="out-text" readonly></textarea>
           </div>
@@ -700,7 +130,7 @@
                 <span data-i18n="title-html">Bloque HTML</span>
                 <span class="format-desc" data-i18n="desc-html">(para incrustar en tu página con enlaces oficiales)</span>
               </h3>
-              <button class="btn btn-copy" data-copy-target="out-html" data-i18n="copy-label">Copiar</button>
+              <button class="btn btn-copy" data-copy-target="out-html">Copiar</button>
             </div>
             <textarea id="out-html" readonly></textarea>
           </div>
@@ -708,8 +138,8 @@
       </fieldset>
 
       <details>
-        <summary class="hint">Licencias incluidas (enlaces oficiales)</summary>
-        <div class="hint">
+        <summary class="hint" id="summary-licenses">Licencias incluidas (enlaces oficiales)</summary>
+        <div class="hint" id="licenses-list">
           • CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/<br/>
           • CC BY 4.0: https://creativecommons.org/licenses/by/4.0/<br/>
           • CC BY-NC-SA 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/<br/>
@@ -720,19 +150,12 @@
         </div>
       </details>
     </div>
-    <footer class="card footer-center" role="contentinfo" style="margin-top:12px">
-      <div class="foot-line">© 2025 <a href="https://bilateria.org" target="_blank" rel="noopener">Juan José de Haro</a></div>
-      <div class="foot-line">Licencia: <a href="LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a></div>
+    <footer class="card footer-center footer-offset" role="contentinfo">
+      <div class="foot-line"><span id="footer-owner-label">© 2025</span> <a href="https://bilateria.org" target="_blank" rel="noopener">Juan José de Haro</a></div>
+      <div class="foot-line"><span id="footer-license-label">Licencia: </span><a href="LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a></div>
     </footer>
   </div>
 </body>
-  <script>
-  function sendHeight() {
-    const height = document.documentElement.scrollHeight;
-    parent.postMessage(height, "*");
-  }
-  window.onload = sendHeight;
-  window.onresize = sendHeight;
-</script>
+  
 
 </html>
