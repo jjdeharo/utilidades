@@ -1,161 +1,43 @@
 <!DOCTYPE html>
-<!--
-  Proyecto: Generador de prompt de licencias
-  Copyright (C) 2025 Juan José de Haro — https://jjdeharo.github.io/utilidades/licencias-libres
-  Licencia del código: GNU AGPL v3 (ver LICENSE.txt)
-  Este archivo forma parte de la app educativa y puede redistribuirse y/o modificarse bajo los términos de la AGPL v3.
--->
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Generador de licencias para recursos educativos abiertos (REA)</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="i18n.js" defer></script>
-  <script src="scripts.js" defer></script>
-
-  <!-- Uso principal: incrustar vía <iframe> en WordPress u otra web. -->
-  <meta name="generator" content="Bilateria · Licencias libres para docentes" />
-  <meta name="x-licenses" content="CC BY-SA 4.0, CC BY 4.0, CC BY-NC-SA 4.0, AGPL v3, MPL 2.0, Apache 2.0, MIT" />
-  <meta name="x-author" content="Ejemplo" />
-  <meta name="x-date" content="2025-09-05" />
-  <meta name="referrer" content="no-referrer" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src data:; base-uri 'none'; form-action 'none'"> 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%232563eb'/%3E%3Ctext x='8' y='11' font-size='10' text-anchor='middle' fill='white' font-family='Arial'%3EL%3C/text%3E%3C/svg%3E">
+  <meta http-equiv="refresh" content="0; url=https://jjdeharo.github.io/licencias-libres/" />
+  <title>Licencias libres</title>
+  <script>
+    window.location.replace('https://jjdeharo.github.io/licencias-libres/');
+  </script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f7f7fb;
+      color: #1f2937;
+    }
+    .card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(31, 41, 55, 0.12);
+      text-align: center;
+      max-width: 420px;
+    }
+    a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1 id="app-title">Generador de licencias para recursos educativos abiertos (REA)</h1>
-      <p class="lead" id="app-lead">Elige las licencias recomendadas para contenidos y/o código y genera un prompt listo para pedir el texto de licencia (README / página web).</p>
-
-      <div class="inline preset-row">
-        <button id="preset-reciprocity" class="btn" data-preset="reciprocity" title="CC BY-SA + AGPL v3">Reciprocidad (recomendado)</button>
-        <button id="preset-adoption" class="btn btn-ghost" data-preset="adoption" title="CC BY + Apache 2.0">Máxima adopción</button>
-        <button id="preset-intermediate" class="btn btn-ghost" data-preset="intermediate" title="CC BY-SA + MPL 2.0">Intermedia</button>
-      </div>
-
-      <fieldset>
-        <legend id="legend-resource">Tipo de recurso</legend>
-        <label>
-          <select id="tipo">
-            <option value="ambos" id="opt-type-both">Ambos (contenidos + código)</option>
-            <option value="contenidos" id="opt-type-content">Solo contenidos educativos</option>
-            <option value="codigo" id="opt-type-code">Solo código (apps/herramientas)</option>
-          </select>
-        </label>
-      </fieldset>
-
-      <div class="row">
-        <fieldset id="box-content">
-          <legend id="legend-content">Licencias para contenidos educativos</legend>
-          <label><input type="radio" name="lic-content" value="CC BY-SA 4.0" checked /><span id="label-content-cc-by-sa"> CC BY-SA 4.0 — Atribución + compartir igual (recomendada)</span></label>
-          <label><input type="radio" name="lic-content" value="CC BY 4.0" /><span id="label-content-cc-by"> CC BY 4.0 — Atribución</span></label>
-          <label><input type="radio" name="lic-content" value="CC BY-NC-SA 4.0" /><span id="label-content-cc-by-nc-sa"> CC BY-NC-SA 4.0 — No comercial (con reservas)</span></label>
-          <details>
-            <summary class="hint" id="summary-content-details">Ver detalles</summary>
-            <div class="hint" id="content-details">
-              • CC BY-SA 4.0: uso libre, requiere atribución y compartir con la misma licencia.<br/>
-              • CC BY 4.0: máxima difusión con atribución; las mejoras pueden cerrarse.<br/>
-              • CC BY-NC-SA 4.0: prohíbe usos comerciales; «NC» puede generar ambigüedad.
-            </div>
-          </details>
-        </fieldset>
-
-        <fieldset id="box-code">
-          <legend id="legend-code">Licencias para código</legend>
-          <label><input type="radio" name="lic-code" value="AGPL v3" checked /><span id="label-code-agpl"> AGPL v3 — Copyleft fuerte orientado a red (recomendada)</span></label>
-          <label><input type="radio" name="lic-code" value="MPL 2.0" /><span id="label-code-mpl"> MPL 2.0 — Copyleft moderado</span></label>
-          <label><input type="radio" name="lic-code" value="Apache 2.0" /><span id="label-code-apache"> Apache 2.0 — Adopción amplia</span></label>
-          <label><input type="radio" name="lic-code" value="MIT" /><span id="label-code-mit"> MIT — Simplicidad</span></label>
-          <div class="hint hint-tight" id="code-link-hint">Dónde enlazar la licencia del código</div>
-          <label class="code-link-option"><input type="radio" name="code-link-mode" value="archivo" checked /><span id="label-code-link-file"> Crear LICENSE.txt y enlazar al archivo</span></label>
-          <label class="code-link-option"><input type="radio" name="code-link-mode" value="oficial" /><span id="label-code-link-official"> Enlazar al sitio oficial de la licencia</span></label>
-          <details>
-            <summary class="hint" id="summary-code-details">Ver detalles</summary>
-            <div class="hint" id="code-details">
-              • AGPL v3: garantiza que las mejoras permanezcan libres (copyleft) e incluye uso a través de red.<br/>
-              • MPL 2.0: obliga a compartir cambios por archivo; permite combinar con código cerrado.<br/>
-              • Apache 2.0: permisiva, sin obligación de devolver mejoras; protección de patentes.<br/>
-              • MIT: muy permisiva y simple, sin garantías de retorno ni patentes.
-            </div>
-          </details>
-        </fieldset>
-      </div>
-
-      <fieldset>
-        <legend id="legend-attribution">Datos opcionales para atribución</legend>
-        <div class="row">
-          <label><span class="field-label" id="label-field-title">Título o proyecto</span><input id="titulo" name="project-title" autocomplete="on" autocapitalize="sentences" type="text" placeholder="p. ej., App de ecuaciones de 1º Bach" /></label>
-          <label><span class="field-label" id="label-field-author">Autoría</span><input id="autor" name="author" autocomplete="name" autocapitalize="words" type="text" placeholder="p. ej., Ana Pérez" /></label>
-          <label><span class="field-label" id="label-field-year">Año</span><input id="anio" name="copyright-year" autocomplete="on" type="number" min="1990" max="2100" step="1" placeholder="2025" /></label>
-          <label><span class="field-label" id="label-field-url">URL del recurso</span><input id="url" name="project-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-centro.edu/recurso" /></label>
-          <label><span class="field-label" id="label-field-author-url">Enlace del autor</span><input id="autor_url" name="author-url" autocomplete="url" inputmode="url" type="url" placeholder="https://tu-perfil-o-autor.example" /></label>
-          <label><span class="field-label" id="label-field-language">Idioma</span>
-            <select id="idioma" name="language" autocomplete="language"></select>
-          </label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend id="legend-outputs">Resultados generados</legend>
-        <div class="inline action-row">
-          <button id="btn-clear" class="btn btn-ghost" title="Borrar datos">Borrar datos</button>
-        </div>
-        <p class="hint" id="outputs-intro">Copia el formato que necesites: prompt para IA, texto listo para pegar o HTML con enlaces.</p>
-        <div class="outputs">
-          <div class="output-block">
-            <div class="output-head">
-              <h3>
-                <span data-i18n="title-prompt">Prompt para IA</span>
-                <span class="format-desc" data-i18n="desc-prompt">(para pedir a una IA que redacte el aviso)</span>
-              </h3>
-              <button class="btn btn-copy" data-copy-target="out-prompt">Copiar</button>
-            </div>
-            <textarea id="out-prompt" readonly></textarea>
-          </div>
-          <div class="output-block">
-            <div class="output-head">
-              <h3>
-                <span data-i18n="title-text">Texto plano</span>
-                <span class="format-desc" data-i18n="desc-text">(para pegar directamente en documentos o webs)</span>
-              </h3>
-              <button class="btn btn-copy" data-copy-target="out-text">Copiar</button>
-            </div>
-            <textarea id="out-text" readonly></textarea>
-          </div>
-          <div class="output-block">
-            <div class="output-head">
-              <h3>
-                <span data-i18n="title-html">Bloque HTML</span>
-                <span class="format-desc" data-i18n="desc-html">(para incrustar en tu página con enlaces oficiales)</span>
-              </h3>
-              <button class="btn btn-copy" data-copy-target="out-html">Copiar</button>
-            </div>
-            <textarea id="out-html" readonly></textarea>
-          </div>
-        </div>
-      </fieldset>
-
-      <details>
-        <summary class="hint" id="summary-licenses">Licencias incluidas (enlaces oficiales)</summary>
-        <div class="hint" id="licenses-list">
-          • CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/<br/>
-          • CC BY 4.0: https://creativecommons.org/licenses/by/4.0/<br/>
-          • CC BY-NC-SA 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/<br/>
-          • AGPL v3: https://www.gnu.org/licenses/agpl-3.0.html<br/>
-          • MPL 2.0: https://www.mozilla.org/MPL/2.0/<br/>
-          • Apache 2.0: https://www.apache.org/licenses/LICENSE-2.0<br/>
-          • MIT: https://opensource.org/license/mit
-        </div>
-      </details>
-    </div>
-    <footer class="card footer-center footer-offset" role="contentinfo">
-      <div class="foot-line"><span id="footer-owner-label">© 2025</span> <a href="https://bilateria.org" target="_blank" rel="noopener">Juan José de Haro</a></div>
-      <div class="foot-line"><span id="footer-license-label">Licencia: </span><a href="LICENSE.txt" target="_blank" rel="noopener">AGPL v3</a></div>
-    </footer>
+  <div class="card">
+    <h1>Licencias libres</h1>
+    <p>La herramienta ahora vive en <a href="https://jjdeharo.github.io/licencias-libres/">jjdeharo.github.io/licencias-libres</a>.</p>
+    <p>Redirigiendo...</p>
   </div>
 </body>
-  
-
 </html>
