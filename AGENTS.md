@@ -2,13 +2,13 @@
 
 ## Estructura del proyecto
 - Monorepo de utilidades web estáticas. Cada herramienta vive en su carpeta con `index.html` y, si aplica, `scripts.js` y `styles.css` (ej.: `estadistica/Boot_Media_IC/index.html`, `grup_coop/`).
-- Raíz: `README.md`/`index.md` (texto principal), `git.sh` (atajo para commits), subcarpetas temáticas (`estadistica/`, `prompts_edu/`, `licencias-libres/`, etc.), y algunos activos (`*.png`, `*.mp3`).
+- Raíz: `README.md`/`index.md` (texto principal), subcarpetas temáticas (`estadistica/`, `prompts_edu/`, `licencias-libres/`, etc.), y algunos activos (`*.png`, `*.mp3`).
 - No hay build ni framework: HTML/CSS/JS vanilla servidos como archivos estáticos.
 
 ## Desarrollo, build y pruebas locales
 - Abrir directo en navegador: `xdg-open ruta/a/index.html`.
 - Servir estático (útil para rutas relativas): `python3 -m http.server 8080` y visitar `http://localhost:8080/`.
-- Commits rápidos: `bash git.sh` (pide mensaje, hace `add/commit/push`). Alternativa manual: `git add . && git commit -m "mensaje" && git push`.
+- Commits: añadir solo los archivos del cambio (`git add ruta`), no `git add .`, y `git commit -m "mensaje" && git push`.
 - Publicación (GitHub Pages u otro estático): subir la carpeta correspondiente y apuntar a su `index.html`.
 
 ## Estilo de código y convenciones
